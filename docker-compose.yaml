@@ -9,7 +9,7 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_MULTIPLE_DATABASES=trips
+      - POSTGRES_MULTIPLE_DATABASES=trips-db
       - POSTGRES_PASSWORD=test-databases
     ports:
       - 15432:5432
@@ -21,6 +21,28 @@ services:
       - 8000:8000
     volumes:
       - ./sample_service:/app
+  trips:
+    build:
+      context: ./trips
+      dockerfile: ./Dockerfile.dev
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./trips:/app
+    environment:
+      DATABASE_URL: postgresql://user:password@trips-db/trips_main
+      WAIT_HOSTS: postgres:5432
+
+  trips-db:
+    image: postgres:14.5-bullseye
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_DB: trip_main
+    ports:
+      - 15433:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
 
   ghi:
     image: node:lts-bullseye
@@ -36,3 +58,14 @@ services:
       HOST: "0.0.0.0"
       PUBLIC_URL: http://localhost:3000
       REACT_APP_SAMPLE_SERVICE_API_HOST: http://localhost:8000
+
+  pg-admin:
+    image: dpage/pgadmin4
+    volumes:
+      - pg-admin:/var/lib/pgadmin
+    ports:
+      - 8082:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: «REPLACE WITH AN EMAIL»
+      PGADMIN_DEFAULT_PASSWORD: «REPLACE WITH A PASSWORD»
+      PGADMIN_DISABLE_POSTFIX: 1
