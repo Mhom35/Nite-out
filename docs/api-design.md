@@ -172,7 +172,7 @@
       {
         "trip name": string,
         "locations" : [string],
-        "desription": string,
+        "description": string,
         "image_url": string,
         "distance": number,
       }
@@ -200,7 +200,7 @@
      {
        "trip name": string,
        "locations" : [string],
-       "desription": string,
+       "description": string,
        "likes": number,
      }
    ]
