@@ -36,6 +36,21 @@ services:
       - ./trips:/app
     environment:
       DATABASE_URL: postgresql://tripsdb:password@postgres/tripsdb
+<<<<<<< HEAD
+      WAIT_HOSTS: postgres:5432
+
+  accounts:
+    build:
+      context: ./accounts
+      dockerfile: ./Dockerfile.dev
+    ports:
+      - "8080:8000"
+    volumes:
+      - ./users:/app
+    environment:
+      DATABASE_URL: postgresql://accounts:password@postgres/accounts
+=======
+>>>>>>> main
       WAIT_HOSTS: postgres:5432
 
 <<<<<<< HEAD
