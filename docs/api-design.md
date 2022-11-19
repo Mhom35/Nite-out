@@ -44,9 +44,8 @@
   ```json
   {
     "email": string,
-    "user name" : string,
-    "password" : string,
-    "password2": string,
+    "username": string,
+    "password": string,
   }
   ```
 
