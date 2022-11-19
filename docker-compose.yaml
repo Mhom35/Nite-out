@@ -51,17 +51,17 @@ services:
       DATABASE_URL: postgresql://accounts:password@postgres/accounts
       WAIT_HOSTS: postgres:5432
 
-  yelp:
-    build:
-      context: ./yelp
-      dockerfile: ./Dockerfile.dev
-    ports:
-      - "8002:8000"
-    volumes:
-      - ./yelp:/app
-    environment:
-      DATABASE_URL: postgresql://yelp:password@postgres/yelp
-      WAIT_HOSTS: postgres:5432
+  # yelp:
+  #   build:
+  #     context: ./yelp
+  #     dockerfile: ./Dockerfile.dev
+  #   ports:
+  #     - "8002:8000"
+  #   volumes:
+  #     - ./yelp:/app
+  #   environment:
+  #     DATABASE_URL: postgresql://yelp:password@postgres/yelp
+  #     WAIT_HOSTS: postgres:5432
 
   ghi:
     image: node:lts-bullseye
