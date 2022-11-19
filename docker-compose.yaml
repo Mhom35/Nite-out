@@ -47,6 +47,7 @@ services:
     volumes:
       - ./accounts:/app
     environment:
+      SIGNING_KEY: niteout
       DATABASE_URL: postgresql://accounts:password@postgres/accounts
       WAIT_HOSTS: postgres:5432
 
