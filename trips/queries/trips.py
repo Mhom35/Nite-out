@@ -1,0 +1,232 @@
+from pydantic import BaseModel
+from typing import Optional, List, Union
+from queries.pool import pool
+from datetime import datetime
+from .bars import BarOut
+
+
+class Error(BaseModel):
+    message: str
+
+
+class TripIn(BaseModel):
+    trip_name: str
+    locations: list[str]
+    description: str
+    created_on: datetime
+    image_url: Optional[str]
+    likes: Optional[int]
+    distance: Optional[int]
+
+
+class TripOut(BaseModel):
+    id: int
+    trip_name: str
+    locations: list
+    description: str
+    created_on: datetime
+    image_url: Optional[str]
+    likes: Optional[int]
+    distance: Optional[int]
+
+
+
+
+
+class TripRepository:
+    def get_one_trip(self, trip_id: int) -> Optional[TripOut]:
+        try:
+            # connect the database
+            with pool.connection() as conn:
+                # get a cursor (something to run SQL with)
+                with conn.cursor() as db:
+                    # Run our SELECT statement
+                    result = db.execute(
+                        """
+                        SELECT id
+                            , trip_name
+                            , locations
+                            , description
+                            , created_on
+                            , image_url
+                            , likes
+                            , distance
+                        FROM trips
+                        WHERE id = %s
+                        """,
+                        [trip_id],
+                    )
+                    record = result.fetchone()
+                    if record is None:
+                        return None
+                    return self.record_to_trip_out(record)
+        except Exception as e:
+            print(e)
+            return {"message": "Could not get that trip"}
+
+    def delete_trip(self, trip_id: int) -> bool:
+        try:
+            # connect the database
+            with pool.connection() as conn:
+                # get a cursor (something to run SQL with)
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        DELETE FROM trips
+                        WHERE id = %s
+                        """,
+                        [trip_id],
+                    )
+                    return True
+        except Exception as e:
+            print(e)
+            return False
+
+    def update_trip(self, trip_id: int, trip: TripIn) -> Union[TripOut, Error]:
+        try:
+            # connect to database
+            with pool.connection() as conn:
+                # get cursor (something to run SQL with)
+                with conn.cursor() as db:
+                    # Run our SELECT statement
+                    db.execute(
+                        """
+                        UPDATE trips
+                        SET trip_name = %s
+                            , locations = %s
+                            , description = %s
+                            , image_url = %s
+                        WHERE id = %s
+                        """,
+                        # , likes = %s
+                        #     , distance = %s
+                        [
+                            trip.trip_name,
+                            trip.locations,
+                            trip.description,
+                            trip.image_url,
+                            # trip.likes,
+                            # trip.distance,
+                            trip_id,
+                        ],
+                    )
+                    return self.trip_in_to_out(trip_id, trip)
+        except Exception as e:
+            print("error message:", e)
+            return {"message": "Could not update trip"}
+
+    def get_all_trips(self) -> Union[List[TripOut], Error]:
+        try:
+            # connect to database
+            with pool.connection() as conn:
+                # get cursor (something to run SQL with)
+                with conn.cursor() as db:
+                    # Run our SELECT statement
+                    result = db.execute(
+                        """
+                        SELECT id
+                            , trip_name
+                            , locations
+                            , description
+                            , created_on
+                            , image_url
+                            , likes
+                            , distance
+                        FROM trips
+                        ORDER BY id;
+                        """
+                    )
+                    return [
+                        self.record_to_trip_out(record) for record in result
+                    ]
+        except Exception as e:
+            print("error message:", e)
+            return {"message": "Could not get all trips"}
+
+    def create_trip(self, trip: TripIn) -> TripOut:
+        try:
+            # connect to database
+            with pool.connection() as conn:
+                # get cursor (something to run SQL with)
+                with conn.cursor() as db:
+                    # Run our INSERT statement
+                    result = db.execute(
+                        """
+                        INSERT INTO trips
+                            (trip_name, locations, description, created_on)
+                        VALUES
+                            (%s, %s, %s, %s)
+                        RETURNING id;
+                        """,
+                        [
+                            trip.trip_name,
+                            trip.locations,
+                            trip.description,
+                            trip.created_on,
+                        ],
+                    )
+                    id = result.fetchone()[0]
+                    return self.trip_in_to_out(id, trip)
+        except Exception:
+            return {"message": "Create did not work"}
+    def get_bars_for_trip(self, trip_id:int):
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    bars = []
+                    result = db.execute(
+                        """
+                        SELECT b.id AS bar_id, b.yelp_id, b.bar_name, b.url, b.lat, b.long, b.price,
+                            t.id AS trip_id, t.trip_name, t.locations, t.description, t.created_on, t.image_url, t.likes, t.distance
+                        FROM trip_bars AS tb
+                        JOIN bars AS b ON b.id = tb.bar_id
+                        JOIN trips AS t ON t.id = tb.trip_id
+                        WHERE tb.trip_id = %s
+                        """,
+                        [trip_id]
+
+                    )
+
+
+                    for record in result:
+                        bars.append(BarOut(
+                            id=record[0],
+                            yelp_id=record[1],
+                            bar_name=record[2],
+                            url=record[3],
+                            lat=record[4],
+                            long=record[5],
+                            price=record[6]
+                            )
+                        )
+                    trip = TripOut(
+                        id=record[7],
+                        trip_name=record[8],
+                        locations=record[9],
+                        description=record[10],
+                        created_on=record[11],
+                        image_url=record[12],
+                        likes=record[13],
+                        distance=record[14],
+                    )
+                    trip.locations = bars
+                    return trip
+
+        except Exception:
+            return {"message": "trip does not exist"}
+
+    def trip_in_to_out(self, id: int, trip: TripIn):
+        old_data = trip.dict()
+        return TripOut(id=id, **old_data)
+
+    def record_to_trip_out(self, record):
+        return TripOut(
+            id=record[0],
+            trip_name=record[1],
+            locations=record[2],
+            description=record[3],
+            created_on=record[4],
+            image_url=record[5],
+            likes=record[6],
+            distance=record[7],
+        )
