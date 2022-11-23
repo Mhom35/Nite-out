@@ -1,37 +1,35 @@
-import { useEffect, useState } from 'react';
-import Construct from './Construct.js'
-import ErrorNotification from './ErrorNotification';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 import './App.css';
+import Signup from './signup.js';
+import Logout from './signout.js';
+import SignIn from './signin.js';
+import Top from './toptrips.js';
+import Trip from './createatrip.js';
+
 
 function App() {
-  const [launch_info, setLaunchInfo] = useState([]);
-  const [error, setError] = useState(null);  
 
-  useEffect(() => {
-    async function getData() {
-      let url = `${process.env.REACT_APP_SAMPLE_SERVICE_API_HOST}/api/launch-details`;
-      console.log('fastapi url: ', url);
-      let response = await fetch(url);
-      console.log("------- hello? -------");
-      let data = await response.json();
-
-      if (response.ok) {
-        console.log("got launch data!");
-        setLaunchInfo(data.launch_details);
-      } else {
-        console.log("drat! something happened");
-        setError(data.message);
-      }
-    }
-    getData();
-  }, [])
-
+  const domain = /https:\/\/[^/]+/;
+  const basename = process.env.PUBLIC_URL.replace(domain, '');
 
   return (
-    <div>
-      <ErrorNotification error={error} />
-      <Construct info={launch_info} />
+    <BrowserRouter basename={basename}>
+    <div className="navColor">
+    {/* <Nav token={token} /> */}
     </div>
+
+      <Routes>
+
+        <Route path="/login"element={<SignIn/>}/>
+        <Route path="/login/new" element={<Signup/>} />
+        <Route path="/top" element={<Top/>} />
+        <Route path="/trip" element={<Trip/>} />
+
+        <Route path="/logout" element={<Logout/>} />
+
+      </Routes>
+    </BrowserRouter>
   );
 }
 
