@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import Optional, List, Union
 from queries.pool import pool
 from datetime import datetime
-from .bars import BarOut
+from .bars import BarOut, BarOutWithPosition
 
 
 class Error(BaseModel):
@@ -130,33 +130,7 @@ class TripRepository:
     #         print("error message:", e)
     #         return {"message": "Could not update trip"}
 
-    def get_all_trips(self) -> Union[List[TripOut], Error]:
-        try:
-            # connect to database
-            with pool.connection() as conn:
-                # get cursor (something to run SQL with)
-                with conn.cursor() as db:
-                    # Run our SELECT statement
-                    result = db.execute(
-                        """
-                        SELECT id
-                            , trip_name
-                            , locations
-                            , description
-                            , created_on
-                            , image_url
-                            , likes
-                            , distance
-                        FROM trips
-                        ORDER BY id;
-                        """
-                    )
-                    return [
-                        self.record_to_trip_out(record) for record in result
-                    ]
-        except Exception as e:
-            print("error message:", e)
-            return {"message": "Could not get all trips"}
+
 
     def create_trip(self, trip: TripIn) -> TripOut:
         try:
@@ -205,7 +179,7 @@ class TripRepository:
 
                     for record in result:
                         bars.append(
-                            BarOut(
+                            BarOutWithPosition(
                                 id=record[0],
                                 yelp_id=record[1],
                                 bar_name=record[2],
@@ -231,6 +205,36 @@ class TripRepository:
 
         except Exception:
             return {"message": "trip does not exist"}
+
+    def get_all_trips(self) -> Union[List[TripOut], Error]:
+            try:
+                with pool.connection() as conn:
+                    with conn.cursor() as db:
+                        trips = []
+                        trips_dict = {}
+                        result = db.execute(
+                            """
+                            SELECT b.id AS bar_id, b.yelp_id, b.bar_name, b.url, b.lat, b.long, b.price,
+                                t.id AS trip_id, t.trip_name, t.locations, t.description, t.created_on, t.image_url, t.likes, t.distance, tb.positions
+                            FROM trip_bars AS tb
+                            JOIN bars AS b ON b.id = tb.bar_id
+                            JOIN trips AS t ON t.id = tb.trip_id
+
+                            ORDER BY tb.positions;
+                            """
+                        )
+                        for record in result:
+                            unique_tripid = record[7]
+                            if unique_tripid not in trips_dict:
+                                trips_dict[unique_tripid] = 1
+                            else:
+                                trips_dict[unique_tripid] += 1
+                        for trip in trips_dict.keys():
+                            indiv_trip = self.get_bars_for_trip(trip)
+                            trips.append(indiv_trip)
+                        return trips
+            except Exception:
+                return {"message": "trip does not exist"}
 
     def trip_in_to_out(self, id: int, trip: TripIn):
         old_data = trip.dict()

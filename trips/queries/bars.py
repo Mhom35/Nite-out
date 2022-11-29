@@ -24,6 +24,15 @@ class BarOut(BaseModel):
     lat: float
     long: float
     price: str
+
+class BarOutWithPosition(BaseModel):
+    id: int
+    yelp_id: str
+    bar_name: str
+    url: str
+    lat: float
+    long: float
+    price: str
     position: int
 
 
@@ -98,7 +107,7 @@ class BarsRepository:
                             bar.url,
                             bar.lat,
                             bar.long,
-                            bar.price,
+                            bar.price
                         ],
                     )
 
