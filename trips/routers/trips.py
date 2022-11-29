@@ -1,3 +1,5 @@
+import sys
+sys.path.append("..")
 from fastapi import APIRouter, Depends, Response
 from typing import List
 from typing import List, Union, Optional
@@ -12,6 +14,7 @@ from queries.yelp_get_bars import bar_in_db
 from queries.requests_yelp import API_KEY
 
 
+
 router = APIRouter()
 
 
@@ -22,6 +25,8 @@ def create_trip(
     response: Response,
     repo: TripRepository = Depends(),
     repoX: TripBarRepository = Depends(),
+    # account_data: dict = Depends(authenticator.get_current_account_data)
+
 ):
     try:
         try:

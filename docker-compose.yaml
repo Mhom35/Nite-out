@@ -35,6 +35,7 @@ services:
     volumes:
       - ./trips:/app
     environment:
+      SIGNING_KEY: niteout
       DATABASE_URL: postgresql://tripsdb:password@postgres/tripsdb
       WAIT_HOSTS: postgres:5432
 
