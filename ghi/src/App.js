@@ -6,7 +6,7 @@ import Logout from "./signout.js";
 import SignIn from "./signin.js";
 import Top from "./toptrips.js";
 import Trip from "./createatrip.js";
-import Draggable from "./drag";
+import YelpMap from "./map";
 
 function App() {
   const domain = /https:\/\/[^/]+/;
@@ -21,7 +21,7 @@ function App() {
         <Route path="/login/new" element={<Signup />} />
         <Route path="/top" element={<Top />} />
         <Route path="/trip" element={<Trip />} />
-        <Route path="/drag" element={<Draggable />} />
+        <Route path="/yelpmap" element={<YelpMap />} />
 
         <Route path="/logout" element={<Logout />} />
       </Routes>
