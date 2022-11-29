@@ -214,22 +214,20 @@ class TripRepository:
                         trips_dict = {}
                         result = db.execute(
                             """
-                            SELECT b.id AS bar_id, b.yelp_id, b.bar_name, b.url, b.lat, b.long, b.price,
-                                t.id AS trip_id, t.trip_name, t.locations, t.description, t.created_on, t.image_url, t.likes, t.distance, tb.positions
+                            SELECT t.id AS trip_id
                             FROM trip_bars AS tb
                             JOIN bars AS b ON b.id = tb.bar_id
                             JOIN trips AS t ON t.id = tb.trip_id
-
                             ORDER BY tb.positions;
                             """
                         )
                         for record in result:
-                            unique_tripid = record[7]
+                            unique_tripid = record[0]
                             if unique_tripid not in trips_dict:
                                 trips_dict[unique_tripid] = 1
                             else:
                                 trips_dict[unique_tripid] += 1
-                        for trip in trips_dict.keys():
+                        for trip in trips_dict:
                             indiv_trip = self.get_bars_for_trip(trip)
                             trips.append(indiv_trip)
                         return trips
