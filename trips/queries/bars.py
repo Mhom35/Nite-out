@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import Optional, List, Union
 from queries.pool import pool
 
+
 class Error(BaseModel):
     message: str
 
@@ -23,6 +24,8 @@ class BarOut(BaseModel):
     lat: float
     long: float
     price: str
+    position: int
+
 
 class BarsRepository:
     def get_bar(self, yelp_id: str) -> Optional[BarOut]:
@@ -95,7 +98,7 @@ class BarsRepository:
                             bar.url,
                             bar.lat,
                             bar.long,
-                            bar.price
+                            bar.price,
                         ],
                     )
 
@@ -106,6 +109,7 @@ class BarsRepository:
 
         except Exception:
             return {"message": "Create did not work"}
+
     def bar_in_to_out(self, id: int, bar: BarIn):
         old_data = bar.dict()
         return BarOut(id=id, **old_data)
@@ -114,9 +118,9 @@ class BarsRepository:
         return BarOut(
             id=record[0],
             yelp_id=record[1],
-            bar_name= record[2],
-            url= record[3],
-            lat= record[4],
-            long= record[5],
-            price= record[6]
+            bar_name=record[2],
+            url=record[3],
+            lat=record[4],
+            long=record[5],
+            price=record[6],
         )

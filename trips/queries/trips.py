@@ -30,39 +30,36 @@ class TripOut(BaseModel):
     distance: Optional[int]
 
 
-
-
-
 class TripRepository:
-    def get_one_trip(self, trip_id: int) -> Optional[TripOut]:
-        try:
-            # connect the database
-            with pool.connection() as conn:
-                # get a cursor (something to run SQL with)
-                with conn.cursor() as db:
-                    # Run our SELECT statement
-                    result = db.execute(
-                        """
-                        SELECT id
-                            , trip_name
-                            , locations
-                            , description
-                            , created_on
-                            , image_url
-                            , likes
-                            , distance
-                        FROM trips
-                        WHERE id = %s
-                        """,
-                        [trip_id],
-                    )
-                    record = result.fetchone()
-                    if record is None:
-                        return None
-                    return self.record_to_trip_out(record)
-        except Exception as e:
-            print(e)
-            return {"message": "Could not get that trip"}
+    # def get_one_trip(self, trip_id: int) -> Optional[TripOut]:
+    #     try:
+    #         # connect the database
+    #         with pool.connection() as conn:
+    #             # get a cursor (something to run SQL with)
+    #             with conn.cursor() as db:
+    #                 # Run our SELECT statement
+    #                 result = db.execute(
+    #                     """
+    #                     SELECT id
+    #                         , trip_name
+    #                         , locations
+    #                         , description
+    #                         , created_on
+    #                         , image_url
+    #                         , likes
+    #                         , distance
+    #                     FROM trips
+    #                     WHERE id = %s
+    #                     """,
+    #                     [trip_id],
+    #                 )
+    #                 record = result.fetchone()
+    #                 if record is None:
+    #                     return None
+    #                 return self.record_to_trip_out(record)
+    #     except Exception as e:
+    #         print(e)
+    #         return {"message": "Could not get that trip"}
 
     def delete_trip(self, trip_id: int) -> bool:
         try:
@@ -82,38 +79,56 @@ class TripRepository:
             print(e)
             return False
 
-    def update_trip(self, trip_id: int, trip: TripIn) -> Union[TripOut, Error]:
+    def delete_all_bars_from_trip(self, trip_id: int) -> bool:
         try:
-            # connect to database
+            # connect the database
             with pool.connection() as conn:
-                # get cursor (something to run SQL with)
+                # get a cursor (something to run SQL with)
                 with conn.cursor() as db:
-                    # Run our SELECT statement
                     db.execute(
                         """
-                        UPDATE trips
-                        SET trip_name = %s
-                            , locations = %s
-                            , description = %s
-                            , image_url = %s
-                        WHERE id = %s
+                        DELETE FROM trip_bars
+                        WHERE trip_id = %s
                         """,
-                        # , likes = %s
-                        #     , distance = %s
-                        [
-                            trip.trip_name,
-                            trip.locations,
-                            trip.description,
-                            trip.image_url,
-                            # trip.likes,
-                            # trip.distance,
-                            trip_id,
-                        ],
+                        [trip_id],
                     )
-                    return self.trip_in_to_out(trip_id, trip)
+                    return True
         except Exception as e:
-            print("error message:", e)
-            return {"message": "Could not update trip"}
+            print(e)
+            return False
+
+    # def update_trip(self, trip_id: int, trip: TripIn) -> Union[TripOut, Error]:
+    #     try:
+    #         # connect to database
+    #         with pool.connection() as conn:
+    #             # get cursor (something to run SQL with)
+    #             with conn.cursor() as db:
+    #                 # Run our SELECT statement
+    #                 db.execute(
+    #                     """
+    #                     UPDATE trips
+    #                     SET trip_name = %s
+    #                         , locations = %s
+    #                         , description = %s
+    #                         , image_url = %s
+    #                     WHERE id = %s
+    #                     """,
+    #                     # , likes = %s
+    #                     #     , distance = %s
+    #                     [
+    #                         trip.trip_name,
+    #                         trip.locations,
+    #                         trip.description,
+    #                         trip.image_url,
+    #                         # trip.likes,
+    #                         # trip.distance,
+    #                         trip_id,
+    #                     ],
+    #                 )
+    #                 return self.trip_in_to_out(trip_id, trip)
+    #     except Exception as e:
+    #         print("error message:", e)
+    #         return {"message": "Could not update trip"}
 
     def get_all_trips(self) -> Union[List[TripOut], Error]:
         try:
@@ -169,7 +184,8 @@ class TripRepository:
                     return self.trip_in_to_out(id, trip)
         except Exception:
             return {"message": "Create did not work"}
-    def get_bars_for_trip(self, trip_id:int):
+
+    def get_bars_for_trip(self, trip_id: int):
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -177,26 +193,27 @@ class TripRepository:
                     result = db.execute(
                         """
                         SELECT b.id AS bar_id, b.yelp_id, b.bar_name, b.url, b.lat, b.long, b.price,
-                            t.id AS trip_id, t.trip_name, t.locations, t.description, t.created_on, t.image_url, t.likes, t.distance
+                            t.id AS trip_id, t.trip_name, t.locations, t.description, t.created_on, t.image_url, t.likes, t.distance, tb.positions
                         FROM trip_bars AS tb
                         JOIN bars AS b ON b.id = tb.bar_id
                         JOIN trips AS t ON t.id = tb.trip_id
                         WHERE tb.trip_id = %s
+                        ORDER BY tb.positions;
                         """,
-                        [trip_id]
-
+                        [trip_id],
                     )
 
-
                     for record in result:
-                        bars.append(BarOut(
-                            id=record[0],
-                            yelp_id=record[1],
-                            bar_name=record[2],
-                            url=record[3],
-                            lat=record[4],
-                            long=record[5],
-                            price=record[6]
+                        bars.append(
+                            BarOut(
+                                id=record[0],
+                                yelp_id=record[1],
+                                bar_name=record[2],
+                                url=record[3],
+                                lat=record[4],
+                                long=record[5],
+                                price=record[6],
+                                position=record[15],
                             )
                         )
                     trip = TripOut(
