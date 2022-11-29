@@ -71,6 +71,7 @@ function YelpMap() {
           >
             <h2>{selectedPlace.bar_name}</h2>
             <h3>Price</h3>
+            <button>+</button>
             <p>{selectedPlace.price}</p>
           </Popup>
         )}
