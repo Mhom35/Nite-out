@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useMemo } from "react";
-import MapGL, { Marker, Popup, Layer, Source } from "react-map-gl";
+import React, { useState, useEffect } from "react";
+import MapGL, { Marker, Popup } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 function YelpMap() {
-  const [viewport, setViewPort] = useState({
+  const viewport = {
     latitude: 37.774929,
     longitude: -122.419418,
     zoom: 14,
-  });
+  };
 
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
