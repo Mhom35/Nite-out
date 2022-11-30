@@ -10,6 +10,7 @@ from queries.trips import (
     TripRepository,
     TripOut,
 )
+
 from queries.trip_bars import TripBarRepository, TripBarOut, TripBarIn
 from queries.yelp_get_bars import bar_in_db
 from queries.requests_yelp import API_KEY
@@ -24,7 +25,7 @@ def create_trip(
     trip: TripIn,
     response: Response,
     repo: TripRepository = Depends(),
-    account_data: dict = Depends(authenticator.get_current_account_data),
+    # account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
         created_trip = repo.create_trip(trip)

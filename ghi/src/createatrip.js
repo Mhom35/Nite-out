@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import YelpMap from './yelpmap';
 
 const theme = createTheme();
@@ -133,15 +133,15 @@ export default function Trip(props) {
 
   const locationsMapRef = useRef();
 
-  const scrollToSection = (elementRef) => {
-    window.scrollTo({
-      top: elementRef.current.offsetTop,
-      behavior: 'smooth'
-    })
-  }
+  // const scrollToSection = (elementRef) => {
+  //   window.scrollTo({
+  //     top: elementRef.current.offsetTop,
+  //     behavior: 'smooth'
+  //   })
+  // }
 
   const [tripName, setTripName] = useState('');
-  const [location, setLocation] = useState([]);
+  // const [location, setLocation] = useState([]);
   const [description, setDescription] = useState('');
   const [clicked, setClicked] = useState(false)
 
