@@ -17,7 +17,7 @@ class BarIn(BaseModel):
 
 
 class BarOut(BaseModel):
-    id: int
+    bar_id: int
     yelp_id: str
     bar_name: str
     url: str
@@ -25,8 +25,9 @@ class BarOut(BaseModel):
     long: float
     price: str
 
+
 class BarOutWithPosition(BaseModel):
-    id: int
+    bar_id: int
     yelp_id: str
     bar_name: str
     url: str
@@ -99,7 +100,7 @@ class BarsRepository:
                         )
                         VALUES
                             (%s, %s, %s, %s, %s, %s)
-                        RETURNING id;
+                        RETURNING bar_id;
                         """,
                         [
                             bar.yelp_id,
@@ -107,7 +108,7 @@ class BarsRepository:
                             bar.url,
                             bar.lat,
                             bar.long,
-                            bar.price
+                            bar.price,
                         ],
                     )
 
@@ -125,7 +126,7 @@ class BarsRepository:
 
     def record_to_bar_out(self, record):
         return BarOut(
-            id=record[0],
+            bar_id=record[0],
             yelp_id=record[1],
             bar_name=record[2],
             url=record[3],

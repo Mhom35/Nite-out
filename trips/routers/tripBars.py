@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, Response
-from typing import List
-from typing import List, Union, Optional
+from typing import Optional
 
 
 from queries.trip_bars import TripBarRepository, TripBarOut, TripBarIn
@@ -10,7 +9,7 @@ router = APIRouter()
 
 
 @router.post("/middletable", response_model=Optional[TripBarOut])
-def create_middletable(
+def create_middle_table(
     tripBar: TripBarIn,
     response: Response,
     repo: TripBarRepository = Depends(),
