@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append("..")
 from fastapi import APIRouter, Depends, Response
 from typing import List
@@ -12,7 +13,7 @@ from queries.trips import (
 from queries.trip_bars import TripBarRepository, TripBarOut, TripBarIn
 from queries.yelp_get_bars import bar_in_db
 from queries.requests_yelp import API_KEY
-
+from authenticator import authenticator
 
 
 router = APIRouter()
@@ -21,23 +22,15 @@ router = APIRouter()
 @router.post("/trips", response_model=Union[TripOut, Error])
 def create_trip(
     trip: TripIn,
-    tripBar: TripBarIn,
     response: Response,
     repo: TripRepository = Depends(),
-    repoX: TripBarRepository = Depends(),
-    # account_data: dict = Depends(authenticator.get_current_account_data)
-
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        try:
-            created_trip = repo.create_trip(trip)
-            created_middle_table = repoX.create_trip_bar(tripBar)
-        except Exception:
-            response.status_code = 400
-
+        created_trip = repo.create_trip(trip)
         return created_trip
     except Exception:
-        response.status_code = 403
+        response.status_code = 400
 
 
 @router.get("/trips", response_model=Union[List[TripOut], Error])

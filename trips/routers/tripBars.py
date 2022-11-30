@@ -10,7 +10,7 @@ router = APIRouter()
 
 
 @router.post("/middletable", response_model=Optional[TripBarOut])
-def create_middletable(
+def create_middle_table(
     tripBar: TripBarIn,
     response: Response,
     repo: TripBarRepository = Depends(),

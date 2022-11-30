@@ -6,13 +6,13 @@ from queries.bars import (
     BarsRepository,
     BarOut,
 )
-from queries.requests_yelp import (API_KEY)
-from queries.yelp_get_bars import(bar_in_db)
+from queries.requests_yelp import API_KEY
+from queries.yelp_get_bars import bar_in_db
 
 router = APIRouter()
 
 
-@router.post("/bars", response_model=Union[BarOut, Error])
+@router.post("/bars/new", response_model=Union[BarOut, Error])
 def create_bar(
     bar: BarIn,
     response: Response,
@@ -20,7 +20,6 @@ def create_bar(
     repo: BarsRepository = Depends(),
 ):
     return bar_in_db(API_KEY=API_KEY, yelp_id=yelp_id)
-
 
 
 @router.get("/bars", response_model=Union[List[BarOut], Error])
@@ -59,19 +58,14 @@ def get_one_bar(
     return bar
 
 
-
-
-
-
-
 # @router.get("/bars/{id}")
 # def getBusinessDetails(id: str):
 #     data = get_business(API_KEY, id)
-    # data = fake_decode_token(token)
-    # if not data:
-    #     raise HTTPException(
-    #         status_code=status.HTTP_401_UNAUTHORIZED,
-    #         detail="Invalid authentication credentials",
-    #         headers={"WWW-Authenticate": "Bearer"},
-    #     )
-    # return data
+# data = fake_decode_token(token)
+# if not data:
+#     raise HTTPException(
+#         status_code=status.HTTP_401_UNAUTHORIZED,
+#         detail="Invalid authentication credentials",
+#         headers={"WWW-Authenticate": "Bearer"},
+#     )
+# return data

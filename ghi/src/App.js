@@ -6,7 +6,7 @@ import Logout from "./signout.js";
 import SignIn from "./signin.js";
 import Top from "./toptrips.js";
 import Trip from "./createatrip.js";
-import YelpMap from "./map";
+import YelpMap from "./yelpmap";
 
 function App() {
   const domain = /https:\/\/[^/]+/;
