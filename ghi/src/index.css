@@ -11,7 +11,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-.marker-btn {
+/* .marker-btn {
   background: none;
   border: none;
   cursor: pointer;
@@ -20,4 +20,36 @@ code {
 .marker-btn img {
   width: 20px;
   height: 20px;
+} */
+
+.suggestions-wrapper {
+  background-color: aliceblue;
+}
+.suggestions {
+  list-style-type: none;
+  padding: 2px;
+  margin: 2px;
+}
+
+li {
+  font-family: "Garamond(serif)", "Gill Sans", Calibri, "Trebuchet MS",
+    sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+li:hover {
+  background-color: antiquewhite;
+}
+
+.active {
+  background-color: antiquewhite;
+}
+
+.mapboxgl-ctrl-geocoder--suggestion-title {
+  font-weight: bold;
+}
+
+.mapboxgl-ctrl-geocoder--button {
+  background-color: gainsboro;
 }
