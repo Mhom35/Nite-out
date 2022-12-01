@@ -8,7 +8,6 @@ import { useControl } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useRef, useState } from "react";
 import MapBoxGeocoder from "@mapbox/mapbox-gl-geocoder";
-// import Geocoder from "./Geocoder";
 
 const AddLocation = () => {
   const viewport = {
