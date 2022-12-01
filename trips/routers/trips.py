@@ -1,7 +1,7 @@
 import sys
 
 sys.path.append("..")
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends, Response, HTTPException, status
 from typing import List
 from typing import List, Union, Optional
 from queries.trips import (
@@ -14,10 +14,19 @@ from queries.trips import (
 from queries.trip_bars import TripBarRepository, TripBarOut, TripBarIn
 from queries.yelp_get_bars import bar_in_db
 from queries.requests_yelp import API_KEY
+
 from authenticator import authenticator
+
+# from token_auth import get_current_user
 
 
 router = APIRouter()
+
+# not_authorized = HTTPException(
+#     status_code=status.HTTP_401_UNAUTHORIZED,
+#     detail="Invalid authentication credentials",
+#     headers={"WWW-Authenticate": "Bearer"},
+# )
 
 
 @router.post("/trips", response_model=Union[TripOut, Error])
@@ -25,7 +34,8 @@ def create_trip(
     trip: TripIn,
     response: Response,
     repo: TripRepository = Depends(),
-    # account_data: dict = Depends(authenticator.get_current_account_data),
+    account_data: dict = Depends(authenticator.get_current_account_data),
+    # account: dict = Depends(get_current_user),
 ):
     try:
         created_trip = repo.create_trip(trip)

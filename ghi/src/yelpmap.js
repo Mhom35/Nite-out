@@ -32,7 +32,7 @@ function YelpMap() {
   useEffect(() => {
     const fetchYelpData = async () => {
       //get all the yelp bars added to database
-      const url = "http://localhost:8001/bars/";
+      const url = "http://localhost:8001/bars";
       const response = await fetch(url);
       const data = await response.json();
       setYelpData(data);
