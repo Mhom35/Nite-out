@@ -13,7 +13,6 @@ class BarIn(BaseModel):
     url: str
     lat: float
     long: float
-    price: str
 
 
 class BarOut(BaseModel):
@@ -23,7 +22,6 @@ class BarOut(BaseModel):
     url: str
     lat: float
     long: float
-    price: str
 
 
 class BarOutWithPosition(BaseModel):
@@ -33,7 +31,6 @@ class BarOutWithPosition(BaseModel):
     url: str
     lat: float
     long: float
-    price: str
     position: int
 
 
@@ -95,12 +92,11 @@ class BarsRepository:
                             bar_name,
                             url,
                             lat,
-                            long,
-                            price
+                            long
                         )
                         VALUES
-                            (%s, %s, %s, %s, %s, %s)
-                        RETURNING bar_id;
+                            (%s, %s, %s, %s, %s)
+                        RETURNING id AS bar_id;
                         """,
                         [
                             bar.yelp_id,
@@ -108,7 +104,6 @@ class BarsRepository:
                             bar.url,
                             bar.lat,
                             bar.long,
-                            bar.price,
                         ],
                     )
 
@@ -120,9 +115,9 @@ class BarsRepository:
         except Exception:
             return {"message": "Create did not work"}
 
-    def bar_in_to_out(self, id: int, bar: BarIn):
+    def bar_in_to_out(self, bar_id: int, bar: BarIn):
         old_data = bar.dict()
-        return BarOut(id=id, **old_data)
+        return BarOut(bar_id=bar_id, **old_data)
 
     def record_to_bar_out(self, record):
         return BarOut(
@@ -132,5 +127,4 @@ class BarsRepository:
             url=record[3],
             lat=record[4],
             long=record[5],
-            price=record[6],
         )

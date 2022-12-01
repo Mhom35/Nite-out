@@ -16,10 +16,10 @@ router = APIRouter()
 def create_bar(
     bar: BarIn,
     response: Response,
-    yelp_id: str,
+    # yelp_id: str,
     repo: BarsRepository = Depends(),
 ):
-    return bar_in_db(API_KEY=API_KEY, yelp_id=yelp_id)
+    return repo.create_bar(bar)
 
 
 @router.get("/bars", response_model=Union[List[BarOut], Error])
