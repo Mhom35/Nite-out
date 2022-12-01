@@ -164,7 +164,7 @@ class TripRepository:
                     bars = []
                     result = db.execute(
                         """
-                        SELECT b.id AS bar_id, b.yelp_id, b.bar_name, b.url, b.lat, b.long, t.id AS trip_id, t.trip_name, t.locations, t.description, t.created_on, t.image_url, t.likes, t.distance, tb.positions
+                        SELECT b.id AS bar_id, b.yelp_id, b.bar_name, b.url, b.lat, b.long, b.image_url, t.id AS trip_id, t.trip_name, t.locations, t.description, t.created_on, t.image_url, t.likes, t.distance, tb.positions
                         FROM trip_bars AS tb
                         JOIN bars AS b ON b.id = tb.bar_id
                         JOIN trips AS t ON t.id = tb.trip_id
@@ -183,18 +183,19 @@ class TripRepository:
                                 url=record[3],
                                 lat=record[4],
                                 long=record[5],
-                                position=record[14],
+                                image_url=record[6],
+                                position=record[15],
                             )
                         )
                     trip = TripOut(
-                        id=record[6],
-                        trip_name=record[7],
-                        locations=record[8],
-                        description=record[9],
-                        created_on=record[10],
-                        image_url=record[11],
-                        likes=record[12],
-                        distance=record[13],
+                        id=record[7],
+                        trip_name=record[8],
+                        locations=record[9],
+                        description=record[10],
+                        created_on=record[11],
+                        image_url=record[12],
+                        likes=record[13],
+                        distance=record[14],
                     )
                     trip.locations = bars
                     return trip

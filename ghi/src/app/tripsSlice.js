@@ -33,6 +33,21 @@ export const tripsSlice = createApi({
             invalidatesTags: [{ type: 'Books', id: 'LIST' }],
         }),
 
+        addBar: builder.mutation({
+            query: form => {
+                const formData = new FormData(form);
+                const entries = Array.from(formData.entries());
+                const data = entries.reduce((acc, [key, value]) => { acc[key] = Number.parseInt(value) || value; return acc; }, {});
+                return {
+                    method: 'post',
+                    url: '/api/books',
+                    credentials: 'include',
+                    body: data,
+                }
+            },
+            invalidatesTags: [{ type: 'Books', id: 'LIST' }],
+        }),
+
         getBooks: builder.query({
             query: () => `/api/books`,
             providesTags: data => {
