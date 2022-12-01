@@ -130,8 +130,6 @@ class TripRepository:
     #         print("error message:", e)
     #         return {"message": "Could not update trip"}
 
-
-
     def create_trip(self, trip: TripIn) -> TripOut:
         try:
             # connect to database
@@ -166,8 +164,7 @@ class TripRepository:
                     bars = []
                     result = db.execute(
                         """
-                        SELECT b.id AS bar_id, b.yelp_id, b.bar_name, b.url, b.lat, b.long, b.price,
-                            t.id AS trip_id, t.trip_name, t.locations, t.description, t.created_on, t.image_url, t.likes, t.distance, tb.positions
+                        SELECT b.id AS bar_id, b.yelp_id, b.bar_name, b.url, b.lat, b.long, b.image_url, t.id AS trip_id, t.trip_name, t.locations, t.description, t.created_on, t.image_url, t.likes, t.distance, tb.positions
                         FROM trip_bars AS tb
                         JOIN bars AS b ON b.id = tb.bar_id
                         JOIN trips AS t ON t.id = tb.trip_id
@@ -180,13 +177,13 @@ class TripRepository:
                     for record in result:
                         bars.append(
                             BarOutWithPosition(
-                                id=record[0],
+                                bar_id=record[0],
                                 yelp_id=record[1],
                                 bar_name=record[2],
                                 url=record[3],
                                 lat=record[4],
                                 long=record[5],
-                                price=record[6],
+                                image_url=record[6],
                                 position=record[15],
                             )
                         )
@@ -207,32 +204,32 @@ class TripRepository:
             return {"message": "trip does not exist"}
 
     def get_all_trips(self) -> Union[List[TripOut], Error]:
-            try:
-                with pool.connection() as conn:
-                    with conn.cursor() as db:
-                        trips = []
-                        trips_dict = {}
-                        result = db.execute(
-                            """
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    trips = []
+                    trips_dict = {}
+                    result = db.execute(
+                        """
                             SELECT t.id AS trip_id
                             FROM trip_bars AS tb
                             JOIN bars AS b ON b.id = tb.bar_id
                             JOIN trips AS t ON t.id = tb.trip_id
                             ORDER BY tb.positions;
                             """
-                        )
-                        for record in result:
-                            unique_tripid = record[0]
-                            if unique_tripid not in trips_dict:
-                                trips_dict[unique_tripid] = 1
-                            else:
-                                trips_dict[unique_tripid] += 1
-                        for trip in trips_dict:
-                            indiv_trip = self.get_bars_for_trip(trip)
-                            trips.append(indiv_trip)
-                        return trips
-            except Exception:
-                return {"message": "trip does not exist"}
+                    )
+                    for record in result:
+                        unique_tripid = record[0]
+                        if unique_tripid not in trips_dict:
+                            trips_dict[unique_tripid] = 1
+                        else:
+                            trips_dict[unique_tripid] += 1
+                    for trip in trips_dict:
+                        indiv_trip = self.get_bars_for_trip(trip)
+                        trips.append(indiv_trip)
+                    return trips
+        except Exception:
+            return {"message": "trip does not exist"}
 
     def trip_in_to_out(self, id: int, trip: TripIn):
         old_data = trip.dict()

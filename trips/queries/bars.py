@@ -13,6 +13,7 @@ class BarIn(BaseModel):
     url: str
     lat: float
     long: float
+    image_url: str
 
 
 class BarOut(BaseModel):
@@ -22,6 +23,7 @@ class BarOut(BaseModel):
     url: str
     lat: float
     long: float
+    image_url: str
 
 
 class BarOutWithPosition(BaseModel):
@@ -31,6 +33,7 @@ class BarOutWithPosition(BaseModel):
     url: str
     lat: float
     long: float
+    image_url: str
     position: int
 
 
@@ -92,10 +95,11 @@ class BarsRepository:
                             bar_name,
                             url,
                             lat,
-                            long
+                            long,
+                            image_url
                         )
                         VALUES
-                            (%s, %s, %s, %s, %s)
+                            (%s, %s, %s, %s, %s, %s)
                         RETURNING id AS bar_id;
                         """,
                         [
@@ -104,6 +108,7 @@ class BarsRepository:
                             bar.url,
                             bar.lat,
                             bar.long,
+                            bar.image_url,
                         ],
                     )
 
@@ -127,4 +132,5 @@ class BarsRepository:
             url=record[3],
             lat=record[4],
             long=record[5],
+            image_url=record[6],
         )

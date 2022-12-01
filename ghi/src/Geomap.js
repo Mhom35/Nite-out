@@ -1,4 +1,7 @@
 import { Box } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { addLocation } from "./app/locations.js";
+import Button from '@mui/material/Button';
 import ReactMapGL, {
   GeolocateControl,
   Marker,
@@ -9,7 +12,8 @@ import { useControl } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useRef, useState } from "react";
 import MapBoxGeocoder from "@mapbox/mapbox-gl-geocoder";
-import axios from "axios";
+const blueMarker = require("./assets/blue-marker.png")
+const redMarker = require("./assets/red-marker.png")
 
 const AddLocation = () => {
   const viewport = {
@@ -30,6 +34,7 @@ const AddLocation = () => {
   const [backendData, setBackendData] = useState([]);
   const [location, setLocation] = useState({});
   const [locations, setLocations] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchYelpData = async () => {
@@ -112,11 +117,12 @@ const AddLocation = () => {
         fetchOptions
       );
       const YelpResponse = await result.json();
-      let yelp_id = YelpResponse["id"];
-      let bar_name = YelpResponse["name"];
-      let url = YelpResponse["url"];
-      let lat = YelpResponse.coordinates.latitude;
-      let long = YelpResponse.coordinates.longitude;
+      const yelp_id = YelpResponse["id"];
+      const bar_name = YelpResponse["name"];
+      const url = YelpResponse["url"];
+      const lat = YelpResponse.coordinates.latitude;
+      const long = YelpResponse.coordinates.longitude;
+      const image_url = YelpResponse.image_url;
 
       const data = {
         yelp_id: yelp_id,
@@ -124,6 +130,7 @@ const AddLocation = () => {
         url: url,
         lat: lat,
         long: long,
+        image_url: image_url,
       };
       const barUrl = "http://localhost:8001/bars/new";
       const fetchConfig = {
@@ -136,7 +143,9 @@ const AddLocation = () => {
       const response = await fetch(barUrl, fetchConfig);
       if (response.ok) {
         const newBar = await response.json();
+        console.log("newBar", newBar)
         locations.push(newBar.bar_id);
+        console.log("locations", locations)
         return true;
       }
     }
@@ -147,7 +156,8 @@ const AddLocation = () => {
     <Box
       sx={{
         height: 700,
-        gap: 2,
+        width: 1000,
+        // gap: 2,
         position: "relative",
       }}
     >
@@ -187,7 +197,7 @@ const AddLocation = () => {
                 }}
               >
                 <img
-                  src="https://img.icons8.com/color/344/where.png"
+                  src={redMarker}
                   alt="hello"
                 />
               </button>
@@ -213,7 +223,7 @@ const AddLocation = () => {
                 }}
               >
                 <img
-                  src="https://o.remove.bg/downloads/48b67d1d-2ed9-42e7-86f5-6f6b798f40d9/671-6710560_blue-map-marker-png-transparent-png-removebg-preview.png"
+                  src={blueMarker}
                   alt="hello"
                 />
               </button>
@@ -256,6 +266,7 @@ const AddLocation = () => {
       </ReactMapGL>
       <div>
         <button onClick={(e) => setLocations([])}>clear locations</button>
+        <Button type="button" fullWidth variant="outlined" onClick={() => { dispatch(addLocation(locations)) }} sx={{ mt: 3, mb: 2 }}>Finished Adding Locations</Button>
       </div>
     </Box>
   );

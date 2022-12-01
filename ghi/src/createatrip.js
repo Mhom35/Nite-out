@@ -7,129 +7,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState, useRef } from 'react';
-import YelpMap from './yelpmap';
+import AddLocation from './Geomap';
+import { useSelector } from 'react-redux';
 
 const theme = createTheme();
 
-export default function Trip(props) {
-  //     constructor(props) {
-  //         super(props)
-  //         this.state = {
-
-  //         };
-  //         this.handleChange = this.handleChange.bind(this);
-  //         this.handleChange = this.handleChange.bind(this);
-  //         this.handleChange = this.handleChange.bind(this);
-
-  //     }
-
-  //     goneTrips(data) {
-  //       const goneTrips = []
-  //       const ***** = this.state.*****.map(item => {return item.*****})
-  //       for (let ***** of *****) {
-  //           if (!*****.includes(*****)) {
-  //               goneTrips.push(*****)
-  //           }
-  //       }
-  //       this.setState({*****: *****})
-  //   }
-
-  //     async handleSubmit(event) {
-  //         event.preventDefault();
-  //         const data = {...this.state};
-  //         data.***** = data.*****
-  //         delete data.*****
-  //         delete data.*****
-  //         delete data.*****
-  //         delete data.*****
-  //         delete data.*****
-  //         delete data.*****
-  //         delete data.*****
-  //         delete data.*****
-
-
-
-  //         const *****Url = '*****';
-  //         const fetchConfig = {
-  //             method: "post",
-  //             body: JSON.stringify(data),
-  //             headers: {
-  //                 'Content-Type': 'application/json',
-  //             },
-  //         };
-
-  //         const ***** = await fetch(*****, fetchConfig);
-
-
-  //         if (*****.ok) {
-  //           const cleared = {
-  //               *****: "",
-  //               *****: "",
-  //               *****: "",
-  //               *****: "",
-  //           };
-  //             this.setState(cleared);
-  //             this.componentDidMount()
-  //         }
-  //     }
-
-  //     handle*****Change(event) {
-  //         const value = event.target.value;
-  //         this.setState({*****: value});
-  //     }
-
-  //     handle*****Change(event) {
-  //         const value = event.target.value;
-  //         this.setState({*****: value})
-  //     }
-
-  //     handle*****Change(event) {
-  //         const value = event.target.value;
-  //         this.setState({*****: value})
-  //     }
-
-  //     handle*****Change(event) {
-  //         const value = event.target.value;
-  //         this.setState({*****: value})
-  //     }
-
-  //     async componentDidMount() {
-
-
-  //         const *****Url = '*****';
-  //         const *****Response = await fetch(*****Url);
-  //         if (*****Response.ok) {
-  //             const data = await *****Response.json();
-  //             this.setState({*****people: data.*****});
-
-  //         }
-  //         const *****Url = '*****';
-  //         const *****Response = await fetch(customerUrl);
-  //         if (*****Response.ok) {
-  //             const data = await *****Response.json();
-  //             this.setState({*****: data.*****});
-  //         }
-
-  //         const *****Url = '*****';
-  //         const *****Response = await fetch(*****Url);
-  //         if (*****Response.ok) {
-  //             const data = await *****Response.json();
-
-  //             this.setState({*****: data.*****});
-
-  //         }
-  //         const *****Url = "*****";
-  //         const *****Response = await fetch(*****Url);
-  //         if (*****Response.ok) {
-  //             const *****Data = await *****Response.json();
-
-  //             // this.setState({*****: *****Data.*****});
-  //             this.goneTrips(*****);
-  //         }
-
-
-
-  //     }
+export default function Trip() {
+  const locations = useSelector((state) => state.addLocations.value)
 
   const locationsMapRef = useRef();
 
@@ -163,20 +47,31 @@ export default function Trip(props) {
               <Button type="button" fullWidth variant="outlined" onClick={(event) => setClicked(true)} sx={{ mt: 3, mb: 2 }}> Add Locations </Button>
             </Link>
             <TextField margin="normal" fullWidth id="outlined-multiline-static" multiline label="Description" name="" rows={3} value={description} onChange={(event) => setDescription(event.target.value)} />
+            {(!clicked && (locations.length > 1)) && (
+              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}> Submit </Button>
+            )}
+            <Button type="button" fullWidth variant="outlined" onClick={(event) => setClicked(false)} sx={{ mt: 3, mb: 2 }}> Finished Adding Locations </Button>
           </Box>
 
           {clicked && (
             <>
               <div ref={locationsMapRef}>
-                <YelpMap />
-              </div>
-              <div>
-                <Button type="button" fullWidth variant="outlined" onClick={(event) => setClicked(false)} sx={{ mt: 3, mb: 2 }}>Finished Adding Locations</Button>
+                <AddLocation />
               </div>
             </>
           )}
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}> Submit </Button>
+          {locations?.map((location) => (
+            (
+              <>
+                <div>
+                  <p>{location}</p>
+                </div>
+              </>
+            )
+          ))}
+
         </Box>
+
       </Container>
     </ThemeProvider>
   );

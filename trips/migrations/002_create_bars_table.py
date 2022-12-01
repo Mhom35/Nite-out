@@ -1,4 +1,4 @@
-steps =[
+steps = [
     [
         ## Create the table
         """
@@ -8,7 +8,8 @@ steps =[
             bar_name VARCHAR(255) NOT NULL,
             url VARCHAR(999) NOT NULL,
             lat NUMERIC NOT NULL,
-            long NUMERIC NOT NULL
+            long NUMERIC NOT NULL,
+            image_url VARCHAR(999) NOT NULL
         );
         """,
         ## Drop the table
