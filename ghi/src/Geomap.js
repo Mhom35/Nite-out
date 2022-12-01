@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, requirePropFactory } from "@mui/material";
 import ReactMapGL, {
   GeolocateControl,
   Marker,
@@ -9,6 +9,9 @@ import { useControl } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useEffect, useRef, useState } from "react";
 import MapBoxGeocoder from "@mapbox/mapbox-gl-geocoder";
+const blueMarker = require("./assets/blue-marker.png")
+const redMarker = require("./assets/red-marker.png")
+
 
 const AddLocation = () => {
   const viewport = {
@@ -186,7 +189,7 @@ const AddLocation = () => {
                 }}
               >
                 <img
-                  src="https://img.icons8.com/color/344/where.png"
+                  src={redMarker}
                   alt="hello"
                 />
               </button>
@@ -212,7 +215,7 @@ const AddLocation = () => {
                 }}
               >
                 <img
-                  src="https://o.remove.bg/downloads/48b67d1d-2ed9-42e7-86f5-6f6b798f40d9/671-6710560_blue-map-marker-png-transparent-png-removebg-preview.png"
+                  src={blueMarker}
                   alt="hello"
                 />
               </button>

@@ -18,7 +18,7 @@ export const tripsSlice = createApi({
 
     endpoints: builder => ({
 
-        addBook: builder.mutation({
+        addTrip: builder.mutation({
             query: form => {
                 const formData = new FormData(form);
                 const entries = Array.from(formData.entries());
