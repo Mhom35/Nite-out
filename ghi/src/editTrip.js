@@ -30,7 +30,7 @@ export default function EditTrip() {
   // const [location, setLocation] = useState([]);
   const [description, setDescription] = useState("");
   const [editName, setEditName] = useState(false);
-  const [editDescription, setEditDescription] = useState(false);
+  // const [editDescription, setEditDescription] = useState(false);
   const [editBarsforTrip, setEditBarsforTrip] = useState(false);
   const [addLocation, setAddLocation] = useState(false);
 
@@ -139,6 +139,17 @@ export default function EditTrip() {
               <div ref={locationsMapRef}>
                 <EditBars />
               </div>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={setAddLocation(true)}
+              >
+                {" "}
+                Add Location{" "}
+              </Button>
+
             </>
           )
           }
