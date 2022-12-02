@@ -1,5 +1,5 @@
 # import get_locations from LocationRepo
-from .requests_yelp import (API_KEY, yelp_get_bar)
+from .requests_yelp import (API_KEY, yelp_get_bar, search_yelp)
 from .bars import BarsRepository, BarIn
 
 def bar_in_db(API_KEY, yelp_id):
@@ -16,14 +16,9 @@ def bar_in_db(API_KEY, yelp_id):
             url = yelp_result["url"]
             lat = yelp_result["coordinates"]["latitude"]
             long = yelp_result["coordinates"]["longitude"]
-            price = yelp_result["price"]
-            new_bar = BarIn(yelp_id=yelp_id, bar_name=bar_name, url=url, lat=lat, long=long, price=price)
+            image_url = yelp_result["image_url"]
+            new_bar = BarIn(yelp_id=yelp_id, bar_name=bar_name, url=url, lat=lat, long=long, image_url=image_url)
             return bars_repo.create_bar(bar=new_bar)
         except Exception as e:
             print(e)
             return "please enter valid Business id"
-
-
-
-def categories():
-    pass

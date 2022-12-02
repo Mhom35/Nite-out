@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addLocation } from "./app/locations.js";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 import ReactMapGL, {
   GeolocateControl,
   Marker,
@@ -13,8 +13,8 @@ import ReactMapGL, {
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapBoxGeocoder from "@mapbox/mapbox-gl-geocoder";
-const blueMarker = require("./assets/blue-marker.png")
-const redMarker = require("./assets/red-marker.png")
+const blueMarker = require("./assets/blue-marker.png");
+const redMarker = require("./assets/red-marker.png");
 
 const AddLocation = () => {
   const viewport = {
@@ -49,24 +49,18 @@ const AddLocation = () => {
     fetchYelpData();
   }, []);
 
-  const API_KEY =
-    "VXewi8fN8R31u-aMs8JHgs3D6_KkTTnVXEaz1RXj4UoKrNDt82YLvgaDlC5VCxaF-OkdYJ4FQGWo4qwzez_MW23qTXbXnvxbsx2zJTcQCqB_HiVnIAR0r54D-Kt5Y3Yx";
-
   useEffect(() => {
     const search = async () => {
-      const corsProxy = "https://proxy-ibmasyzzya-uc.a.run.app/";
-      const yelpApi = "https://api.yelp.com/v3/businesses/search";
-      const searchParams = `?term=bar&latitude=${lat}&longitude=${lng}`;
-      const fetchOptions = { headers: { Authorization: `Bearer ${API_KEY}` } };
-      const response = await fetch(
-        corsProxy + yelpApi + searchParams,
-        fetchOptions
-      );
-      const jsonResponse = await response.json();
-      if (jsonResponse) {
-        setYelpData(jsonResponse.businesses);
+      let url = `http://localhost:8001/api/bars?term=bar&latitude=${lat}&longitude=${lng}`;
+      const response = await fetch(url);
+      if (response.ok) {
+        let data = await response.json();
+        setYelpData(data.businesses);
+      } else {
+        console.log("nope");
       }
     };
+    console.log(lat, lng);
     search();
   }, [lat, lng]);
 
@@ -113,31 +107,15 @@ const AddLocation = () => {
   const handleAddLocation = async () => {
     selectedPlace ? setLocation(selectedPlace) : setLocation(yelpSelectedPlace);
     if (!location["bar_id"]) {
-      const corsProxy = "https://proxy-ibmasyzzya-uc.a.run.app/";
-      const yelpApi = "https://api.yelp.com/v3/businesses/";
-      const searchParams = `${location.id}`;
-      const fetchOptions = { headers: { Authorization: `Bearer ${API_KEY}` } };
-      const result = await fetch(
-        corsProxy + yelpApi + searchParams,
-        fetchOptions
-      );
-      const YelpResponse = await result.json();
-      const yelp_id = YelpResponse["id"];
-      const bar_name = YelpResponse["name"];
-      const url = YelpResponse["url"];
-      const lat = YelpResponse.coordinates.latitude;
-      const long = YelpResponse.coordinates.longitude;
-      const image_url = YelpResponse.image_url;
-
+      const yelp_id = location.id;
       const data = {
-        yelp_id: yelp_id,
-        bar_name: bar_name,
-        url: url,
-        lat: lat,
-        long: long,
-        image_url: image_url,
+        yelp_id: "string",
+        bar_name: "string",
+        url: "string",
+        lat: 0,
+        long: 0,
+        image_url: "string",
       };
-      const barUrl = "http://localhost:8001/bars/new";
       const fetchConfig = {
         method: "POST",
         body: JSON.stringify(data),
@@ -145,12 +123,15 @@ const AddLocation = () => {
           "Content-Type": "application/json",
         },
       };
-      const response = await fetch(barUrl, fetchConfig);
-      if (response.ok) {
-        const newBar = await response.json();
-        console.log("newBar", newBar)
+      const barResponse = await fetch(
+        `http://localhost:8001/bars/add/${yelp_id}`,
+        fetchConfig
+      );
+      if (barResponse.ok) {
+        const newBar = await barResponse.json();
+        console.log(newBar);
         locations.push(newBar.bar_id);
-        console.log("locations", locations)
+        console.log("locations", locations);
         return true;
       }
     }
@@ -200,10 +181,7 @@ const AddLocation = () => {
                   setYelpPopUp(false);
                 }}
               >
-                <img
-                  src={redMarker}
-                  alt="hello"
-                />
+                <img src={redMarker} alt="hello" />
               </button>
             </Marker>
           </>
@@ -225,10 +203,7 @@ const AddLocation = () => {
                   setShowPopup(false);
                 }}
               >
-                <img
-                  src={blueMarker}
-                  alt="hello"
-                />
+                <img src={blueMarker} alt="hello" />
               </button>
             </Marker>
           </>
@@ -268,11 +243,49 @@ const AddLocation = () => {
         <Geocoder />
       </ReactMapGL>
       <div>
-        <Button type="button" variant="outlined" onClick={(e) => setLocations([])}>clear locations</Button>
-        <Button type="button" fullWidth variant="outlined" onClick={() => dispatch(addLocation(locations))} sx={{ mt: 3, mb: 2 }}>Finished Adding Locations</Button>
+        <button onClick={(e) => setLocations([])}>clear locations</button>
+        <Button
+          type="button"
+          fullWidth
+          variant="outlined"
+          onClick={() => {
+            dispatch(addLocation(locations));
+          }}
+          sx={{ mt: 3, mb: 2 }}
+        >
+          Finished Adding Locations
+        </Button>
       </div>
     </Box>
   );
 };
 
 export default AddLocation;
+
+// const search = async () => {
+//   const url = `https://api.yelp.com/v3/businesses/search?term=bar&latitude=${lat}&longitude=${lng}`;
+//   const response = await fetch(url, {
+//     method: "GET",
+//     withCredentials: true,
+//     credentials: "include",
+//     headers: {
+//       "Access-Control-Request-Headers": "*",
+//       /* prettier-ignore */ "Authorization": `${bearer}`,
+//       "Content-Type": "application/json",
+//     },
+
+// const corsProxy = "https://proxy-ibmasyzzya-uc.a.run.app/";
+// const yelpApi = "https://api.yelp.com/v3/businesses/";
+// const searchParams = `${location.id}`;
+// const fetchOptions = { headers: { Authorization: `Bearer ${API_KEY}` } };
+// const result = await fetch(
+//   corsProxy + yelpApi + searchParams,
+//   fetchOptions
+// );
+// const YelpResponse = await result.json();
+// const yelp_id = YelpResponse["id"];
+// const bar_name = YelpResponse["name"];
+// const url = YelpResponse["url"];
+// const lat = YelpResponse.coordinates.latitude;
+// const long = YelpResponse.coordinates.longitude;
+// const image_url = YelpResponse.image_url;
