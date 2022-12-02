@@ -8,6 +8,7 @@ import Top from "./toptrips.js";
 import Trip from "./createatrip.js";
 import YelpMap from "./yelpmap";
 import AddLocation from "./Geomap";
+import TripDetail from "./tripDetail";
 
 function App() {
   const domain = /https:\/\/[^/]+/;
@@ -24,6 +25,7 @@ function App() {
         <Route path="/trip" element={<Trip />} />
         <Route path="/yelpmap" element={<YelpMap />} />
         <Route path="/location/add" element={<AddLocation />} />
+        <Route path="/trip/:id/details" element={<TripDetail />} />
 
         <Route path="/logout" element={<Logout />} />
       </Routes>
