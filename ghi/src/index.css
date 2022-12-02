@@ -64,3 +64,16 @@ li:hover {
 .mapboxgl-ctrl-geocoder--button {
   background-color: gainsboro;
 }
+.edit {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  opacity: 0.5;
+  width: 25px;
+}
+.edit:hover {
+  border: 1px solid beige;
+  background-color: antiquewhite;
+  border-radius: 4px;
+  padding: 1px;
+  width: 30px;
+}

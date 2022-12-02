@@ -64,7 +64,7 @@ DEFAULT_LOCATION = 'San Francisco, CA'
 SEARCH_LIMIT = 10
 
 
-def request(host, path, api_key, url_params=None):
+def requestYelp(host, path, api_key, url_params=None):
     """Given your API_KEY, send a GET request to the API.
     Args:
         host (str): The domain host of the API.
@@ -103,7 +103,7 @@ def search(api_key, term, location):
         'location': location.replace(' ', '+'),
         'limit': SEARCH_LIMIT
     }
-    return request(API_HOST, SEARCH_PATH, api_key, url_params=url_params)
+    return requestYelp(API_HOST, SEARCH_PATH, api_key, url_params=url_params)
 
 
 def yelp_get_bar(api_key, business_id):
@@ -115,4 +115,12 @@ def yelp_get_bar(api_key, business_id):
     """
     business_path = BUSINESS_PATH + business_id
 
-    return request(API_HOST, business_path, api_key)
+    return requestYelp(API_HOST, business_path, api_key)
+
+def search_yelp(url, url_params):
+    headers = {
+        'Authorization': 'Bearer %s' % API_KEY,
+    }
+    response = requests.request('GET', url, headers=headers, params=url_params)
+    print(" QUERYING ", response.url)
+    return response.json()
