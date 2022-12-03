@@ -19,23 +19,25 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ImageList } from '@mui/material';
 import ImageListItem from '@mui/material/ImageListItem';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const theme = createTheme();
 
 export default function TripDetail() {
     const [tripData, setTripData] = useState({})
     const [locations, setLocations] = useState([])
+    const { tripId } = useParams();
 
     useEffect(() => {
-        const fetchTripData = async (trip_id) => {
-            const url = `http://localhost:8001/trips/${trip_id}/getbars`;
+        const fetchTripData = async () => {
+            const url = `http://localhost:8001/trips/${tripId}/getbars`;
             const response = await fetch(url);
             const data = await response.json();
             console.log("Data", data)
             setTripData(data)
             setLocations(data["locations"])
         };
-        fetchTripData(15);
+        fetchTripData();
     }, [])
 
     // const fetchTripData = async () => {

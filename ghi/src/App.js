@@ -10,7 +10,7 @@ import YelpMap from "./yelpmap";
 import AddLocation from "./Geomap";
 import TripDetail from "./tripDetail";
 
-function App() {
+function App(props) {
   const domain = /https:\/\/[^/]+/;
   const basename = process.env.PUBLIC_URL.replace(domain, "");
 
@@ -22,10 +22,12 @@ function App() {
         <Route path="/login" element={<SignIn />} />
         <Route path="/login/new" element={<Signup />} />
         <Route path="/top" element={<Top />} />
-        <Route path="/trip" element={<Trip />} />
+        <Route path="trip">
+          <Route path="new" element={<Trip />} />
+          <Route path=":id/details" element={<TripDetail trips={props.trips} />} />
+        </Route>
         <Route path="/yelpmap" element={<YelpMap />} />
         <Route path="/location/add" element={<AddLocation />} />
-        <Route path="/trip/:id/details" element={<TripDetail />} />
 
         <Route path="/logout" element={<Logout />} />
       </Routes>
