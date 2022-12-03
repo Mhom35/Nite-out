@@ -20,17 +20,54 @@ import { ImageList } from '@mui/material';
 import ImageListItem from '@mui/material/ImageListItem';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
+
+// export const TripRouteGenerator = () => {
+
+//     const [tripsData, setTripsData] = useState([]);
+
+//     useEffect(() => {
+//         const fetchTripsData = async () => {
+//             //get all the yelp bars added to database
+//             const url = "http://localhost:8001/trips";
+//             const response = await fetch(url);
+//             const data = await response.json();
+//             setTripsData(data);
+//         };
+//         fetchTripsData();
+//     }, []);
+
+//     console.log("TRIPSDATA", tripsData)
+// }
+
 export default function TripDetail() {
     const [tripData, setTripData] = useState({})
+    const [tripsData, setTripsData] = useState([]);
     const [locations, setLocations] = useState([])
-    const { tripId } = useParams();
+    // const { tripId } = useParams();
+
+    // console.log("tripID", tripId)
+
+    useEffect(() => {
+        const fetchTripsData = async () => {
+            //get all the yelp bars added to database
+            const url = "http://localhost:8001/trips";
+            const response = await fetch(url);
+            const data = await response.json();
+            setTripsData(data);
+            console.log("tripDetails page data", data)
+        };
+        fetchTripsData();
+    }, []);
 
     useEffect(() => {
         const fetchTripData = async () => {
-            const url = `http://localhost:8001/trips/${tripId}/getbars`;
+            setTripData(tripsData[0])
+            console.log("TRIP DATA", tripData)
+            const url = `http://localhost:8001/trips/${tripData.id}/getbars`;
             const response = await fetch(url);
             const data = await response.json();
             console.log("Data", data)
@@ -39,6 +76,7 @@ export default function TripDetail() {
         };
         fetchTripData();
     }, [])
+
 
     // const fetchTripData = async () => {
     //     // axios.get(
