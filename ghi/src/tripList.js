@@ -14,7 +14,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { NavLink, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // import { TableSortLabel } from '@mui/material';
 // import Checkbox from '@mui/material/Checkbox';
 // import { visuallyHidden } from '@mui/utils';
@@ -48,28 +48,28 @@ export default function TripList() {
         fetchTripsData();
     }, []);
 
-    const handleTripSelect = async (event) => {
-        setTripData(event.currentTarget.value)
-        console.log("TRIP", tripData)
-        const fetchTripData = async () => {
-            const url = `http://localhost:8001/trips/${tripData}/getbars`;
-            const response = await fetch(url);
-            const data = await response.json();
-            console.log("Data", data)
-        };
-    }
-
-    // useEffect(() => {
+    // const handleTripSelect = async (event) => {
+    //     setTripData(event.currentTarget.value)
+    //     console.log("TRIP", tripData)
     //     const fetchTripData = async () => {
     //         const url = `http://localhost:8001/trips/${tripData}/getbars`;
     //         const response = await fetch(url);
     //         const data = await response.json();
     //         console.log("Data", data)
     //     };
-    //     fetchTripData();
-    // }, [tripData])
+    // }
 
-    console.log("TRIPDATAAAA", tripData)
+    useEffect(() => {
+        const fetchTripData = async () => {
+            const url = `http://localhost:8001/trips/${tripData}/getbars`;
+            const response = await fetch(url);
+            const data = await response.json();
+            console.log("Data", data)
+        };
+        fetchTripData();
+    }, [tripData])
+
+
 
 
     return (

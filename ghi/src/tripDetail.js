@@ -18,9 +18,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ImageList } from '@mui/material';
 import ImageListItem from '@mui/material/ImageListItem';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+// import axios from 'axios';
+// import { useParams } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
@@ -65,7 +65,7 @@ export default function TripDetail() {
 
     useEffect(() => {
         const fetchTripData = async () => {
-            setTripData(tripsData[0])
+            // setTripData(tripsData[0])
             console.log("TRIP DATA", tripData)
             const url = `http://localhost:8001/trips/${tripData.id}/getbars`;
             const response = await fetch(url);
@@ -75,7 +75,7 @@ export default function TripDetail() {
             setLocations(data["locations"])
         };
         fetchTripData();
-    }, [])
+    }, [tripData])
 
 
     // const fetchTripData = async () => {
