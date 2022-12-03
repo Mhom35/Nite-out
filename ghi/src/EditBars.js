@@ -30,7 +30,10 @@ function EditBars() {
     items.splice(result.destination.index, 0, reorderedItem);
 
     setEditedBars(items);
+<<<<<<< HEAD
     console.log(editedBars);
+=======
+>>>>>>> main
   }
 
   return (
@@ -85,6 +88,13 @@ function EditBars() {
         {" "}
         Finish Editing Locations{" "}
       </Button>
+<<<<<<< HEAD
+=======
+
+      <p>
+        Images from <a href="https://fusion.yelp.com/">Yelp Fusion Api</a>
+      </p>
+>>>>>>> main
     </div>
   );
 }

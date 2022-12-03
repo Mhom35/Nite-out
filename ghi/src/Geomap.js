@@ -1,17 +1,21 @@
 import { Box } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addLocation } from "./app/locations.js";
 import Button from "@mui/material/Button";
+<<<<<<< HEAD
 import Typography from "@mui/material/Typography";
+=======
+>>>>>>> main
 import ReactMapGL, {
   GeolocateControl,
   Marker,
   NavigationControl,
   Popup,
+  useControl
 } from "react-map-gl";
-import { useControl } from "react-map-gl";
+
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useEffect, useRef, useState } from "react";
 import MapBoxGeocoder from "@mapbox/mapbox-gl-geocoder";
 const blueMarker = require("./assets/blue-marker.png");
 const redMarker = require("./assets/red-marker.png");
@@ -55,8 +59,13 @@ const AddLocation = () => {
         let data = await response.json();
         setYelpData(data.businesses);
       } else {
+<<<<<<< HEAD
+=======
+        console.log("nope");
+>>>>>>> main
       }
     };
+    console.log(lat, lng);
     search();
   }, [lat, lng]);
 
@@ -67,6 +76,7 @@ const AddLocation = () => {
       });
     }
   }, [lng, lat]);
+
   const Geocoder = () => {
     const accessToken =
       "pk.eyJ1IjoiZHJyY2t3YW4iLCJhIjoiY2xhYTlsMnR2MDV3MzNybnQzbGo1dWloaSJ9.GAh-bzyBqqjNEYeIDfT94g";
@@ -75,23 +85,26 @@ const AddLocation = () => {
       marker: false,
       collapsed: false,
     });
+
     useControl(() => ctrl);
     ctrl.on("result", (e) => {
       const coords = e.result.geometry.coordinates;
       setLng(coords[0]);
       setLat(coords[1]);
     });
-
     return null;
   };
+
   function setLatLong(e) {
     setLng(e.lngLat.lng);
     setLat(e.lngLat.lat);
   }
+
   function getLocation(e) {
     setLng(e.coords.longitude);
     setLat(e.coords.latitude);
   }
+
   useEffect(() => {
     console.log(locations);
   }, [locations]);
@@ -167,7 +180,6 @@ const AddLocation = () => {
               <button
                 className="marker-btn"
                 onClick={(e) => {
-                  // e.preventDefault();
                   setSelectedPlace(places);
                   //have to set Popup is true
                   setShowPopup(true);
@@ -189,7 +201,6 @@ const AddLocation = () => {
               <button
                 className="marker-btn"
                 onClick={(e) => {
-                  // e.preventDefault();
                   setYelpSelectedPlace(places);
                   setSelectedPlace(null);
                   //have to set Popup is true
@@ -238,6 +249,7 @@ const AddLocation = () => {
       </ReactMapGL>
       <div>
         <button onClick={(e) => setLocations([])}>clear locations</button>
+<<<<<<< HEAD
         <Typography align="center">
           <Button
             type="submit"
@@ -250,6 +262,19 @@ const AddLocation = () => {
             Finished Adding Locations
           </Button>
         </Typography>
+=======
+        <Button
+          type="button"
+          fullWidth
+          variant="outlined"
+          onClick={() => {
+            dispatch(addLocation(locations));
+          }}
+          sx={{ mt: 3, mb: 2 }}
+        >
+          Finished Adding Locations
+        </Button>
+>>>>>>> main
       </div>
     </Box>
   );
