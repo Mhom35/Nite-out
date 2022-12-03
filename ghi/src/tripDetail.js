@@ -63,6 +63,8 @@ export default function TripDetail() {
         fetchTripsData();
     }, []);
 
+    console.log("tripsData", tripsData)
+
     useEffect(() => {
         const fetchTripData = async () => {
             // setTripData(tripsData[0])
