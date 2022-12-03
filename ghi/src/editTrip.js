@@ -15,8 +15,10 @@ const theme = createTheme();
 
 export default function EditTrip() {
   const editLocation = useSelector((state) => state.editLocations.value);
-  const [notfinisheEdit, setNotFinishedEdit] = useState(true);
+  // const [notfinishEdit, setNotFinishedEdit] = useState(true);
+  console.log(editLocation);
 
+  const editLocationMapRef = useRef();
   const locationsMapRef = useRef();
 
   // const scrollToSection = (elementRef) => {
@@ -35,9 +37,9 @@ export default function EditTrip() {
   const [addLocation, setAddLocation] = useState(false);
 
   //when editLocation is mounted (i.e we finished editing it we will close the editBars component)
-  useEffect(() => {
-    setNotFinishedEdit(false);
-  }, [editLocation]);
+  // useEffect(() => {
+  //   setNotFinishedEdit(false);
+  // }, [editLocation]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -127,32 +129,45 @@ export default function EditTrip() {
           </Box>
           {addLocation && (
             <>
-              <div ref={locationsMapRef}>
+              <Box ref={locationsMapRef} sx={{ p: 2 }}>
                 <AddLocation />
-              </div>
+              </Box>
+              <br></br>
+              <Button
+                type="submit"
+                color="error"
+                variant="contained"
+                sx={{ mt: 6, mb: 2, pl: 16, pr: 16 }}
+                onClick={(e) => {
+                  setAddLocation(false);
+                  setEditBarsforTrip(true);
+                }}
+              >
+                {" "}
+                Back to edit{" "}
+              </Button>
             </>
           )}
 
-          {
-            /* prettier-ignore */ (editBarsforTrip && notfinisheEdit) && (
+          {editBarsforTrip && (
             <>
-              <div ref={locationsMapRef}>
+              <div ref={editLocationMapRef}>
                 <EditBars />
               </div>
               <Button
                 type="submit"
-                fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={setAddLocation(true)}
+                onClick={(e) => {
+                  setAddLocation(true);
+                  setEditBarsforTrip(false);
+                }}
               >
                 {" "}
-                Add Location{" "}
+                Add more bars to trip+{" "}
               </Button>
-
             </>
-          )
-          }
+          )}
         </Box>
       </Container>
     </ThemeProvider>
