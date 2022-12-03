@@ -15,18 +15,10 @@ const theme = createTheme();
 
 export default function EditTrip() {
   const editLocation = useSelector((state) => state.editLocations.value);
-  // const [notfinishEdit, setNotFinishedEdit] = useState(true);
-  console.log(editLocation);
+  const [notFinishEdit, setNotFinishedEdit] = useState(true);
 
   const editLocationMapRef = useRef();
   const locationsMapRef = useRef();
-
-  // const scrollToSection = (elementRef) => {
-  //   window.scrollTo({
-  //     top: elementRef.current.offsetTop,
-  //     behavior: 'smooth'
-  //   })
-  // }
 
   const [tripName, setTripName] = useState("");
   // const [location, setLocation] = useState([]);
@@ -36,10 +28,13 @@ export default function EditTrip() {
   const [editBarsforTrip, setEditBarsforTrip] = useState(false);
   const [addLocation, setAddLocation] = useState(false);
 
-  //when editLocation is mounted (i.e we finished editing it we will close the editBars component)
-  // useEffect(() => {
-  //   setNotFinishedEdit(false);
-  // }, [editLocation]);
+  // when editLocation is mounted (i.e we finished editing it we will close the editBars component)
+  useEffect(
+    (e) => {
+      setNotFinishedEdit(false);
+    },
+    [editLocation]
+  );
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -149,7 +144,8 @@ export default function EditTrip() {
             </>
           )}
 
-          {editBarsforTrip && (
+          {
+            /* prettier-ignore */ (editBarsforTrip && notFinishEdit) && (
             <>
               <div ref={editLocationMapRef}>
                 <EditBars />
@@ -167,7 +163,8 @@ export default function EditTrip() {
                 Add more bars to trip+{" "}
               </Button>
             </>
-          )}
+          )
+          }
         </Box>
       </Container>
     </ThemeProvider>
