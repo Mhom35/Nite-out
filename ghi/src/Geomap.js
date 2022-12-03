@@ -3,16 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addLocation } from "./app/locations.js";
 import Button from "@mui/material/Button";
-<<<<<<< HEAD
 import Typography from "@mui/material/Typography";
-=======
->>>>>>> main
 import ReactMapGL, {
   GeolocateControl,
   Marker,
   NavigationControl,
   Popup,
-  useControl
+  useControl,
 } from "react-map-gl";
 
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -59,10 +56,7 @@ const AddLocation = () => {
         let data = await response.json();
         setYelpData(data.businesses);
       } else {
-<<<<<<< HEAD
-=======
         console.log("nope");
->>>>>>> main
       }
     };
     console.log(lat, lng);
@@ -249,7 +243,6 @@ const AddLocation = () => {
       </ReactMapGL>
       <div>
         <button onClick={(e) => setLocations([])}>clear locations</button>
-<<<<<<< HEAD
         <Typography align="center">
           <Button
             type="submit"
@@ -262,19 +255,6 @@ const AddLocation = () => {
             Finished Adding Locations
           </Button>
         </Typography>
-=======
-        <Button
-          type="button"
-          fullWidth
-          variant="outlined"
-          onClick={() => {
-            dispatch(addLocation(locations));
-          }}
-          sx={{ mt: 3, mb: 2 }}
-        >
-          Finished Adding Locations
-        </Button>
->>>>>>> main
       </div>
     </Box>
   );

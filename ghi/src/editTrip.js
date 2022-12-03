@@ -15,25 +15,11 @@ const theme = createTheme();
 
 export default function EditTrip() {
   const editLocation = useSelector((state) => state.editLocations.value);
-<<<<<<< HEAD
   const [notFinishEdit, setNotFinishedEdit] = useState(true);
 
   const editLocationMapRef = useRef();
   const locationsMapRef = useRef();
 
-=======
-  const [notfinisheEdit, setNotFinishedEdit] = useState(true);
-
-  const locationsMapRef = useRef();
-
-  // const scrollToSection = (elementRef) => {
-  //   window.scrollTo({
-  //     top: elementRef.current.offsetTop,
-  //     behavior: 'smooth'
-  //   })
-  // }
-
->>>>>>> main
   const [tripName, setTripName] = useState("");
   // const [location, setLocation] = useState([]);
   const [description, setDescription] = useState("");
@@ -42,20 +28,10 @@ export default function EditTrip() {
   const [editBarsforTrip, setEditBarsforTrip] = useState(false);
   const [addLocation, setAddLocation] = useState(false);
 
-<<<<<<< HEAD
-  // when editLocation is mounted (i.e we finished editing it we will close the editBars component)
-  useEffect(
-    (e) => {
-      setNotFinishedEdit(false);
-    },
-    [editLocation]
-  );
-=======
   //when editLocation is mounted (i.e we finished editing it we will close the editBars component)
   useEffect(() => {
     setNotFinishedEdit(false);
   }, [editLocation]);
->>>>>>> main
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -145,7 +121,6 @@ export default function EditTrip() {
           </Box>
           {addLocation && (
             <>
-<<<<<<< HEAD
               <Box ref={locationsMapRef} sx={{ p: 2 }}>
                 <AddLocation />
               </Box>
@@ -163,29 +138,17 @@ export default function EditTrip() {
                 {" "}
                 Back to edit{" "}
               </Button>
-=======
-              <div ref={locationsMapRef}>
-                <AddLocation />
-              </div>
->>>>>>> main
             </>
           )}
 
           {
-<<<<<<< HEAD
             /* prettier-ignore */ (editBarsforTrip && notFinishEdit) && (
             <>
               <div ref={editLocationMapRef}>
-=======
-            /* prettier-ignore */ (editBarsforTrip && notfinisheEdit) && (
-            <>
-              <div ref={locationsMapRef}>
->>>>>>> main
                 <EditBars />
               </div>
               <Button
                 type="submit"
-<<<<<<< HEAD
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
                 onClick={(e) => {
@@ -196,17 +159,6 @@ export default function EditTrip() {
                 {" "}
                 Add more bars to trip+{" "}
               </Button>
-=======
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                onClick={setAddLocation(true)}
-              >
-                {" "}
-                Add Location{" "}
-              </Button>
-
->>>>>>> main
             </>
           )
           }
