@@ -14,7 +14,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { useNavigate, redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getTripId } from './app/tripId';
 import { useDispatch } from 'react-redux';
 // import { TableSortLabel } from '@mui/material';
@@ -48,7 +48,7 @@ export default function TripList() {
             const url = "http://localhost:8001/trips";
             const response = await fetch(url);
             const data = await response.json();
-            console.log("FETCHTRIPSDATA", data)
+            // console.log("FETCHTRIPSDATA", data)
             setTripsData(data);
             // setTripData(data[0]) // how do i set trip data to a single
         };
@@ -56,7 +56,7 @@ export default function TripList() {
     }, []);
 
     const handleTripSelect = async (event) => {
-        console.log("event.currentTarget.value:", event.currentTarget.value)
+        // console.log("event.currentTarget.value:", event.currentTarget.value)
         // setTripId(event.currentTarget.value)
         let tripId = event.currentTarget.value
         // setTripData(tripsData[tripId])
@@ -65,7 +65,7 @@ export default function TripList() {
             const url = `http://localhost:8001/trips/${tripId}/getbars`;
             const response = await fetch(url);
             const data = await response.json();
-            console.log("Data", data)
+            // console.log("Data", data)
         };
         fetchTripData();
         dispatch(getTripId(tripId))
