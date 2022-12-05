@@ -14,7 +14,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Link } from 'react-router-dom';
+import { useNavigate, redirect } from 'react-router-dom';
+import { getTripId } from './app/tripId';
+import { useDispatch } from 'react-redux';
 // import { TableSortLabel } from '@mui/material';
 // import Checkbox from '@mui/material/Checkbox';
 // import { visuallyHidden } from '@mui/utils';
@@ -33,7 +35,12 @@ const theme = createTheme();
 export default function TripList() {
     const [first, setFirst] = useState(0)
     const [tripsData, setTripsData] = useState([]);
-    const [tripData, setTripData] = useState(0)
+    // const [tripData, setTripData] = useState(0)
+    // const [tripId, setTripId] = useState(0)
+    // let tripId = 0
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchTripsData = async () => {
@@ -43,34 +50,28 @@ export default function TripList() {
             const data = await response.json();
             console.log("FETCHTRIPSDATA", data)
             setTripsData(data);
-            setTripData(data[0].id)
+            // setTripData(data[0]) // how do i set trip data to a single
         };
         fetchTripsData();
     }, []);
 
-    // const handleTripSelect = async (event) => {
-    //     setTripData(event.currentTarget.value)
-    //     console.log("TRIP", tripData)
-    //     const fetchTripData = async () => {
-    //         const url = `http://localhost:8001/trips/${tripData}/getbars`;
-    //         const response = await fetch(url);
-    //         const data = await response.json();
-    //         console.log("Data", data)
-    //     };
-    // }
+    const handleTripSelect = async (event) => {
+        console.log("event.currentTarget.value:", event.currentTarget.value)
+        // setTripId(event.currentTarget.value)
+        let tripId = event.currentTarget.value
+        // setTripData(tripsData[tripId])
 
-    useEffect(() => {
         const fetchTripData = async () => {
-            const url = `http://localhost:8001/trips/${tripData}/getbars`;
+            const url = `http://localhost:8001/trips/${tripId}/getbars`;
             const response = await fetch(url);
             const data = await response.json();
             console.log("Data", data)
         };
         fetchTripData();
-    }, [tripData])
-
-
-
+        dispatch(getTripId(tripId))
+        // return redirect(`/trips/details/${tripId}`)
+        navigate(`/trips/details/${tripId}`)
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -92,9 +93,9 @@ export default function TripList() {
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                                 <TableCell align="center" component="th" scope="row">
-                                    <Link to={`/trips/details/${trip.id}`}
+                                    <Button onClick={handleTripSelect} value={trip.id}
                                     >{trip.trip_name}
-                                    </Link>
+                                    </Button>
                                 </TableCell>
                                 <TableCell align="center" >{trip.locations[0].bar_name}</TableCell>
                                 <TableCell align="center"><img src={trip.locations[0].image_url} width="200" alt="" /></TableCell>

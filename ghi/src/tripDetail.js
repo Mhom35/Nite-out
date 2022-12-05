@@ -18,6 +18,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ImageList } from '@mui/material';
 import ImageListItem from '@mui/material/ImageListItem';
+import { useSelector } from 'react-redux';
+import { getTripId } from './app/tripId';
 // import axios from 'axios';
 // import { useParams } from 'react-router-dom';
 // import { useNavigate } from 'react-router-dom';
@@ -45,39 +47,42 @@ const theme = createTheme();
 
 export default function TripDetail() {
     const [tripData, setTripData] = useState({})
-    const [tripsData, setTripsData] = useState([]);
+    // const [tripsData, setTripsData] = useState([]);
     const [locations, setLocations] = useState([])
+    let tripId = useSelector((state) => state.getTripId.value)
+    console.log("trip id from selector:", tripId)
+
     // const { tripId } = useParams();
 
     // console.log("tripID", tripId)
 
-    useEffect(() => {
-        const fetchTripsData = async () => {
-            //get all the yelp bars added to database
-            const url = "http://localhost:8001/trips";
-            const response = await fetch(url);
-            const data = await response.json();
-            setTripsData(data);
-            console.log("tripDetails page data", data)
-        };
-        fetchTripsData();
-    }, []);
+    // useEffect(() => {
+    //     const fetchTripsData = async () => {
+    //         //get all the yelp bars added to database
+    //         const url = "http://localhost:8001/trips";
+    //         const response = await fetch(url);
+    //         const data = await response.json();
+    //         setTripsData(data);
+    //         console.log("tripDetails page data", data)
+    //     };
+    //     fetchTripsData();
+    // }, []);
 
-    console.log("tripsData", tripsData)
+    // console.log("tripsData", tripsData)
 
     useEffect(() => {
         const fetchTripData = async () => {
             // setTripData(tripsData[0])
             console.log("TRIP DATA", tripData)
-            const url = `http://localhost:8001/trips/${tripData.id}/getbars`;
+            const url = `http://localhost:8001/trips/${tripId}/getbars`;
             const response = await fetch(url);
             const data = await response.json();
-            console.log("Data", data)
             setTripData(data)
+            console.log("Data", data)
             setLocations(data["locations"])
         };
         fetchTripData();
-    }, [tripData])
+    }, [])
 
 
     // const fetchTripData = async () => {
@@ -156,20 +161,6 @@ export default function TripDetail() {
                     {/* </Grid> */}
                 </Container>
             </main>
-            {/* Footer */}
-            <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
-                <Typography variant="h6" align="center" gutterBottom>
-                    Footer
-                </Typography>
-                <Typography
-                    variant="subtitle1"
-                    align="center"
-                    color="text.secondary"
-                    component="p"
-                >
-                    Something here to give the footer a purpose!
-                </Typography>
-            </Box>
         </ThemeProvider>
     );
 }
