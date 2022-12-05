@@ -64,7 +64,8 @@ export default function TripList() {
         const fetchTripData = async () => {
             const url = `http://localhost:8001/trips/${tripId}/getbars`;
             const response = await fetch(url);
-            const data = await response.json();
+            // const data = await response.json();
+            await response.json();
             // console.log("Data", data)
         };
         fetchTripData();
