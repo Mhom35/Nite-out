@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { tripsSlice } from "./tripsSlice";
+import { tripsApi, tripsSlice } from "./tripsApi";
 import { authApiSlice } from "./authApiSlice";
 import { accountSlice } from "./accountSlice";
 import addLocationsReducer from "./locations";
@@ -8,7 +8,7 @@ import editLocationsReducer from "./editLocation";
 
 export const store = configureStore({
   reducer: {
-    [tripsSlice.reducerPath]: tripsSlice.reducer,
+    [tripsApi.reducerPath]: tripsApi.reducer,
     [authApiSlice.reducerPath]: authApiSlice.reducer,
     [accountSlice.name]: accountSlice.reducer,
     addLocations: addLocationsReducer,

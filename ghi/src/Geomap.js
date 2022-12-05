@@ -50,7 +50,7 @@ const AddLocation = () => {
 
   useEffect(() => {
     const search = async () => {
-      let url = `http://localhost:8001/api/bars?term=bar&latitude=${lat}&longitude=${lng}`;
+      let url = `http://localhost:8001/api/bars?term=restaurants&latitude=${lat}&longitude=${lng}`;
       const response = await fetch(url);
       if (response.ok) {
         let data = await response.json();

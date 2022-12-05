@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import Button from "@mui/material/Button";
 import "./App.css";
-import editLocation from "./app/editLocation";
+import { editLocation } from "./app/editLocation";
 
 function EditBars() {
   const [editedBars, setEditedBars] = useState([]);
@@ -22,14 +22,20 @@ function EditBars() {
     fetchBarsInTrip();
   }, []);
 
+  useEffect(() => {
+    console.log(Array.isArray(editedBars));
+  }, [editedBars]);
+
   function handleOnDragEnd(result) {
     if (!result.destination) return;
-
     const items = Array.from(editedBars);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-
     setEditedBars(items);
+  }
+  function confirmFinish() {
+    const barIDArray = editedBars.map((bar) => bar.bar_id);
+    dispatch(editLocation(barIDArray));
   }
 
   return (
@@ -76,9 +82,7 @@ function EditBars() {
         type="button"
         fullWidth
         variant="outlined"
-        onClick={() => {
-          dispatch(editLocation(editedBars));
-        }}
+        onClick={confirmFinish}
         sx={{ mt: 3, mb: 2 }}
       >
         {" "}
