@@ -112,6 +112,10 @@ class TripRepository:
                             , description = %s
                             , image_url = %s
                             , likes = %s
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
                         WHERE id = %s
                         """,
                         # , likes = %s

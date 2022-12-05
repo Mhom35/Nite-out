@@ -14,6 +14,9 @@ class TripBarOut(BaseModel):
     bar_id: int
     positions: int
 
+class UpdateLocationIn(BaseModel):
+    locations: list
+
 
 class TripBarRepository:
     def create_trip_bar(self, trip_bars: TripBarIn) -> TripBarOut:

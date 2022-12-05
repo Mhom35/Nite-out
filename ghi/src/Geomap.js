@@ -3,12 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addLocation } from "./app/locations.js";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import ReactMapGL, {
   GeolocateControl,
   Marker,
   NavigationControl,
   Popup,
-  useControl
+  useControl,
 } from "react-map-gl";
 
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -22,7 +23,6 @@ const AddLocation = () => {
     longitude: -122.419418,
     zoom: 10,
   };
-
   const [lat, setLat] = useState(37.779);
   const [lng, setLng] = useState(-122.419906);
   const mapRef = useRef();
@@ -30,7 +30,6 @@ const AddLocation = () => {
   const [yelpSelectedPlace, setYelpSelectedPlace] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [yelpPopup, setYelpPopUp] = useState(false);
-
   const [yelpData, setYelpData] = useState([]);
   const [backendData, setBackendData] = useState([]);
   const [location, setLocation] = useState({});
@@ -51,7 +50,7 @@ const AddLocation = () => {
 
   useEffect(() => {
     const search = async () => {
-      let url = `http://localhost:8001/api/bars?term=bar&latitude=${lat}&longitude=${lng}`;
+      let url = `http://localhost:8001/api/bars?term=restaurants&latitude=${lat}&longitude=${lng}`;
       const response = await fetch(url);
       if (response.ok) {
         let data = await response.json();
@@ -244,17 +243,18 @@ const AddLocation = () => {
       </ReactMapGL>
       <div>
         <button onClick={(e) => setLocations([])}>clear locations</button>
-        <Button
-          type="button"
-          fullWidth
-          variant="outlined"
-          onClick={() => {
-            dispatch(addLocation(locations));
-          }}
-          sx={{ mt: 3, mb: 2 }}
-        >
-          Finished Adding Locations
-        </Button>
+        <Typography align="center">
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{ mt: 3, mb: 2, mw: 4, pl: 8.5, pr: 8.5 }}
+            onClick={() => {
+              dispatch(addLocation(locations));
+            }}
+          >
+            Finished Adding Locations
+          </Button>
+        </Typography>
       </div>
     </Box>
   );
