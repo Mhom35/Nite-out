@@ -21,3 +21,20 @@ root.render(
 reportWebVitals();
 
 // <React.StrictMode>
+
+// async function loadTrips() {
+//   const response = await fetch("http://localhost:8001/trips")
+//   if (response.ok) {
+//     const data = await response.json();
+//     console.log("DATA", data)
+//     root.render(
+//       <React.StrictMode>
+//         <App trips={data.map((trip) => {
+//           return trip
+//         })} />
+//       </React.StrictMode>
+//     )
+//   }
+// }
+
+// loadTrips()

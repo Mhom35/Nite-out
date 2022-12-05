@@ -5,6 +5,7 @@ import { authApiSlice } from "./authApiSlice";
 import { accountSlice } from "./accountSlice";
 import addLocationsReducer from "./locations";
 import editLocationsReducer from "./editLocation";
+import getTripIdReducer from './tripId'
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,8 @@ export const store = configureStore({
     [accountSlice.name]: accountSlice.reducer,
     addLocations: addLocationsReducer,
     editLocations: editLocationsReducer,
+    getTripId: getTripIdReducer,
+
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware()
