@@ -9,22 +9,18 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState, useRef } from "react";
 import AddLocation from "./Geomap";
 import EditBars from "./EditBars.js";
+import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 
 const theme = createTheme();
 
 export default function EditTrip() {
-  const editLocation = useSelector((state) => state.editLocations.value);
-  const [notfinisheEdit, setNotFinishedEdit] = useState(true);
+  let editLocation = useSelector((state) => state.editLocations.value);
+  let extraLocations = useSelector((state) => state.addLocations.value);
+  const [notFinishEdit, setNotFinishedEdit] = useState(true);
 
+  const editLocationMapRef = useRef();
   const locationsMapRef = useRef();
-
-  // const scrollToSection = (elementRef) => {
-  //   window.scrollTo({
-  //     top: elementRef.current.offsetTop,
-  //     behavior: 'smooth'
-  //   })
-  // }
 
   const [tripName, setTripName] = useState("");
   // const [location, setLocation] = useState([]);
@@ -32,16 +28,100 @@ export default function EditTrip() {
   const [editName, setEditName] = useState(false);
   // const [editDescription, setEditDescription] = useState(false);
   const [editBarsforTrip, setEditBarsforTrip] = useState(false);
+  const [getTripInfo, setGetTripInfo] = useState([]);
   const [addLocation, setAddLocation] = useState(false);
+  const [addExtraBars, setAddExtraBars] = useState(true);
+  const [confirmEdit, setConfirmEdit] = useState(true);
+  const [deleteTrip, setDeleteTrip] = useState(true);
+  //tracker will check if confirm edit has been hit, locations will be finalized
+  // const [tracker, setTracker] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchTripData = async () => {
+      //get all the yelp bars added to database
+      const url = "http://localhost:8001/trips/2/getbars";
+      // const url = `http://localhost:8001/trips/${trip_id}/getbars`;
+      const response = await fetch(url);
+      const data = await response.json();
+      setGetTripInfo(data);
+    };
 
+    fetchTripData();
+  }, []);
   //when editLocation is mounted (i.e we finished editing it we will close the editBars component)
   useEffect(() => {
-    setNotFinishedEdit(false);
-  }, [editLocation]);
+    console.log("editLocations", editLocation);
+    console.log("extra", extraLocations);
+    if (editLocation.length > 0) {
+      setNotFinishedEdit(false);
+      setConfirmEdit(true);
+      setDeleteTrip(true);
+    }
+    //if user adds more locations then close that locations page and go back to EditPage
+    if (extraLocations.length > 0) {
+      setAddExtraBars(false);
+      setEditBarsforTrip(true);
+    }
+    //if user adds more locations append them to the list of locations assoc. w the trip
+    if ((extraLocations.length && editLocation.length) > 0) {
+      setConfirmEdit(true);
+      setDeleteTrip(true);
+    }
+  }, [editLocation, extraLocations]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    //const data = new FormData(event.currentTarget);
+    const locationData = {
+      locations: editLocation.concat(extraLocations),
+    };
+    console.log("concat", editLocation);
+    const tripUrl = `http://localhost:8001/trips/${getTripInfo.id}/update-bar`;
+    const fetchConfig = {
+      method: "PUT",
+      body: JSON.stringify(locationData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const tripResponse = await fetch(tripUrl, fetchConfig);
+    if (tripResponse.ok) {
+      const updateTrip = await tripResponse.json();
+      console.log("trip_updated", updateTrip);
+      console.log(true);
+      return true;
+    }
+  };
+  const DeleteConfirmation = () => {
+    const card = document.getElementById("edit");
+    const DeleteConfirmation = document.getElementById("alert");
+    card.classList.add("d-none");
+    DeleteConfirmation.classList.remove("d-none");
+  };
+
+  const ConfirmDeletion = async (e) => {
+    e.preventDefault();
+    const tripUrl = `http://localhost:8001/trips/1`;
+    const fetchConfig = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const response = await fetch(tripUrl, fetchConfig);
+    if (response.ok) {
+      const sendToShoeList = document.getElementById("sendBack");
+      const DeleteConfirmationPage = document.getElementById("alert");
+      DeleteConfirmationPage.classList.add("d-none");
+      sendToShoeList.classList.remove("d-none");
+    } else {
+      console.error(response);
+    }
+  };
+  const NotDeleting = () => {
+    const card = document.getElementById("card");
+    const DeleteConfirmation = document.getElementById("alert");
+    card.classList.remove("d-none");
+    DeleteConfirmation.classList.add("d-none");
   };
 
   return (
@@ -55,6 +135,7 @@ export default function EditTrip() {
             flexDirection: "column",
             alignItems: "center",
           }}
+          id="edit"
         >
           {!editName && (
             <Typography component="h1" variant="h5">
@@ -95,7 +176,10 @@ export default function EditTrip() {
                 type="button"
                 fullWidth
                 variant="outlined"
-                onClick={(event) => setEditBarsforTrip(true)}
+                onClick={(event) => {
+                  setEditBarsforTrip(true);
+                  setConfirmEdit(false);
+                }}
                 sx={{ mt: 3, mb: 2 }}
               >
                 {" "}
@@ -113,48 +197,118 @@ export default function EditTrip() {
               value={description}
               onChange={(event) => setDescription(event.target.value)}
             />
-            {!addLocation && (
+            {confirmEdit &&
+              deleteTrip(
+                <>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={handleSubmit}
+                  >
+                    {" "}
+                    Confirm Edit{" "}
+                  </Button>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={DeleteConfirmation}
+                  >
+                    {" "}
+                    delete Trip{" "}
+                  </Button>
+                </>
+              )}
+          </Box>
+          {
+            /* prettier-ignore */ (addLocation && addExtraBars) &&(
+            <>
+              <Box ref={locationsMapRef} sx={{ p: 2 }}>
+                <AddLocation />
+              </Box>
+              <br></br>
               <Button
                 type="submit"
-                fullWidth
+                color="error"
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ mt: 6, mb: 2, pl: 16, pr: 16 }}
+                onClick={(e) => {
+                  setAddLocation(false);
+                  setEditBarsforTrip(true);
+                }}
               >
                 {" "}
-                Confirm Edit{" "}
+                Back to edit{" "}
               </Button>
-            )}
-          </Box>
-          {addLocation && (
-            <>
-              <div ref={locationsMapRef}>
-                <AddLocation />
-              </div>
             </>
-          )}
+          )
+          }
 
           {
-            /* prettier-ignore */ (editBarsforTrip && notfinisheEdit) && (
+            /* prettier-ignore */ (editBarsforTrip && notFinishEdit) && (
             <>
-              <div ref={locationsMapRef}>
+              <div ref={editLocationMapRef}>
                 <EditBars />
               </div>
               <Button
                 type="submit"
-                fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                onClick={setAddLocation(true)}
+                onClick={(e) => {
+                  setAddLocation(true);
+                  setEditBarsforTrip(false);
+                }}
               >
                 {" "}
-                Add Location{" "}
+                Add more bars to trip+{" "}
               </Button>
-
             </>
           )
           }
         </Box>
+        <div
+          className="alert alert-success d-none"
+          role="alert"
+          id="alert"
+          style={{ backgroundColor: "#DBF7DE" }}
+        >
+          <h4 className="alert-heading">Confirm Delete</h4>
+          <p>Are you sure you want to delete this trip?</p>
+          <hr />
+          <div className="d-grid gap-2 d-md-block">
+            <button
+              type="button"
+              onClick={ConfirmDeletion}
+              className="btn btn-success m-2"
+            >
+              Yes
+            </button>
+            <button
+              type="button"
+              onClick={NotDeleting}
+              className="btn btn-danger"
+            >
+              No
+            </button>
+          </div>
+        </div>
+        <button
+          type="button"
+          className="btn btn-lg btn-danger d-none"
+          onClick={() => navigate("/trip")}
+          id="sendBack"
+          data-bs-toggle="popover"
+          data-bs-title="Popover title"
+          data-bs-content=""
+        >
+          Click here to go back to trips list
+        </button>
       </Container>
     </ThemeProvider>
   );
 }
+
+// const barIDArray = items.map((bar) => bar.bar_id);

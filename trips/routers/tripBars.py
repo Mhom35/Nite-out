@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Response
 from typing import Optional
 
 
-from queries.trip_bars import TripBarRepository, TripBarOut, TripBarIn
+from queries.trip_bars import TripBarRepository, TripBarOut, TripBarIn, UpdateLocationIn
 from queries.trips import TripIn
 
 router = APIRouter()
@@ -34,7 +34,7 @@ def delete_bar_from_trip(
 @router.put("/trips/{trip_id}/update-bar")
 def update_bars_for_trips(
     trip_id: int,
-    trip_in: TripIn,
+    update_location_in: UpdateLocationIn,
     repo: TripBarRepository = Depends(),
 ):
-    return repo.update_bars_for_trips(trip_id, trip_in.locations)
+    return repo.update_bars_for_trips(trip_id, update_location_in.locations)
