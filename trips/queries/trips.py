@@ -11,7 +11,7 @@ class Error(BaseModel):
 
 class TripIn(BaseModel):
     trip_name: str
-    locations: list[str]
+    locations: list
     description: str
     created_on: datetime
     image_url: Optional[str]
@@ -112,7 +112,6 @@ class TripRepository:
                             , description = %s
                             , image_url = %s
                             , likes = %s
-
                         WHERE id = %s
                         """,
                         # , likes = %s
