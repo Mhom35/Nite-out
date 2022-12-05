@@ -23,11 +23,11 @@ export default function SignIn() {
   //   password: ""
   // })
   const { register, handleSubmit } = useForm()
-  const onSubmit = (data) => {
-    // event.preventDefault();
-    console.log("data", data)
-    //const data = new FormData(event.currentTarget);
-  };
+  // const onSubmit = (data) => {
+  //   // event.preventDefault();
+  //   console.log("data", data)
+  //   //const data = new FormData(event.currentTarget);
+  // };
 
   return (
     <ThemeProvider theme={theme}>
@@ -48,7 +48,7 @@ export default function SignIn() {
             Sign in
           </Typography>
           <form onSubmit={handleSubmit}>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <Box component="form" noValidate sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required
