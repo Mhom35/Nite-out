@@ -8,8 +8,10 @@ import Top from "./toptrips.js";
 import Trip from "./createatrip.js";
 import YelpMap from "./yelpmap";
 import AddLocation from "./Geomap";
+import TripDetail from "./tripDetail";
 import EditBars from "./EditBars.js";
 import EditTrip from "./editTrip";
+import TripList from "./tripList";
 
 function App() {
   const domain = /https:\/\/[^/]+/;
@@ -23,7 +25,11 @@ function App() {
         <Route path="/login" element={<SignIn />} />
         <Route path="/login/new" element={<Signup />} />
         <Route path="/top" element={<Top />} />
-        <Route path="/trip" element={<Trip />} />
+        <Route path="trips">
+          <Route index element={<TripList />} />
+          <Route path="new" element={<Trip />} />
+          <Route path="details/:id" element={<TripDetail />}></Route>
+        </Route>
         <Route path="/yelpmap" element={<YelpMap />} />
         <Route path="/location/add" element={<AddLocation />} />
         <Route path="/edit/trips" element={<EditTrip />} />

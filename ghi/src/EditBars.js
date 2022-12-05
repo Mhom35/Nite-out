@@ -12,11 +12,11 @@ function EditBars() {
   useEffect(() => {
     const fetchBarsInTrip = async () => {
       //get all the yelp bars added to database
-      const url = "http://localhost:8001/bars";
-      // const url = `http://localhost:8001/trips/${trip_id}/getbars`;
+      // const url = "http://localhost:8001/bars";
+      const url = `http://localhost:8001/trips/2/getbars`;
       const response = await fetch(url);
       const data = await response.json();
-      setEditedBars(data);
+      setEditedBars(data.locations);
     };
 
     fetchBarsInTrip();

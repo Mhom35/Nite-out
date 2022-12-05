@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { authApiSlice } from "./authApiSlice";
 
-export const tripsSlice = createApi({
+export const tripsApi = createApi({
   reducerPath: "trips",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_TRIPS_API_HOST,
@@ -34,40 +34,47 @@ export const tripsSlice = createApi({
       },
       invalidatesTags: [{ type: "Books", id: "LIST" }],
     }),
-
-    addBar: builder.mutation({
-      query: (form) => {
-        const formData = new FormData(form);
-        const entries = Array.from(formData.entries());
-        const data = entries.reduce((acc, [key, value]) => {
-          acc[key] = Number.parseInt(value) || value;
-          return acc;
-        }, {});
-        return {
-          method: "post",
-          url: "/api/books",
-          credentials: "include",
-          body: data,
-        };
-      },
-      invalidatesTags: [{ type: "Books", id: "LIST" }],
+    createTrip: builder.mutation({
+      query: (data) => ({
+        url: "/trips",
+        body: data,
+        method: "post",
+      }),
     }),
+
+    // addBar: builder.mutation({
+    //   query: (form) => {
+    //     const formData = new FormData(form);
+    //     const entries = Array.from(formData.entries());
+    //     const data = entries.reduce((acc, [key, value]) => {
+    //       acc[key] = Number.parseInt(value) || value;
+    //       return acc;
+    //     }, {});
+    //     return {
+    //       method: "post",
+    //       url: "/api/books",
+    //       credentials: "include",
+    //       body: data,
+    //     };
+    //   },
+    //   invalidatesTags: [{ type: "Books", id: "LIST" }],
+    // }),
 
     getAllTrips: builder.query({
       query: () => `/trips`,
-      providesTags: (data) => {
-        const tags = [{ type: "Books", id: "LIST" }];
-        if (!data || !data.books) return tags;
+      //   providesTags: (data) => {
+      //     const tags = [{ type: "Books", id: "LIST" }];
+      //     if (!data || !data.books) return tags;
 
-        const { books } = data;
-        if (books) {
-          tags.concat(...books.map(({ id }) => ({ type: "Books", id })));
-        }
-        return tags;
-      },
+      //     const { books } = data;
+      //     if (books) {
+      //       tags.concat(...books.map(({ id }) => ({ type: "Books", id })));
+      //     }
+      //     return tags;
+      //   },
     }),
 
-    borrowBook: builder.mutation({
+    createTrip: builder.mutation({
       query: (bookId) => ({
         method: "post",
         url: `/api/books/${bookId}/loans`,
@@ -87,7 +94,8 @@ export const tripsSlice = createApi({
 
 export const {
   useAddBookMutation,
+  useCreateTripMutation,
   useBorrowBookMutation,
   useGetAllTripsQuery,
   useReturnBookMutation,
-} = tripsAPI;
+} = tripsApi;

@@ -39,7 +39,7 @@ export default function EditTrip() {
   useEffect(() => {
     const fetchTripData = async () => {
       //get all the yelp bars added to database
-      const url = "http://localhost:8001/trips/1/getbars";
+      const url = "http://localhost:8001/trips/2/getbars";
       // const url = `http://localhost:8001/trips/${trip_id}/getbars`;
       const response = await fetch(url);
       const data = await response.json();
@@ -50,7 +50,7 @@ export default function EditTrip() {
   }, []);
   //when editLocation is mounted (i.e we finished editing it we will close the editBars component)
   useEffect(() => {
-    console.log(editLocation);
+    console.log("editLocations", editLocation);
     console.log("extra", extraLocations);
     if (editLocation.length > 0) {
       setNotFinishedEdit(false);
@@ -64,7 +64,6 @@ export default function EditTrip() {
     }
     //if user adds more locations append them to the list of locations assoc. w the trip
     if ((extraLocations.length && editLocation.length) > 0) {
-      editLocation.concat(extraLocations);
       setConfirmEdit(true);
       setDeleteTrip(true);
     }
@@ -72,18 +71,14 @@ export default function EditTrip() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = {
-      trip_name: getTripInfo.trip_name,
-      locations: editLocation,
-      description: getTripInfo.description,
-      created_on: getTripInfo.created_on,
-      likes: getTripInfo.likes,
-      distance: getTripInfo.distance,
+    const locationData = {
+      locations: editLocation.concat(extraLocations),
     };
+    console.log("concat", editLocation);
     const tripUrl = `http://localhost:8001/trips/${getTripInfo.id}/update-bar`;
     const fetchConfig = {
       method: "PUT",
-      body: JSON.stringify(data),
+      body: JSON.stringify(locationData),
       headers: {
         "Content-Type": "application/json",
       },
