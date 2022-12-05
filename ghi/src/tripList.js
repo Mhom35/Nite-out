@@ -61,14 +61,14 @@ export default function TripList() {
         let tripId = event.currentTarget.value
         // setTripData(tripsData[tripId])
 
-        const fetchTripData = async () => {
-            const url = `http://localhost:8001/trips/${tripId}/getbars`;
-            const response = await fetch(url);
-            // const data = await response.json();
-            await response.json();
-            // console.log("Data", data)
-        };
-        fetchTripData();
+        // const fetchTripData = async () => {
+        //     const url = `http://localhost:8001/trips/${tripId}/getbars`;
+        //     const response = await fetch(url);
+        //     // const data = await response.json();
+        //     await response.json();
+        //     // console.log("Data", data)
+        // };
+        // fetchTripData();
         dispatch(getTripId(tripId))
         // return redirect(`/trips/details/${tripId}`)
         navigate(`/trips/details/${tripId}`)

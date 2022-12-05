@@ -16,7 +16,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 // import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { ImageList } from '@mui/material';
+import { Button, ImageList } from '@mui/material';
 import ImageListItem from '@mui/material/ImageListItem';
 import { useSelector } from 'react-redux';
 // import { getTripId } from './app/tripId';
@@ -124,6 +124,9 @@ export default function TripDetail() {
                         </Typography>
                         <Typography variant="h5" align="center" color="text.secondary" paragraph>{tripData.description}</Typography>
                         <Typography variant="h5" align="center" color="text.secondary" paragraph>{tripData.likes}</Typography>
+                        <Typography align="center">
+                            <Button>Edit</Button>
+                        </Typography>
                         <Stack
                             sx={{ pt: 4 }}
                             direction="row"
