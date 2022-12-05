@@ -11,7 +11,7 @@ class Error(BaseModel):
 
 class TripIn(BaseModel):
     trip_name: str
-    locations: list[str]
+    locations: list
     description: str
     created_on: datetime
     image_url: Optional[str]
@@ -97,38 +97,39 @@ class TripRepository:
             print(e)
             return False
 
-    # def update_trip(self, trip_id: int, trip: TripIn) -> Union[TripOut, Error]:
-    #     try:
-    #         # connect to database
-    #         with pool.connection() as conn:
-    #             # get cursor (something to run SQL with)
-    #             with conn.cursor() as db:
-    #                 # Run our SELECT statement
-    #                 db.execute(
-    #                     """
-    #                     UPDATE trips
-    #                     SET trip_name = %s
-    #                         , locations = %s
-    #                         , description = %s
-    #                         , image_url = %s
-    #                     WHERE id = %s
-    #                     """,
-    #                     # , likes = %s
-    #                     #     , distance = %s
-    #                     [
-    #                         trip.trip_name,
-    #                         trip.locations,
-    #                         trip.description,
-    #                         trip.image_url,
-    #                         # trip.likes,
-    #                         # trip.distance,
-    #                         trip_id,
-    #                     ],
-    #                 )
-    #                 return self.trip_in_to_out(trip_id, trip)
-    #     except Exception as e:
-    #         print("error message:", e)
-    #         return {"message": "Could not update trip"}
+    def update_trip(self, trip_id: int, trip: TripIn) -> Union[TripOut, Error]:
+        try:
+            # connect to database
+            with pool.connection() as conn:
+                # get cursor (something to run SQL with)
+                with conn.cursor() as db:
+                    # Run our SELECT statement
+                    db.execute(
+                        """
+                        UPDATE trips
+                        SET trip_name = %s
+                            , locations = %s
+                            , description = %s
+                            , image_url = %s
+                            , likes = %s
+                        WHERE id = %s
+                        """,
+                        # , likes = %s
+                        #     , distance = %s
+                        [
+                            trip.trip_name,
+                            trip.locations,
+                            trip.description,
+                            trip.image_url,
+                            trip.likes,
+                            # trip.distance,
+                            trip_id,
+                        ],
+                    )
+                    return self.trip_in_to_out(trip_id, trip)
+        except Exception as e:
+            print("error message:", e)
+            return {"message": "Could not update trip"}
 
     def create_trip(self, trip: TripIn) -> TripOut:
         try:

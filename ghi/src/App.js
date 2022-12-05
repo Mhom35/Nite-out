@@ -11,7 +11,7 @@ import AddLocation from "./Geomap";
 import TripDetail from "./tripDetail";
 // import EditBars from "./EditBars.js";
 import EditTrip from "./editTrip";
-import TripList from "./tripList";
+import TopTrips from "./toptrips.js";
 
 function App() {
   const domain = /https:\/\/[^/]+/;
@@ -24,9 +24,8 @@ function App() {
       <Routes>
         <Route path="/login" element={<SignIn />} />
         <Route path="/login/new" element={<Signup />} />
-        <Route path="/top" element={<Top />} />
         <Route path="trips">
-          <Route index element={<TripList />} />
+          <Route index element={<TopTrips />} />
           <Route path="new" element={<Trip />} />
           <Route path="details/:id" element={<TripDetail />} >
           </Route>

@@ -51,13 +51,13 @@ def get_all_trips(
     return repo.get_all_trips()
 
 
-# @router.put("/trips/{trip_id}", response_model=Union[TripOut, Error])
-# def update_trip(
-#     trip_id: int,
-#     trip: TripIn,
-#     repo: TripRepository = Depends(),
-# ) -> Union[TripOut, Error]:
-#     return repo.update_trip(trip_id, trip)
+@router.put("/trips/{trip_id}", response_model=Union[TripOut, Error])
+def update_trip(
+    trip_id: int,
+    trip: TripIn,
+    repo: TripRepository = Depends(),
+) -> Union[TripOut, Error]:
+    return repo.update_trip(trip_id, trip)
 
 
 @router.delete("/trips/{trip_id}", response_model=bool)
