@@ -74,14 +74,6 @@ export const tripsApi = createApi({
       //   },
     }),
 
-    createTrip: builder.mutation({
-      query: (bookId) => ({
-        method: "post",
-        url: `/api/books/${bookId}/loans`,
-      }),
-      invalidatesTags: [{ type: "Books", id: "LIST" }],
-    }),
-
     returnBook: builder.mutation({
       query: (bookId) => ({
         method: "delete",

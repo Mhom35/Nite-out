@@ -10,13 +10,13 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AddLocation from "./Geomap";
 import { addLocation } from "./app/locations.js";
-import { useCreateTripMutation } from "./app/tripsApi";
+// import { useCreateTripMutation } from "./app/tripsApi";
 
 const theme = createTheme();
 
 export default function Trip() {
   let locations = useSelector((state) => state.addLocations.value);
-  const [createTrip, result] = useCreateTripMutation;
+  // const [createTrip, result] = useCreateTripMutation;
   const [notFinished, setNotFinished] = useState(true);
   const locationsMapRef = useRef();
   const date = new Date();
@@ -29,7 +29,7 @@ export default function Trip() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    createTrip(tripName, locations, description, dateTime);
+    // createTrip(tripName, locations, description, dateTime);
     const data = {
       trip_name: tripName,
       locations: locations,

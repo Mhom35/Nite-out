@@ -197,30 +197,31 @@ export default function EditTrip() {
               value={description}
               onChange={(event) => setDescription(event.target.value)}
             />
-            {confirmEdit && (
-              <>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                  onClick={handleSubmit}
-                >
-                  {" "}
-                  Confirm Edit{" "}
-                </Button>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                  onClick={DeleteConfirmation}
-                >
-                  {" "}
-                  delete Trip{" "}
-                </Button>
-              </>
-            )}
+            {confirmEdit &&
+              deleteTrip(
+                <>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={handleSubmit}
+                  >
+                    {" "}
+                    Confirm Edit{" "}
+                  </Button>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2 }}
+                    onClick={DeleteConfirmation}
+                  >
+                    {" "}
+                    delete Trip{" "}
+                  </Button>
+                </>
+              )}
           </Box>
           {
             /* prettier-ignore */ (addLocation && addExtraBars) &&(

@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 // import Typography from '@mui/material/Typography';
 // import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 // import Container from '@mui/material/Container';
 import RecommendIcon from "@mui/icons-material/Recommend";
 import Table from "@mui/material/Table";
@@ -35,9 +35,9 @@ import CircularProgress from "@mui/material/CircularProgress";
 const theme = createTheme();
 
 export default function TripList() {
-  const { data: barData, error, isLoading } = useGetAllTripsQuery();
+  const { data: barData, isLoading } = useGetAllTripsQuery();
   const [first, setFirst] = useState(0);
-  const [tripsData, setTripsData] = useState([]);
+  //   const [tripsData, setTripsData] = useState([]);
   // const [tripData, setTripData] = useState(0)
   // const [tripId, setTripId] = useState(0)
   // let tripId = 0
