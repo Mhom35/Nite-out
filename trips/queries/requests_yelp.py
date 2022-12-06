@@ -20,6 +20,7 @@ import json  # noqa: F401
 # import pprint
 # import sys
 import urllib  # noqa: F401
+from urllib.parse import quote
 
 
 router = APIRouter()
@@ -35,7 +36,6 @@ auth_scheme = HTTPBearer()
 # try:
 # For Python 3.0 and later
 # from urllib.error import HTTPError
-from urllib.parse import quote
 
 # from urllib.parse import urlencode
 # except ImportError:
