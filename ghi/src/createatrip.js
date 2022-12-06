@@ -13,7 +13,7 @@ import { addLocation } from "./app/locations.js";
 import { useNavigate } from "react-router-dom";
 // import { useCreateTripMutation } from "./app/tripsApi";
 import { useAuthContext } from "./frontendAuth";
-import { useGetTokenQuery } from "./app/authApiSlice";
+// import { useGetTokenQuery } from "./app/authApiSlice";
 
 const theme = createTheme();
 
