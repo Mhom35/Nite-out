@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import Optional, List, Union
 from queries.pool import pool
 from datetime import datetime
-from .bars import BarOut, BarOutWithPosition
+from .bars import BarOutWithPosition
 
 
 class Error(BaseModel):
@@ -165,7 +165,9 @@ class TripRepository:
                     bars = []
                     result = db.execute(
                         """
-                        SELECT b.id AS bar_id, b.yelp_id, b.bar_name, b.url, b.lat, b.long, b.image_url, t.id AS trip_id, t.trip_name, t.locations, t.description, t.created_on, t.image_url, t.likes, t.distance, tb.positions
+                        SELECT b.id AS bar_id, b.yelp_id, b.bar_name, b.url, b.lat, b.long,
+                        b.image_url, t.id AS trip_id, t.trip_name, t.locations, t.description,
+                        t.created_on, t.image_url, t.likes, t.distance, tb.positions
                         FROM trip_bars AS tb
                         JOIN bars AS b ON b.id = tb.bar_id
                         JOIN trips AS t ON t.id = tb.trip_id

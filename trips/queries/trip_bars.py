@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from typing import Optional, List, Union
 from queries.pool import pool
 
 
@@ -13,6 +12,7 @@ class TripBarOut(BaseModel):
     trip_id: int
     bar_id: int
     positions: int
+
 
 class UpdateLocationIn(BaseModel):
     locations: list
@@ -44,7 +44,6 @@ class TripBarRepository:
                         ],
                     )
                     row = result.fetchone()
-                    ## return success if this works
                     return {
                         "trip_id": row[0],
                         "bar_id": row[1],
@@ -54,7 +53,7 @@ class TripBarRepository:
         except Exception:
             return {"message": "Create did not work"}
 
-    def update_bars_for_trips(self, trip_id: int, locations: list[str]):
+    def update_bars_for_trips(self, trip_id: int, locations: list):
         parens = ""
         ids = []
         for i, bar_id in enumerate(locations):
@@ -68,7 +67,7 @@ class TripBarRepository:
         sequel1 = f"""
                 DELETE FROM trip_bars
                 WHERE trip_id = %s;
-            """
+            """  # noqa F541
         sequel2 = f"""
                 INSERT INTO trip_bars
                     (trip_id, bar_id, positions)
@@ -101,7 +100,7 @@ class TripBarRepository:
                 # get cursor (something to run SQL with)
                 with conn.cursor() as db:
                     # Run our INSERT statement
-                    result = db.execute(
+                    db.execute(
                         """
                         DELETE FROM trip_bars
                         WHERE trip_id = %s AND bar_id = %s
