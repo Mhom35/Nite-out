@@ -1,8 +1,5 @@
 import sys
-
-sys.path.append("..")
-from fastapi import APIRouter, Depends, Response, HTTPException, status
-from typing import List
+from fastapi import APIRouter, Depends, Response
 from typing import List, Union, Optional
 from queries.trips import (
     Error,
@@ -10,14 +7,14 @@ from queries.trips import (
     TripRepository,
     TripOut,
 )
-
-from queries.trip_bars import TripBarRepository, TripBarOut, TripBarIn
-from queries.yelp_get_bars import bar_in_db
-from queries.requests_yelp import API_KEY
-
 from authenticator import authenticator
 
+# from queries.trip_bars import TripBarRepository, TripBarOut, TripBarIn
+# from queries.yelp_get_bars import bar_in_db
+# from queries.requests_yelp import API_KEY
 # from token_auth import get_current_user
+
+sys.path.append("..")
 
 
 router = APIRouter()

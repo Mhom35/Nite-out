@@ -1,6 +1,5 @@
 steps = [
     [
-        ## Create the table
         """
         CREATE TABLE bars (
             id SERIAL PRIMARY KEY NOT NULL,
@@ -12,7 +11,6 @@ steps = [
             image_url VARCHAR(999) NOT NULL
         );
         """,
-        ## Drop the table
         """
         DROP TABLE bars;
         """,

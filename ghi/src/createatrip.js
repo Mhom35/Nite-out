@@ -13,7 +13,7 @@ import { addLocation } from "./app/locations.js";
 import { useNavigate } from "react-router-dom";
 // import { useCreateTripMutation } from "./app/tripsApi";
 import { useAuthContext } from "./frontendAuth";
-import { useGetTokenQuery } from "./app/authApiSlice";
+// import { useGetTokenQuery } from "./app/authApiSlice";
 
 const theme = createTheme();
 
@@ -30,11 +30,12 @@ export default function Trip() {
   const [clicked, setClicked] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const { data: tokenData } = useGetTokenQuery()
+  // const { data: tokenData } = useGetTokenQuery()
 
   const { token } = useAuthContext();
 
-  if (!tokenData) {
+  if (!token) {
+    // console.log("TOKEN DATA IN CREATE", tokenData)
     navigate("/login")
   }
 

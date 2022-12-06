@@ -2,8 +2,13 @@ from fastapi import APIRouter, Depends, Response
 from typing import Optional
 
 
-from queries.trip_bars import TripBarRepository, TripBarOut, TripBarIn, UpdateLocationIn
-from queries.trips import TripIn
+from queries.trip_bars import (
+    TripBarRepository,
+    TripBarOut,
+    TripBarIn,
+    UpdateLocationIn,
+)
+
 
 router = APIRouter()
 

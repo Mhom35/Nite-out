@@ -33,7 +33,9 @@ export const authApiSlice = createApi({
                 try {
                     await queryFulfilled;
                     dispatch(clearForm());
-                } catch (err) { }
+                } catch (err) {
+                    console.log("err", err)
+                }
             },
         }),
 
@@ -44,7 +46,7 @@ export const authApiSlice = createApi({
                     formData = new FormData(info);
                 } else {
                     formData = new FormData();
-                    formData.append('username', info.email);
+                    formData.append('username', info.username);
                     formData.append('password', info.password);
                 }
                 return {

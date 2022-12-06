@@ -12,8 +12,9 @@ from queries.yelp_get_bars import bar_in_db
 router = APIRouter()
 
 
-API_HOST = 'https://api.yelp.com'
-SEARCH_PATH = '/v3/businesses/search'
+API_HOST = "https://api.yelp.com"
+SEARCH_PATH = "/v3/businesses/search"
+
 
 @router.post("/bars/new/", response_model=Union[BarOut, Error])
 def create_bar(
@@ -34,17 +35,15 @@ def add_new_bar(
 ):
     return bar_in_db(API_KEY=API_KEY, yelp_id=yelp_id)
 
+
 @router.get("/api/bars")
-async def get_bars_list(
-    latitude: float,
-    longitude: float
-):
+async def get_bars_list(latitude: float, longitude: float):
     url = API_HOST + SEARCH_PATH
-    url_params= {
-        'term':"bar",
-        'latitude': latitude,
-        'longitude': longitude,
-        'limit': 20,
+    url_params = {
+        "term": "bar",
+        "latitude": latitude,
+        "longitude": longitude,
+        "limit": 20,
     }
     return search_yelp(url, url_params)
 

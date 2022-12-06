@@ -1,6 +1,5 @@
 steps = [
     [
-        ## Create the table
         """
         CREATE TABLE trips (
             id SERIAL PRIMARY KEY NOT NULL,
@@ -13,11 +12,8 @@ steps = [
             distance SMALLINT
         );
         """,
-        ## Drop the table
         """
         DROP TABLE trips;
         """,
     ]
 ]
-
-# account_id integer REFERENCES accounts (id),

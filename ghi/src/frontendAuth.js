@@ -94,10 +94,9 @@ export function useToken() {
             credentials: "include",
             body: form,
         });
-        console.log("FORM", form)
-        console.log("response", response)
         if (response.ok) {
             const token = await getTokenInternal();
+            console.log("response in frontendauth", response)
             setToken(token);
             return;
         }
@@ -105,16 +104,14 @@ export function useToken() {
         return handleErrorMessage(error);
     }
 
-    async function signup(username, password, email, firstName, lastName) {
+    async function signup(username, email, password) {
         const url = `${process.env.REACT_APP_AUTH_API_HOST}/api/accounts/`;
         const response = await fetch(url, {
             method: "post",
             body: JSON.stringify({
                 username,
-                password,
                 email,
-                first_name: firstName,
-                last_name: lastName,
+                password,
             }),
             headers: {
                 "Content-Type": "application/json",
