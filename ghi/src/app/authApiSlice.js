@@ -14,7 +14,7 @@ export const authApiSlice = createApi({
             return headers;
         }
     }),
-    tagTypes: ['Account', 'Trips', 'Token'],
+    tagTypes: ['Account', 'Token'],
 
     endpoints: builder => ({
 
