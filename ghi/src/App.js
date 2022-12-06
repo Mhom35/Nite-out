@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider, useToken } from "./frontendAuth";
 import "./App.css";
 import Signup from "./signup.js";
-import Logout from "./signout.js";
 import SignIn from "./signin.js";
 import TopTrips from "./toptrips.js";
 import Trip from "./createatrip.js";
@@ -11,6 +10,7 @@ import AddLocation from "./Geomap";
 import TripDetail from "./tripDetail";
 import EditBars from "./EditBars.js";
 import EditTrip from "./editTrip";
+import SignOut from "./signout.js";
 
 function GetToken() {
   // Get token from JWT cookie (if already logged in)
@@ -41,7 +41,7 @@ function App() {
           <Route path="/edit/trips" element={<EditTrip />} />
           <Route path="/edit/bars" element={<EditBars />} />
 
-          <Route path="/logout" element={<Logout />} />
+          <Route path="/logout" element={<SignOut />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
