@@ -34,7 +34,7 @@ def create_trip(
     trip: TripIn,
     response: Response,
     repo: TripRepository = Depends(),
-    # account_data: dict = Depends(authenticator.get_current_account_data),
+    account_data: dict = Depends(authenticator.get_current_account_data),
     # account: dict = Depends(get_current_user),
 ):
     try:

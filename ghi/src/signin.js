@@ -1,6 +1,6 @@
 import * as React from "react";
-// import { useState } from 'react';
-import { useForm } from "react-hook-form";
+import { useState } from 'react';
+// import { useForm } from "react-hook-form";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,20 +14,64 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+// import { json } from "react-router-dom";
+import { useToken } from "./frontendAuth";
 
 const theme = createTheme();
 
 export default function SignIn() {
-  // const [data, setData] = useState({
-  //   username: "",
-  //   password: ""
-  // })
-  const { register, handleSubmit } = useForm();
-  // const onSubmit = (data) => {
-  //   // event.preventDefault();
-  //   console.log("data", data)
-  //   //const data = new FormData(event.currentTarget);
-  // };
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  // const { register, handleSubmit, formState: { errors }, } = useForm();
+  const [token, login] = useToken();
+
+  const onSubmit = async (event) => {
+    event.preventDefault()
+    await login(username, password)
+
+    // event.preventDefault();
+    // const data = event.target.value
+    // console.log("dataaaaa", data)
+    // const url = "http://localhost:8080/token";
+
+    // const form = new FormData();
+    // form.append("username", username);
+    // form.append("password", password);
+
+    // const fetchConfig = {
+    //   method: "POST",
+    //   credentials: "include",
+    //   body: form,
+    // headers: {
+    //   'Content-Type': 'application/json',
+    //   // 'Access-Control-Allow-Origin': '*',
+    // },
+    // };
+    // const response = await fetch(url, fetchConfig);
+    // console.log("REsponse", response)
+
+    // if (response.ok) {
+    //   const tokenUrl = "http://localhost:8080/token"
+
+    //   try {
+    //     const response = await fetch(tokenUrl, {
+    //       credentials: "include",
+    //     });
+    //     if (response.ok) {
+    //       const data = await response.json();
+    //       const token = data.access_token;
+    //       // setToken(token);
+    //       console.log("TOKEN", token)
+    //       return;
+    //     }
+    //   } catch (e) { }
+    //   return false;
+    // }
+    // let error = await response.json();
+    // const x = await json.response()
+    // console.log("x", x)
+    // reset()
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -47,8 +91,8 @@ export default function SignIn() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form onSubmit={handleSubmit}>
-            <Box component="form" noValidate sx={{ mt: 1 }}>
+          <form onSubmit={onSubmit}>
+            <Box sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required
@@ -58,7 +102,11 @@ export default function SignIn() {
                 name="email"
                 autoComplete="email"
                 autoFocus
-                {...register("email address", { required: "Required" })}
+                onChange={(event) => { setUsername(event.currentTarget.value) }}
+                value={username}
+              // {...register("username", { required: "Required" })}
+              // error={!!errors?.email}
+              // helperText={errors?.email ? errors.email.message : null}
               />
               <TextField
                 margin="normal"
@@ -69,11 +117,12 @@ export default function SignIn() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={(event) => { setPassword(event.currentTarget.value) }}
+                value={password}
+              // {...register("password", { required: "Required Field" })}
+              // error={!!errors?.password}
+              // helperText={errors?.password ? errors.password.message : null}
               />
-              {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
               <Button
                 type="submit"
                 fullWidth

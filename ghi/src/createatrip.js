@@ -10,7 +10,10 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AddLocation from "./Geomap";
 import { addLocation } from "./app/locations.js";
+import { useNavigate } from "react-router-dom";
 // import { useCreateTripMutation } from "./app/tripsApi";
+import { useAuthContext } from "./frontendAuth";
+import { useGetTokenQuery } from "./app/authApiSlice";
 
 const theme = createTheme();
 
@@ -26,6 +29,14 @@ export default function Trip() {
   const [description, setDescription] = useState("");
   const [clicked, setClicked] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const { data: tokenData } = useGetTokenQuery()
+
+  const { token } = useAuthContext();
+
+  if (!tokenData) {
+    navigate("/login")
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -41,6 +52,7 @@ export default function Trip() {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     };
@@ -68,6 +80,7 @@ export default function Trip() {
         }
       });
       clearState();
+      navigate(`/trips`)
     }
   };
   const clearState = () => {

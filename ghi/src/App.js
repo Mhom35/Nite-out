@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import { AuthProvider, useToken } from "./frontendAuth";
 import "./App.css";
 import Signup from "./signup.js";
 import Logout from "./signout.js";
@@ -12,29 +12,38 @@ import TripDetail from "./tripDetail";
 import EditBars from "./EditBars.js";
 import EditTrip from "./editTrip";
 
+function GetToken() {
+  // Get token from JWT cookie (if already logged in)
+  useToken();
+  return null
+}
+
 function App() {
   const domain = /https:\/\/[^/]+/;
   const basename = process.env.PUBLIC_URL.replace(domain, "");
 
   return (
     <BrowserRouter basename={basename}>
-      <div className="navColor">{/* <Nav token={token} /> */}</div>
+      <AuthProvider>
+        <GetToken />
+        <div className="navColor">{/* <Nav token={token} /> */}</div>
 
-      <Routes>
-        <Route path="/login" element={<SignIn />} />
-        <Route path="/login/new" element={<Signup />} />
-        <Route path="trips">
-          <Route index element={<TopTrips />} />
-          <Route path="new" element={<Trip />} />
-          <Route path="details/:id" element={<TripDetail />}></Route>
-        </Route>
-        <Route path="/yelpmap" element={<YelpMap />} />
-        <Route path="/location/add" element={<AddLocation />} />
-        <Route path="/edit/trips" element={<EditTrip />} />
-        <Route path="/edit/bars" element={<EditBars />} />
+        <Routes>
+          <Route path="/login" element={<SignIn />} />
+          <Route path="/login/new" element={<Signup />} />
+          <Route path="trips">
+            <Route index element={<TopTrips />} />
+            <Route path="new" element={<Trip />} />
+            <Route path="details/:id" element={<TripDetail />}></Route>
+          </Route>
+          <Route path="/yelpmap" element={<YelpMap />} />
+          <Route path="/location/add" element={<AddLocation />} />
+          <Route path="/edit/trips" element={<EditTrip />} />
+          <Route path="/edit/bars" element={<EditBars />} />
 
-        <Route path="/logout" element={<Logout />} />
-      </Routes>
+          <Route path="/logout" element={<Logout />} />
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
