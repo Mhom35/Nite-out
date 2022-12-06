@@ -23,7 +23,7 @@ export default function SignIn() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   // const { register, handleSubmit, formState: { errors }, } = useForm();
-  const [token, login] = useToken();
+  const [, login] = useToken();
 
   const onSubmit = async (event) => {
     event.preventDefault()

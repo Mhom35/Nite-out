@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,7 +11,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useToken } from './frontendAuth';
+// import { useToken } from './frontendAuth';
 import { useGetTokenQuery } from "./app/authApiSlice";
 import { useNavigate } from 'react-router-dom';
 import { useSignUpMutation } from './app/authApiSlice';
@@ -20,7 +20,7 @@ import { useSignUpMutation } from './app/authApiSlice';
 const theme = createTheme();
 
 export default function SignUp() {
-  const [signUp, result] = useSignUpMutation();
+  const [signUp] = useSignUpMutation();
   // const [token, login, logout, signup] = useToken();
   // const [token, login, , signup] = useToken();
   const navigate = useNavigate();

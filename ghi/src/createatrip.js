@@ -30,7 +30,7 @@ export default function Trip() {
   const [clicked, setClicked] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const { data: tokenData } = useGetTokenQuery()
+  // const { data: tokenData } = useGetTokenQuery()
 
   const { token } = useAuthContext();
 
