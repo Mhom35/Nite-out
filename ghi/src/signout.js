@@ -1,9 +1,10 @@
-import { Navigate } from 'react-router-dom';
+// import { Navigate } from 'react-router-dom';
+import { useToken } from "./frontendAuth";
 
-function Logout(props) {
-  const { logout } = props;
+function SignOut() {
+  const [, , logout] = useToken();
   logout();
-  return <Navigate to="/" />;
+  // return <Navigate to="/" />;
 }
 
-export default Logout;
+export default SignOut;
