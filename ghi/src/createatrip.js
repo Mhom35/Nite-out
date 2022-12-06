@@ -34,7 +34,8 @@ export default function Trip() {
 
   const { token } = useAuthContext();
 
-  if (!tokenData) {
+  if (!token) {
+    // console.log("TOKEN DATA IN CREATE", tokenData)
     navigate("/login")
   }
 

@@ -9,23 +9,23 @@ class Account(BaseModel):
     id: int
     email: str
     hashed_password: str
-    full_name: str
+    username: str
 
 
 class AccountIn(BaseModel):
     email: str
     password: str
-    full_name: str
+    username: str
 
 
 class AccountOut(BaseModel):
     id: int
     email: str
-    full_name: str
+    username: str
 
 
 class AccountRepo:
-    def get(self, email: str) -> Optional[Account]:
+    def get(self, username: str) -> Optional[Account]:
         # connect the database
         with pool.connection() as conn:
             # get a cursor (something to run SQL with)
@@ -36,11 +36,11 @@ class AccountRepo:
                     SELECT id
                             , email
                             , hashed_password
-                            , full_name
+                            , username
                     FROM accounts
-                    WHERE email = %s
+                    WHERE username = %s
                     """,
-                    [email],
+                    [username],
                 )
                 record = result.fetchone()
                 if record is None:
@@ -50,7 +50,7 @@ class AccountRepo:
                     id=record[0],
                     email=record[1],
                     hashed_password=record[2],
-                    full_name=record[3],
+                    username=record[3],
                 )
 
     def create(self, account: AccountIn, hashed_password: str) -> Account:
@@ -62,7 +62,7 @@ class AccountRepo:
                 result = db.execute(
                     """
                     INSERT INTO accounts
-                        (email, hashed_password, full_name)
+                        (email, hashed_password, username)
                     VALUES
                         (%s, %s, %s)
                     RETURNING id;
@@ -70,13 +70,13 @@ class AccountRepo:
                     [
                         account.email,
                         hashed_password,
-                        account.full_name,
+                        account.username,
                     ],
                 )
                 id = result.fetchone()[0]
                 return Account(
                     id=id,
                     email=account.email,
-                    full_name=account.full_name,
                     hashed_password=hashed_password,
+                    username=account.username,
                 )

@@ -27,7 +27,7 @@ export default function SignIn() {
 
   const onSubmit = async (event) => {
     event.preventDefault()
-    await login(username, password)
+    login(username, password)
 
     // event.preventDefault();
     // const data = event.target.value
