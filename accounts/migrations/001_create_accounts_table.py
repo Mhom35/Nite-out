@@ -1,6 +1,5 @@
 steps = [
     [
-        ## Create the table
         """
         CREATE TABLE accounts (
             id SERIAL PRIMARY KEY NOT NULL,
@@ -9,7 +8,6 @@ steps = [
             username VARCHAR(255) NOT NULL UNIQUE
         );
         """,
-        ## Drop the table
         """
         DROP TABLE accounts;
         """,

@@ -1,7 +1,6 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState } from "react";
 import RecommendIcon from "@mui/icons-material/Recommend";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -20,8 +19,6 @@ const theme = createTheme();
 
 export default function TopTrips() {
     const { data: barData, isLoading } = useGetAllTripsQuery();
-    const [first, setFirst] = useState(0);
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -36,6 +33,11 @@ export default function TopTrips() {
         let tripId = event.currentTarget.value
         dispatch(getTripId(tripId))
         navigate(`/trips/details/${tripId}`)
+    }
+
+    // console.log("likessss", barData.likes)
+    function LikesCounter() {
+
     }
 
     return (
@@ -73,9 +75,8 @@ export default function TopTrips() {
                                     <img src={trip.locations[0].image_url} width="200" alt="" />
                                 </TableCell>
                                 <TableCell align="center">
-                                    <Button onClick={() => setFirst(first + 1)}>
-                                        <RecommendIcon />
-                                        {`${first === 0 ? "" : first}`}
+                                    <Button onClick={LikesCounter(this)}>
+                                        <RecommendIcon/>{trip.likes}
                                     </Button>
                                 </TableCell>
                             </TableRow>
