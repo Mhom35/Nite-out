@@ -13,14 +13,13 @@ import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
 import { getTripId } from "./app/tripId";
 import { useDispatch } from "react-redux";
-import { tripsApi, useGetAllTripsQuery } from "./app/tripsApi";
+import { useGetAllTripsQuery } from "./app/tripsApi";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const theme = createTheme();
 
 export default function TopTrips() {
     const { data: barData, isLoading } = useGetAllTripsQuery();
-    const [first, setFirst] = useState(0);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
