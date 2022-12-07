@@ -13,7 +13,7 @@ import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
 import { getTripId } from "./app/tripId";
 import { useDispatch } from "react-redux";
-import { useGetAllTripsQuery } from "./app/tripsApi";
+import { tripsApi, useGetAllTripsQuery } from "./app/tripsApi";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const theme = createTheme();
@@ -21,7 +21,6 @@ const theme = createTheme();
 export default function TopTrips() {
     const { data: barData, isLoading } = useGetAllTripsQuery();
     const [first, setFirst] = useState(0);
-
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -36,6 +35,11 @@ export default function TopTrips() {
         let tripId = event.currentTarget.value
         dispatch(getTripId(tripId))
         navigate(`/trips/details/${tripId}`)
+    }
+
+    // console.log("likessss", barData.likes)
+    function LikesCounter() {
+
     }
 
     return (
@@ -73,9 +77,8 @@ export default function TopTrips() {
                                     <img src={trip.locations[0].image_url} width="200" alt="" />
                                 </TableCell>
                                 <TableCell align="center">
-                                    <Button onClick={() => setFirst(first + 1)}>
-                                        <RecommendIcon />
-                                        {`${first === 0 ? "" : first}`}
+                                    <Button onClick={LikesCounter(this)}>
+                                        <RecommendIcon/>{trip.likes}
                                     </Button>
                                 </TableCell>
                             </TableRow>

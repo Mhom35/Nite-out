@@ -4,12 +4,19 @@ stages:
   - deploy
 
 # Run flake8 to check for code quality
-lint-test-job:
+lint-trips-test-job:
   image: python:3-bullseye
   stage: test
   script:
     - pip install flake8
     - flake8 trips
+
+lint-accounts-test-job:
+  image: python:3-bullseye
+  stage: test
+  script:
+    - pip install flake8
+    - flake8 accounts
 
 # Run the unit tests
 # api-unit-test-job:
@@ -27,7 +34,8 @@ build-front-end-job:
   stage: build
   image: node:lts-bullseye
   needs:
-    - lint-test-job
+    - lint-trips-test-job
+    - lint-accounts-test-job
   variables:
     # If either of these variables is defined in the GitLab
     # CI/CD variables, that value will override the value here.

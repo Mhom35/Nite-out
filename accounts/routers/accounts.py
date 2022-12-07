@@ -1,7 +1,5 @@
 from fastapi import (
     Depends,
-    HTTPException,
-    status,
     Response,
     APIRouter,
     Request,
