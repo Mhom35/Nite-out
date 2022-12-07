@@ -34,10 +34,13 @@ export default function Trip() {
 
   const { token } = useAuthContext();
 
-  if (!token) {
-    // console.log("TOKEN DATA IN CREATE", tokenData)
-    navigate("/login")
-  }
+  useEffect(() => {
+    if (!token) {
+      // console.log("TOKEN DATA IN CREATE", tokenData)
+      navigate("/login")
+    }
+  }, [token, navigate])
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();

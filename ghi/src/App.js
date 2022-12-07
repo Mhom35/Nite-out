@@ -11,6 +11,8 @@ import TripDetail from "./tripDetail";
 import EditBars from "./EditBars.js";
 import EditTrip from "./editTrip";
 import SignOut from "./signout.js";
+import NavBar from "./NavBar";
+import Home from "./Home";
 
 function GetToken() {
   // Get token from JWT cookie (if already logged in)
@@ -27,8 +29,9 @@ function App() {
       <AuthProvider>
         <GetToken />
         <div className="navColor">{/* <Nav token={token} /> */}</div>
-
+        <NavBar />
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/login/new" element={<Signup />} />
           <Route path="trips">
