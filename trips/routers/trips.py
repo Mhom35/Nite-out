@@ -63,8 +63,9 @@ def delete_trip(
     repo: TripRepository = Depends(),
 ) -> bool:
     try:
-        repo.delete_trip(trip_id)
         repo.delete_all_bars_from_trip(trip_id)
+        repo.delete_trip(trip_id)
+        return True
     except Exception:
         return {"message": "trip does not exist"}
 

@@ -19,12 +19,12 @@ const redMarker = require("./assets/red-marker.png");
 
 const AddLocation = () => {
   const viewport = {
-    latitude: 37.774929,
-    longitude: -122.419418,
+    latitude: 37.783977,
+    longitude: -122.358809,
     zoom: 10,
   };
-  const [lat, setLat] = useState(37.779);
-  const [lng, setLng] = useState(-122.419906);
+  const [lat, setLat] = useState(37.783977);
+  const [lng, setLng] = useState(-122.358809);
   const mapRef = useRef();
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [yelpSelectedPlace, setYelpSelectedPlace] = useState(null);

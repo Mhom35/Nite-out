@@ -14,7 +14,7 @@ export const tripsApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Account", "Trips", "Token"],
+  tagTypes: ["TripsList"],
 
   endpoints: (builder) => ({
     addTrip: builder.mutation({
@@ -62,6 +62,7 @@ export const tripsApi = createApi({
 
     getAllTrips: builder.query({
       query: () => `/trips`,
+      providesTags: ["TripsList"],
       //   providesTags: (data) => {
       //     const tags = [{ type: "Books", id: "LIST" }];
       //     if (!data || !data.books) return tags;
@@ -74,12 +75,32 @@ export const tripsApi = createApi({
       //   },
     }),
 
-    returnBook: builder.mutation({
-      query: (bookId) => ({
+    deleteTrip: builder.mutation({
+      query: (trip_id) => ({
         method: "delete",
-        url: `/api/books/${bookId}/loans`,
+        url: `/trips/${trip_id}`,
       }),
-      invalidatesTags: [{ type: "Books", id: "LIST" }],
+      invalidatesTags: ["TripsList"],
+    }),
+    updateLocations: builder.mutation({
+      query: (data) => ({
+        method: "put",
+        body: data,
+        url: `trips/${data.id}/update-bar`,
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "TripsList", id: arg.id },
+      ],
+    }),
+    updateTrip: builder.mutation({
+      query: (data) => ({
+        method: "put",
+        body: data,
+        url: `trips/${data.id}`,
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "TripsList", id: arg.id },
+      ],
     }),
   }),
 });
@@ -88,6 +109,9 @@ export const {
   useAddBookMutation,
   useCreateTripMutation,
   useBorrowBookMutation,
+  useDeleteTripMutation,
+  useUpdateLocationsMutation,
+  useUpdateTripMutation,
   useGetAllTripsQuery,
   useReturnBookMutation,
 } = tripsApi;

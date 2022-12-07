@@ -14,76 +14,114 @@ import { getTripId } from "./app/tripId";
 import { useDispatch } from "react-redux";
 import { useGetAllTripsQuery } from "./app/tripsApi";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useUpdateTripMutation } from "./app/tripsApi";
 
 const theme = createTheme();
 
 export default function TopTrips() {
-    const { data: barData, isLoading } = useGetAllTripsQuery();
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const { data: barData, isLoading } = useGetAllTripsQuery();
 
-    if (isLoading) {
-        return (
-            // prettier-ignore
-            <CircularProgress />
-        );
-    }
+  //   const { data, refetch } = useQuery("my_key", emulateFetch, {
+  //     refetchOnWindowFocus: false,
+  //     enabled: false, // disable this query from automatically running
+  //   });
 
-    const handleTripSelect = async (event) => {
-        let tripId = event.currentTarget.value
-        dispatch(getTripId(tripId))
-        navigate(`/trips/details/${tripId}`)
-    }
-
-    // console.log("likessss", barData.likes)
-    function LikesCounter() {
-
-    }
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [updateTrip, result] = useUpdateTripMutation();
+  if (isLoading) {
     return (
-        <ThemeProvider theme={theme}>
-            <h1 align="center"> Top Trips </h1>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 400 }} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell align="center" width="100">
-                                Trip Name
-                            </TableCell>
-                            <TableCell align="center" width="125">
-                                Bar Name
-                            </TableCell>
-                            <TableCell align="center">Image</TableCell>
-                            <TableCell align="center">Likes</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {barData?.map((trip) => (
-                            <TableRow
-                                key={trip.name}
-                                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                            >
-                                <TableCell align="center" component="th" scope="row">
-                                    <Button onClick={handleTripSelect} value={trip.id}>
-                                        {trip.trip_name}
-                                    </Button>
-                                </TableCell>
-                                <TableCell align="center">
-                                    {trip.locations[0].bar_name}
-                                </TableCell>
-                                <TableCell align="center">
-                                    <img src={trip.locations[0].image_url} width="200" alt="" />
-                                </TableCell>
-                                <TableCell align="center">
-                                    <Button onClick={LikesCounter(this)}>
-                                        <RecommendIcon/>{trip.likes}
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </ThemeProvider>
+      // prettier-ignore
+      <CircularProgress />
     );
+  }
+
+  const handleTripSelect = async (event) => {
+    let tripId = event.currentTarget.value;
+    dispatch(getTripId(tripId));
+    navigate(`/trips/details/${tripId}`);
+  };
+  const handleLiked = async (event) => {
+    event.preventDefault();
+    const tripID = event.currentTarget.value;
+    console.log(tripID);
+    // const cleanedData = barData.map((trip) => trip.id === tripID);
+    console.log("bardata", barData);
+    /* eslint-disable */
+    const cleanedData = barData.filter((trip) => trip.id == tripID)[0];
+    if (cleanedData.likes === null) {
+      const newLikes = 1;
+    }
+    const newLikes = cleanedData.likes + 1;
+    const likeData = {
+      trip_name: cleanedData.trip_name,
+      locations: [],
+      description: cleanedData.description,
+      created_on: cleanedData.created_on,
+      image_url: cleanedData.image_url,
+      likes: newLikes,
+      distance: 0,
+      id: cleanedData.id,
+    };
+    updateTrip(likeData);
+  };
+  if (result.isSuccess) {
+    console.log("good");
+  } else if (result.isError) {
+    console.log("nowork");
+  }
+  //   ensure likes are set to 0 instead of null else return the trip obj
+  const tripsData = barData.map((trip) =>
+    trip.likes === null ? { ...trip, likes: 0 } : trip
+  );
+  //sort by most popular (likes)
+  tripsData.sort((a, b) => b.likes - a.likes);
+
+  return (
+    <ThemeProvider theme={theme}>
+      <h1 align="center"> Top Trips </h1>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 400 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="center" width="100">
+                Trip Name
+              </TableCell>
+              <TableCell align="center" width="125">
+                Bar Name
+              </TableCell>
+              <TableCell align="center">Image</TableCell>
+              <TableCell align="center">Likes</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {tripsData?.map((trip) => (
+              <TableRow
+                key={trip.name}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell align="center" component="th" scope="row">
+                  <Button onClick={handleTripSelect} value={trip.id}>
+                    {trip.trip_name}
+                  </Button>
+                </TableCell>
+                <TableCell align="center">
+                  {trip.locations[0].bar_name}
+                </TableCell>
+                <TableCell align="center">
+                  <img src={trip.locations[0].image_url} width="200" alt="" />
+                </TableCell>
+                <TableCell align="center">
+                  <Button value={trip.id} onClick={handleLiked}>
+                    <RecommendIcon />
+                    {trip.likes}
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </ThemeProvider>
+  );
 }

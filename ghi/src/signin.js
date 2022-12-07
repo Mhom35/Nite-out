@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from 'react';
+import { useState } from "react";
 // import { useForm } from "react-hook-form";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -16,6 +16,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 // import { json } from "react-router-dom";
 import { useToken } from "./frontendAuth";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
@@ -23,11 +24,13 @@ export default function SignIn() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   // const { register, handleSubmit, formState: { errors }, } = useForm();
+  const navigate = useNavigate();
   const [, login] = useToken();
 
   const onSubmit = async (event) => {
-    event.preventDefault()
-    login(username, password)
+    event.preventDefault();
+    login(username, password);
+    navigate("/");
 
     // event.preventDefault();
     // const data = event.target.value
@@ -71,7 +74,7 @@ export default function SignIn() {
     // const x = await json.response()
     // console.log("x", x)
     // reset()
-  }
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -98,15 +101,17 @@ export default function SignIn() {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="Username"
                 name="email"
                 autoComplete="email"
                 autoFocus
-                onChange={(event) => { setUsername(event.currentTarget.value) }}
+                onChange={(event) => {
+                  setUsername(event.currentTarget.value);
+                }}
                 value={username}
-              // {...register("username", { required: "Required" })}
-              // error={!!errors?.email}
-              // helperText={errors?.email ? errors.email.message : null}
+                // {...register("username", { required: "Required" })}
+                // error={!!errors?.email}
+                // helperText={errors?.email ? errors.email.message : null}
               />
               <TextField
                 margin="normal"
@@ -117,11 +122,13 @@ export default function SignIn() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                onChange={(event) => { setPassword(event.currentTarget.value) }}
+                onChange={(event) => {
+                  setPassword(event.currentTarget.value);
+                }}
                 value={password}
-              // {...register("password", { required: "Required Field" })}
-              // error={!!errors?.password}
-              // helperText={errors?.password ? errors.password.message : null}
+                // {...register("password", { required: "Required Field" })}
+                // error={!!errors?.password}
+                // helperText={errors?.password ? errors.password.message : null}
               />
               <Button
                 type="submit"

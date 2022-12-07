@@ -11,13 +11,20 @@ import AddLocation from "./Geomap";
 import EditBars from "./EditBars.js";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
+import {
+  useDeleteTripMutation,
+  useUpdateLocationsMutation,
+} from "./app/tripsApi";
 
 const theme = createTheme();
 
 export default function EditTrip() {
   let editLocation = useSelector((state) => state.editLocations.value);
   let extraLocations = useSelector((state) => state.addLocations.value);
+  const [deleteTrip, deleteResult] = useDeleteTripMutation();
+  const [updateLocations, updateResult] = useUpdateLocationsMutation();
   const [notFinishEdit, setNotFinishedEdit] = useState(true);
+  let tripId = useSelector((state) => state.getTripId.value);
 
   const editLocationMapRef = useRef();
   const locationsMapRef = useRef();
@@ -32,22 +39,22 @@ export default function EditTrip() {
   const [addLocation, setAddLocation] = useState(false);
   const [addExtraBars, setAddExtraBars] = useState(true);
   const [confirmEdit, setConfirmEdit] = useState(true);
-  const [deleteTrip, setDeleteTrip] = useState(true);
+  /* eslint-disable */
+  const [deleteTrip2, setDeleteTrip2] = useState(true);
   //tracker will check if confirm edit has been hit, locations will be finalized
   // const [tracker, setTracker] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchTripData = async () => {
       //get all the yelp bars added to database
-      const url = "http://localhost:8001/trips/2/getbars";
-      // const url = `http://localhost:8001/trips/${trip_id}/getbars`;
+      const url = `http://localhost:8001/trips/${tripId}/getbars`;
       const response = await fetch(url);
       const data = await response.json();
       setGetTripInfo(data);
     };
 
     fetchTripData();
-  }, []);
+  }, [tripId]);
   //when editLocation is mounted (i.e we finished editing it we will close the editBars component)
   useEffect(() => {
     console.log("editLocations", editLocation);
@@ -55,7 +62,7 @@ export default function EditTrip() {
     if (editLocation.length > 0) {
       setNotFinishedEdit(false);
       setConfirmEdit(true);
-      setDeleteTrip(true);
+      setDeleteTrip2(true);
     }
     //if user adds more locations then close that locations page and go back to EditPage
     if (extraLocations.length > 0) {
@@ -65,7 +72,7 @@ export default function EditTrip() {
     //if user adds more locations append them to the list of locations assoc. w the trip
     if ((extraLocations.length && editLocation.length) > 0) {
       setConfirmEdit(true);
-      setDeleteTrip(true);
+      setDeleteTrip2(true);
     }
   }, [editLocation, extraLocations]);
 
@@ -73,50 +80,62 @@ export default function EditTrip() {
     event.preventDefault();
     const locationData = {
       locations: editLocation.concat(extraLocations),
+      id: tripId,
     };
-    console.log("concat", editLocation);
-    const tripUrl = `http://localhost:8001/trips/${getTripInfo.id}/update-bar`;
-    const fetchConfig = {
-      method: "PUT",
-      body: JSON.stringify(locationData),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    const tripResponse = await fetch(tripUrl, fetchConfig);
-    if (tripResponse.ok) {
-      const updateTrip = await tripResponse.json();
-      console.log("trip_updated", updateTrip);
-      console.log(true);
-      return true;
-    }
+    updateLocations(locationData);
+    // console.log("concat", editLocation);
+    // const tripUrl = `http://localhost:8001/trips/${getTripInfo.id}/update-bar`;
+    // const fetchConfig = {
+    //   method: "PUT",
+    //   body: JSON.stringify(locationData),
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // };
+    // const tripResponse = await fetch(tripUrl, fetchConfig);
+    // if (tripResponse.ok) {
+    //   const updateTrip = await tripResponse.json();
+    //   console.log("trip_updated", updateTrip);
+    //   console.log(true);
+    //   return true;
+    // }
   };
-  const DeleteConfirmation = () => {
-    const card = document.getElementById("edit");
-    const DeleteConfirmation = document.getElementById("alert");
-    card.classList.add("d-none");
-    DeleteConfirmation.classList.remove("d-none");
-  };
+  // const DeleteConfirmation = () => {
+  //   const card = document.getElementById("edit");
+  //   const DeleteConfirmation = document.getElementById("alert");
+  //   card.classList.add("d-none");
+  //   DeleteConfirmation.classList.remove("d-none");
+  // };
 
   const ConfirmDeletion = async (e) => {
     e.preventDefault();
-    const tripUrl = `http://localhost:8001/trips/1`;
-    const fetchConfig = {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    const response = await fetch(tripUrl, fetchConfig);
-    if (response.ok) {
-      const sendToShoeList = document.getElementById("sendBack");
-      const DeleteConfirmationPage = document.getElementById("alert");
-      DeleteConfirmationPage.classList.add("d-none");
-      sendToShoeList.classList.remove("d-none");
-    } else {
-      console.error(response);
-    }
+    deleteTrip(tripId);
+    // const tripUrl = `http://localhost:8001/trips/${tripId}`;
+    // const fetchConfig = {
+    //   method: "DELETE",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // };
+    // const response = await fetch(tripUrl, fetchConfig);
+    // if (response.ok) {
+    //   navigate("/trips");
+    // } else {
+    //   console.error(response);
+    // }
   };
+  if (deleteResult.isSuccess) {
+    navigate("/trips");
+  } else if (deleteResult.isError) {
+    console.log("nowork");
+  }
+
+  if (updateResult.isSuccess) {
+    navigate("/trips");
+  } else if (deleteResult.isError) {
+    console.log("nowork");
+  }
+
   const NotDeleting = () => {
     const card = document.getElementById("card");
     const DeleteConfirmation = document.getElementById("alert");
@@ -140,7 +159,7 @@ export default function EditTrip() {
           {!editName && (
             <Typography component="h1" variant="h5">
               {" "}
-              {tripName}{" "}
+              {getTripInfo.trip_name}{" "}
               <img
                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAaVBMVEX///8AAACWlpYwMDB7e3t4eHixsbHz8/Pl5eUODg7c3NxFRUX7+/uvr68zMzP29vbt7e3GxsYbGxs4ODgXFxdAQEDMzMzExMRWVlabm5shISFISEhnZ2eOjo7i4uK4uLilpaVRUVGBgYGeQtyWAAADiElEQVR4nO3dcVObQBAF8LsYqqYaq2mitjWx/f4fsiGAcCEX7oDj7i3v92edzNwbdtlF7EQpIiIiIiIiIiIiIiIiuur17WbzHvsQIS117teP2OcIpgio9YvUiJnWsiPWAYVGbAYUGXGpTT+lRcz0OWF31HZAYYV6XqLiIl66gqJ60Qj4JrAXjYBLtRN3FZdmQKWehfWicQWz0z/JinghoDILFTziWQ9W5EQ0ejBr/MAoVODbzcUSLRgRYYeGpUQLEoZGa0yY8O+oV0q0gN6LnQHRe/FqD1aQe9E6Jky4vehQogXUiE4lWsDcbjrGhAkxomMPVvCGhnMPVsyhcRv8gEN59GDFKNTfgc83mFcPVoyruAt6vsG8S7TQvIppv17sGVAdUBL26MGTx+bnVuHON1ivHjz61vzcn3DnG6xviRoBN0/hDjhU3xI1Aq4fwh1wqFFK9HvCV9BzVftiBNwmvNCM0oPrhK/gKGNiK74HpZeo/B5MuERHmYPbhG8yo4wJ8T0ocVUzxsQm4R4Uv6pxTFhwVUsFx4TFzHoQpUS5qtXm1YPix4T8VU16icofE9J7kGMionGe6KUHFL+qpfxEzx60mNmYQOlBlmhtZqtawiXKly8W8+pBiS9fzIAJ96D4VY1jwoKrWio4Jixm1oMoJcpVrTavHpS4qvHlSyo4Jiy4qqWCY8KCL19SIf6Jnj1oMa8xwVUtIq5qFjBjgi9fLObVgzCrGl++1GBWNY4Ji3mtanyij4g9aAGzqn307EGYMXEnvQeN26HEly9KLXqVKMwTvWomlPhEn6sTun8GZkycfCW8d/4IzKpW8E8Is6qVvBNC9WDONyFWD+Y8E8KsajW/hDCrWoNXQrgezPkkBBsTJY+ESKtag3tCyBJVHgnxxkTJNSFmD+YcE8L8J+U2t4SoPZhzSgjz8uUSl4SAq1qDQ0LEVa2hOyHsmCh1JsQdE6WuhGhP9G11wv2qbW8EBBsTpYV2BtiDOfeEcGOi5JwQa1VrcE2I2YM5x4Rpv3y56tCdTiM90bfd3ruUKO4VVE4XEbcHC7t1R8B/sU843NPdFQhfoEVERETdVo+LoD5jf5th1rG0jeBv1M19goDH3T1iwP0UAbU+xEv4OU3CiM8n79Mk9PjT1bHtuk83hohfLPqwmSRhzKfMSW41rxEDHp/wPzY3Qa0z/p6AiIiIiIiIiIiIiIiE+w/qvDIZVZVhBwAAAABJRU5ErkJggg=="
                 alt="edit"
@@ -191,37 +210,39 @@ export default function EditTrip() {
               fullWidth
               id="outlined-multiline-static"
               multiline
-              label="Description"
+              label="description"
+              // InputLabelProps={{ shrink: }}
+              FilledInput={getTripInfo.description}
+              // inputRef={getTripInfo.description}
               name=""
               rows={3}
               value={description}
               onChange={(event) => setDescription(event.target.value)}
             />
-            {confirmEdit &&
-              deleteTrip(
-                <>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                    onClick={handleSubmit}
-                  >
-                    {" "}
-                    Confirm Edit{" "}
-                  </Button>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                    onClick={DeleteConfirmation}
-                  >
-                    {" "}
-                    delete Trip{" "}
-                  </Button>
-                </>
-              )}
+            {confirmEdit && (
+              <>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  onClick={handleSubmit}
+                >
+                  {" "}
+                  Confirm Edit{" "}
+                </Button>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  onClick={ConfirmDeletion}
+                >
+                  {" "}
+                  delete Trip{" "}
+                </Button>
+              </>
+            )}
           </Box>
           {
             /* prettier-ignore */ (addLocation && addExtraBars) &&(
