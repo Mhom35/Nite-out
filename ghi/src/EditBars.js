@@ -4,23 +4,25 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import Button from "@mui/material/Button";
 import "./App.css";
 import { editLocation } from "./app/editLocation";
+import { useSelector } from "react-redux";
 
 function EditBars() {
   const [editedBars, setEditedBars] = useState([]);
   const dispatch = useDispatch();
+  let tripId = useSelector((state) => state.getTripId.value);
 
   useEffect(() => {
     const fetchBarsInTrip = async () => {
       //get all the yelp bars added to database
       // const url = "http://localhost:8001/bars";
-      const url = `http://localhost:8001/trips/2/getbars`;
+      const url = `http://localhost:8001/trips/${tripId}/getbars`;
       const response = await fetch(url);
       const data = await response.json();
       setEditedBars(data.locations);
     };
 
     fetchBarsInTrip();
-  }, []);
+  }, [tripId]);
 
   useEffect(() => {
     console.log(Array.isArray(editedBars));

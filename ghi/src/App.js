@@ -17,7 +17,7 @@ import Home from "./Home";
 function GetToken() {
   // Get token from JWT cookie (if already logged in)
   useToken();
-  return null
+  return null;
 }
 
 function App() {
@@ -41,7 +41,7 @@ function App() {
           </Route>
           <Route path="/yelpmap" element={<YelpMap />} />
           <Route path="/location/add" element={<AddLocation />} />
-          <Route path="/edit/trips" element={<EditTrip />} />
+          <Route path="/edit/trip/:id" element={<EditTrip />} />
           <Route path="/edit/bars" element={<EditBars />} />
 
           <Route path="/logout" element={<SignOut />} />

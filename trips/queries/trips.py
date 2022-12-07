@@ -79,7 +79,7 @@ class TripRepository:
             print(e)
             return False
 
-    def delete_all_bars_from_trip(self, trip_id: int) -> bool:
+    def delete_all_bars_from_trip(self, trip_id: int):
         try:
             # connect the database
             with pool.connection() as conn:
