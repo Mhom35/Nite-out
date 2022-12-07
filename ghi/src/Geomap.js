@@ -14,6 +14,8 @@ import ReactMapGL, {
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapBoxGeocoder from "@mapbox/mapbox-gl-geocoder";
+
+
 const blueMarker = require("./assets/blue-marker.png");
 const redMarker = require("./assets/red-marker.png");
 
@@ -39,7 +41,7 @@ const AddLocation = () => {
   useEffect(() => {
     const fetchYelpData = async () => {
       //get all the yelp bars added to database
-      const url = "http://localhost:8001/bars/";
+      const url = `${process.env.REACT_APP_TRIPS_API_HOST}/bars/`
       const response = await fetch(url);
       const data = await response.json();
       setBackendData(data);
@@ -50,13 +52,13 @@ const AddLocation = () => {
 
   useEffect(() => {
     const search = async () => {
-      let url = `http://localhost:8001/api/bars?term=restaurants&latitude=${lat}&longitude=${lng}`;
+      let url = `${process.env.REACT_APP_TRIPS_API_HOST}/api/bars?term=restaurants&latitude=${lat}&longitude=${lng}`;
       const response = await fetch(url);
       if (response.ok) {
         let data = await response.json();
         setYelpData(data.businesses);
       } else {
-        console.log("nope");
+        console.log("response not ok");
       }
     };
     console.log(lat, lng);
@@ -72,10 +74,9 @@ const AddLocation = () => {
   }, [lng, lat]);
 
   const Geocoder = () => {
-    const accessToken =
-      "pk.eyJ1IjoiZHJyY2t3YW4iLCJhIjoiY2xhYTlsMnR2MDV3MzNybnQzbGo1dWloaSJ9.GAh-bzyBqqjNEYeIDfT94g";
+    const mapboxAccessToken = `${process.env.REACT_APP_MAP_TOKEN}`;
     const ctrl = new MapBoxGeocoder({
-      accessToken: accessToken,
+      accessToken: mapboxAccessToken,
       marker: false,
       collapsed: false,
     });
@@ -123,7 +124,7 @@ const AddLocation = () => {
         },
       };
       const barResponse = await fetch(
-        `http://localhost:8001/bars/add/${yelp_id}`,
+        `${process.env.REACT_APP_TRIPS_API_HOST}/bars/add/${yelp_id}`,
         fetchConfig
       );
       if (barResponse.ok) {

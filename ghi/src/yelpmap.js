@@ -17,22 +17,10 @@ function YelpMap() {
   // const [locations, setLocations] = useState([]);
   let locations = []
 
-
-  // useEffect(() => {
-  //   const createBar = async () => {
-  //     const url = "http//localhost:8001/bars/new";
-  //     const response = await fetch(url);
-  //     const data = await response.json();
-  //     setLocations(data)
-  //   }
-  //   createBar();
-  // }, []);
-  // console.log("locations", locations)
-
   useEffect(() => {
     const fetchYelpData = async () => {
       //get all the yelp bars added to database
-      const url = "http://localhost:8001/bars";
+      const url = `${process.env.REACT_APP_TRIPS_API_HOST}/bars`
       const response = await fetch(url);
       const data = await response.json();
       setYelpData(data);
@@ -42,11 +30,6 @@ function YelpMap() {
   }, []);
   console.log("yelp data", yelpData);
 
-  useEffect(() => {
-    console.log("location", location);
-    // console.log("locations::::::::::", locations);
-    // console.log("selected place", setLocation(selectedPlace));
-  });
 
   // const addLocationClicked = (event) => {
   //   setClicked(true)
@@ -58,7 +41,7 @@ function YelpMap() {
     setLocation(selectedPlace)
     if (!(location["bar_id"])) {
       const data = {}
-      const barUrl = "http://localhost:8001/bars/new"
+      const barUrl = `${process.env.REACT_APP_TRIPS_API_HOST}/bars/new/`
       const fetchConfig = {
         method: "post",
         body: JSON.stringify(data),

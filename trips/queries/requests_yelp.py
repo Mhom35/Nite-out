@@ -16,6 +16,7 @@ from fastapi import APIRouter
 from fastapi.security import HTTPBearer
 import requests
 import json  # noqa: F401
+import os
 
 # import pprint
 # import sys
@@ -51,7 +52,8 @@ auth_scheme = HTTPBearer()
 # You can find it on
 # https://www.yelp.com/developers/v3/manage_app
 
-API_KEY = "VXewi8fN8R31u-aMs8JHgs3D6_KkTTnVXEaz1RXj4UoKrNDt82YLvgaDlC5VCxaF-OkdYJ4FQGWo4qwzez_MW23qTXbXnvxbsx2zJTcQCqB_HiVnIAR0r54D-Kt5Y3Yx"  # noqa
+
+YELP_API_KEY = os.environ["YELP_API_KEY"]
 
 
 # API constants, you shouldn't have to change these.
@@ -66,7 +68,7 @@ DEFAULT_LOCATION = "San Francisco, CA"
 SEARCH_LIMIT = 10
 
 
-def requestYelp(host, path, api_key, url_params=None):
+def requestYelp(host, path, api_key=YELP_API_KEY, url_params=None):
     """Given your API_KEY, send a GET request to the API.
     Args:
         host (str): The domain host of the API.
@@ -91,7 +93,7 @@ def requestYelp(host, path, api_key, url_params=None):
     return response.json()
 
 
-def search(api_key, term, location):
+def search(YELP_API_KEY, term, location):
     """Query the Search API by a search term and location.
     Args:
         term (str): The search term passed to the API.
@@ -106,7 +108,9 @@ def search(api_key, term, location):
         "limit": SEARCH_LIMIT,
     }
 
-    return requestYelp(API_HOST, SEARCH_PATH, api_key, url_params=url_params)
+    return requestYelp(
+        API_HOST, SEARCH_PATH, YELP_API_KEY, url_params=url_params
+    )
 
 
 def yelp_get_bar(api_key, business_id):
@@ -118,12 +122,12 @@ def yelp_get_bar(api_key, business_id):
     """
     business_path = BUSINESS_PATH + business_id
 
-    return requestYelp(API_HOST, business_path, api_key)
+    return requestYelp(API_HOST, business_path, YELP_API_KEY)
 
 
 def search_yelp(url, url_params):
     headers = {
-        "Authorization": "Bearer %s" % API_KEY,
+        "Authorization": "Bearer %s" % YELP_API_KEY,
     }
     response = requests.request("GET", url, headers=headers, params=url_params)
     print(" QUERYING ", response.url)

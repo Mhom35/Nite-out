@@ -66,7 +66,7 @@ export default function TopTrips() {
     updateTrip(likeData);
   };
   if (result.isSuccess) {
-    console.log("good");
+    navigate(0)
   } else if (result.isError) {
     console.log("nowork");
   }

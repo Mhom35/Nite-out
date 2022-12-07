@@ -35,6 +35,7 @@ services:
     volumes:
       - ./trips:/app
     environment:
+      YELP_API_KEY: ${YELP_API_KEY}
       SIGNING_KEY: niteout
       DATABASE_URL: postgresql://tripsdb:password@postgres/tripsdb
       WAIT_HOSTS: postgres:5432
@@ -68,6 +69,7 @@ services:
       REACT_APP_SAMPLE_SERVICE_API_HOST: http://localhost:8000
       REACT_APP_AUTH_API_HOST: http://localhost:8080
       REACT_APP_TRIPS_API_HOST: http://localhost:8001
+      REACT_APP_MAP_TOKEN: ${REACT_APP_MAP_TOKEN}
 
   pg-admin:
     image: dpage/pgadmin4

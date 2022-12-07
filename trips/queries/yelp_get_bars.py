@@ -1,9 +1,12 @@
 # import get_locations from LocationRepo
 from .requests_yelp import yelp_get_bar
 from .bars import BarsRepository, BarIn
+import os
+
+YELP_API_KEY = os.environ["YELP_API_KEY"]
 
 
-def bar_in_db(API_KEY, yelp_id):  # noqa F811
+def bar_in_db(YELP_API_KEY, yelp_id):  # noqa F811
     # use get_bars to check if location exists in db
     bars_repo = BarsRepository()
     db_result = bars_repo.get_bar(yelp_id=yelp_id)
@@ -11,7 +14,7 @@ def bar_in_db(API_KEY, yelp_id):  # noqa F811
         return db_result
     else:
         try:
-            yelp_result = yelp_get_bar(API_KEY, yelp_id)
+            yelp_result = yelp_get_bar(YELP_API_KEY, yelp_id)
             yelp_id = yelp_result["id"]
             bar_name = yelp_result["name"]
             url = yelp_result["url"]
