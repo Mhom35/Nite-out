@@ -14,8 +14,7 @@ function EditBars() {
   useEffect(() => {
     const fetchBarsInTrip = async () => {
       //get all the yelp bars added to database
-      // const url = "http://localhost:8001/bars";
-      const url = `http://localhost:8001/trips/${tripId}/getbars`;
+      const url = `${process.env.REACT_APP_TRIPS_API_HOST}/trips/${tripId}/getbars`
       const response = await fetch(url);
       const data = await response.json();
       setEditedBars(data.locations);

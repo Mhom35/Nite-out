@@ -6,14 +6,16 @@ from queries.bars import (
     BarsRepository,
     BarOut,
 )
-from queries.requests_yelp import API_KEY, search_yelp
+from queries.requests_yelp import search_yelp
 from queries.yelp_get_bars import bar_in_db
+import os
 
 router = APIRouter()
 
 
 API_HOST = "https://api.yelp.com"
 SEARCH_PATH = "/v3/businesses/search"
+YELP_API_KEY = os.environ["YELP_API_KEY"]
 
 
 @router.post("/bars/new/", response_model=Union[BarOut, Error])
@@ -33,7 +35,7 @@ def add_new_bar(
     yelp_id: str,
     repo: BarsRepository = Depends(),
 ):
-    return bar_in_db(API_KEY=API_KEY, yelp_id=yelp_id)
+    return bar_in_db(YELP_API_KEY, yelp_id=yelp_id)
 
 
 @router.get("/api/bars")

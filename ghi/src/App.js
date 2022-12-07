@@ -5,7 +5,7 @@ import Signup from "./signup.js";
 import SignIn from "./signin.js";
 import TopTrips from "./toptrips.js";
 import Trip from "./createatrip.js";
-import YelpMap from "./yelpmap";
+// import YelpMap from "./yelpmap";
 import AddLocation from "./Geomap";
 import TripDetail from "./tripDetail";
 import EditBars from "./EditBars.js";
@@ -39,7 +39,6 @@ function App() {
             <Route path="new" element={<Trip />} />
             <Route path="details/:id" element={<TripDetail />}></Route>
           </Route>
-          <Route path="/yelpmap" element={<YelpMap />} />
           <Route path="/location/add" element={<AddLocation />} />
           <Route path="/edit/trip/:id" element={<EditTrip />} />
           <Route path="/edit/bars" element={<EditBars />} />

@@ -51,7 +51,7 @@ export default function Trip() {
       description: description,
       created_on: dateTime,
     };
-    const tripUrl = "http://localhost:8001/trips";
+    const tripUrl = `${process.env.REACT_APP_TRIPS_API_HOST}/trips`
     const fetchConfig = {
       method: "POST",
       body: JSON.stringify(data),
@@ -70,7 +70,7 @@ export default function Trip() {
           bar_id: bar_id,
           positions: position,
         };
-        const middleUrl = "http://localhost:8001/middletable";
+        const middleUrl = `${process.env.REACT_APP_TRIPS_API_HOST}/middletable`
         const fetchConfig = {
           method: "POST",
           body: JSON.stringify(data),

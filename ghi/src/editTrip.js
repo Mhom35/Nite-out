@@ -47,7 +47,7 @@ export default function EditTrip() {
   useEffect(() => {
     const fetchTripData = async () => {
       //get all the yelp bars added to database
-      const url = `http://localhost:8001/trips/${tripId}/getbars`;
+      const url = `${process.env.REACT_APP_TRIPS_API_HOST}/trips/${tripId}/getbars`
       const response = await fetch(url);
       const data = await response.json();
       setGetTripInfo(data);
@@ -83,46 +83,11 @@ export default function EditTrip() {
       id: tripId,
     };
     updateLocations(locationData);
-    // console.log("concat", editLocation);
-    // const tripUrl = `http://localhost:8001/trips/${getTripInfo.id}/update-bar`;
-    // const fetchConfig = {
-    //   method: "PUT",
-    //   body: JSON.stringify(locationData),
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // };
-    // const tripResponse = await fetch(tripUrl, fetchConfig);
-    // if (tripResponse.ok) {
-    //   const updateTrip = await tripResponse.json();
-    //   console.log("trip_updated", updateTrip);
-    //   console.log(true);
-    //   return true;
-    // }
   };
-  // const DeleteConfirmation = () => {
-  //   const card = document.getElementById("edit");
-  //   const DeleteConfirmation = document.getElementById("alert");
-  //   card.classList.add("d-none");
-  //   DeleteConfirmation.classList.remove("d-none");
-  // };
 
   const ConfirmDeletion = async (e) => {
     e.preventDefault();
     deleteTrip(tripId);
-    // const tripUrl = `http://localhost:8001/trips/${tripId}`;
-    // const fetchConfig = {
-    //   method: "DELETE",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // };
-    // const response = await fetch(tripUrl, fetchConfig);
-    // if (response.ok) {
-    //   navigate("/trips");
-    // } else {
-    //   console.error(response);
-    // }
   };
   if (deleteResult.isSuccess) {
     navigate("/trips");
@@ -245,49 +210,49 @@ export default function EditTrip() {
             )}
           </Box>
           {
-            /* prettier-ignore */ (addLocation && addExtraBars) &&(
-            <>
-              <Box ref={locationsMapRef} sx={{ p: 2 }}>
-                <AddLocation />
-              </Box>
-              <br></br>
-              <Button
-                type="submit"
-                color="error"
-                variant="contained"
-                sx={{ mt: 6, mb: 2, pl: 16, pr: 16 }}
-                onClick={(e) => {
-                  setAddLocation(false);
-                  setEditBarsforTrip(true);
-                }}
-              >
-                {" "}
-                Back to edit{" "}
-              </Button>
-            </>
-          )
+            /* prettier-ignore */ (addLocation && addExtraBars) && (
+              <>
+                <Box ref={locationsMapRef} sx={{ p: 2 }}>
+                  <AddLocation />
+                </Box>
+                <br></br>
+                <Button
+                  type="submit"
+                  color="error"
+                  variant="contained"
+                  sx={{ mt: 6, mb: 2, pl: 16, pr: 16 }}
+                  onClick={(e) => {
+                    setAddLocation(false);
+                    setEditBarsforTrip(true);
+                  }}
+                >
+                  {" "}
+                  Back to edit{" "}
+                </Button>
+              </>
+            )
           }
 
           {
             /* prettier-ignore */ (editBarsforTrip && notFinishEdit) && (
-            <>
-              <div ref={editLocationMapRef}>
-                <EditBars />
-              </div>
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                onClick={(e) => {
-                  setAddLocation(true);
-                  setEditBarsforTrip(false);
-                }}
-              >
-                {" "}
-                Add more bars to trip+{" "}
-              </Button>
-            </>
-          )
+              <>
+                <div ref={editLocationMapRef}>
+                  <EditBars />
+                </div>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  onClick={(e) => {
+                    setAddLocation(true);
+                    setEditBarsforTrip(false);
+                  }}
+                >
+                  {" "}
+                  Add more bars to trip+{" "}
+                </Button>
+              </>
+            )
           }
         </Box>
         <div

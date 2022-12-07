@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // import { useForm } from "react-hook-form";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -25,56 +25,19 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   // const { register, handleSubmit, formState: { errors }, } = useForm();
   const navigate = useNavigate();
-  const [, login] = useToken();
+  const [token, login] = useToken();
 
   const onSubmit = async (event) => {
     event.preventDefault();
     login(username, password);
-    navigate("/");
-
-    // event.preventDefault();
-    // const data = event.target.value
-    // console.log("dataaaaa", data)
-    // const url = "http://localhost:8080/token";
-
-    // const form = new FormData();
-    // form.append("username", username);
-    // form.append("password", password);
-
-    // const fetchConfig = {
-    //   method: "POST",
-    //   credentials: "include",
-    //   body: form,
-    // headers: {
-    //   'Content-Type': 'application/json',
-    //   // 'Access-Control-Allow-Origin': '*',
-    // },
-    // };
-    // const response = await fetch(url, fetchConfig);
-    // console.log("REsponse", response)
-
-    // if (response.ok) {
-    //   const tokenUrl = "http://localhost:8080/token"
-
-    //   try {
-    //     const response = await fetch(tokenUrl, {
-    //       credentials: "include",
-    //     });
-    //     if (response.ok) {
-    //       const data = await response.json();
-    //       const token = data.access_token;
-    //       // setToken(token);
-    //       console.log("TOKEN", token)
-    //       return;
-    //     }
-    //   } catch (e) { }
-    //   return false;
-    // }
-    // let error = await response.json();
-    // const x = await json.response()
-    // console.log("x", x)
-    // reset()
   };
+
+  useEffect(() => {
+    if (token) {
+      // console.log("TOKEN DATA IN CREATE", tokenData)
+      navigate("/")
+    }
+  }, [token, navigate])
 
   return (
     <ThemeProvider theme={theme}>
@@ -109,9 +72,9 @@ export default function SignIn() {
                   setUsername(event.currentTarget.value);
                 }}
                 value={username}
-                // {...register("username", { required: "Required" })}
-                // error={!!errors?.email}
-                // helperText={errors?.email ? errors.email.message : null}
+              // {...register("username", { required: "Required" })}
+              // error={!!errors?.email}
+              // helperText={errors?.email ? errors.email.message : null}
               />
               <TextField
                 margin="normal"
@@ -126,9 +89,9 @@ export default function SignIn() {
                   setPassword(event.currentTarget.value);
                 }}
                 value={password}
-                // {...register("password", { required: "Required Field" })}
-                // error={!!errors?.password}
-                // helperText={errors?.password ? errors.password.message : null}
+              // {...register("password", { required: "Required Field" })}
+              // error={!!errors?.password}
+              // helperText={errors?.password ? errors.password.message : null}
               />
               <Button
                 type="submit"
