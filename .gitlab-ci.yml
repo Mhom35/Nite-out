@@ -43,7 +43,7 @@ build-front-end-job:
     # GROUP_NAME, PROJECT_NAME, & WEBSERVICE_NAME below.
     PUBLIC_URL: https://niteout1.gitlab.io/nite-out
     REACT_APP_TRIPS_API_HOST: https://niteout-trips-api.onrender.com
-    REACT_APP_ACCOUNTS_API_HOST: https://niteout-accounts-api.onrender.com
+    REACT_APP_AUTH_API_HOST: https://niteout-accounts-api.onrender.com
   script:
     - cd ghi
     - npm install
