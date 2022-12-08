@@ -43,9 +43,10 @@ const AddLocation = () => {
 
   const { token } = useAuthContext();
 
+  console.log("TOKEN OUTSIDE, BEFORE USEEFFECT", token)
 
   useEffect(() => {
-    console.log("TOKEN", token)
+    console.log("TOKEN INSIDE USE EFFECT", token)
     if (!token) {
       // console.log("TOKEN DATA IN CREATE", tokenData)
       navigate("/")
