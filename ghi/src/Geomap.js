@@ -14,6 +14,8 @@ import ReactMapGL, {
 
 import "mapbox-gl/dist/mapbox-gl.css";
 import MapBoxGeocoder from "@mapbox/mapbox-gl-geocoder";
+import { useAuthContext } from "./frontendAuth";
+import { useNavigate } from "react-router-dom";
 
 
 const blueMarker = require("./assets/blue-marker.png");
@@ -37,6 +39,17 @@ const AddLocation = () => {
   // const [location, setLocation] = useState({});
   const [locations, setLocations] = useState([]);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { token } = useAuthContext();
+
+  useEffect(() => {
+    if (!token) {
+      // console.log("TOKEN DATA IN CREATE", tokenData)
+      navigate("/login")
+    }
+  }, [token, navigate])
+
 
   useEffect(() => {
     const fetchYelpData = async () => {
