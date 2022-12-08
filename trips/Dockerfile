@@ -1,5 +1,6 @@
 FROM python:3.10-bullseye
 RUN python -m pip install --upgrade pip
+RUN python -m pip install requests
 WORKDIR /app
 
 # Copy the top-level files in your service's directory
@@ -16,4 +17,4 @@ COPY routers routers
 COPY migrations migrations
 
 RUN pip install -r requirements.txt
-CMD uvicorn main:app --reload --host 0.0.0.0 --port $PORT
+CMD python migrate && uvicorn main:app --reload --host 0.0.0.0 --port $PORT
