@@ -16,7 +16,7 @@ import LocalBar from "@mui/icons-material/LocalBar";
 // import { styled, alpha } from '@mui/material/styles';
 // import InputBase from '@mui/material/InputBase';
 import { useNavigate } from "react-router-dom";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 function NavBar() {
     // const [openNavMenu, setOpenNavMenu] = React.useState(null);
@@ -40,6 +40,10 @@ function NavBar() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+    // const handleLogoClick = () => {
+    //     navigate(``)
+    // }
 
     const handleTopTripsClick = () => {
         navigate(`/trips`);
@@ -66,7 +70,6 @@ function NavBar() {
                         variant="h6"
                         noWrap
                         component="a"
-                        href="/"
                         sx={{
                             mr: 2,
                             display: { xs: "none", md: "flex" },
@@ -77,7 +80,7 @@ function NavBar() {
                             textDecoration: "none",
                         }}
                     >
-                        NiteOut
+                        <Button key="Home" sx={{ my: 2, color: "white", display: "block" }} onClick={() => navigate(`/`)}>NiteOut</Button>
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
