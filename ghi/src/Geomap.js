@@ -43,10 +43,12 @@ const AddLocation = () => {
 
   const { token } = useAuthContext();
 
+
   useEffect(() => {
+    console.log("TOKEN", token)
     if (!token) {
       // console.log("TOKEN DATA IN CREATE", tokenData)
-      navigate("/login")
+      navigate("/")
     }
   }, [token, navigate])
 
