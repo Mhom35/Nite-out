@@ -36,8 +36,9 @@ services:
       - ./trips:/app
     environment:
       YELP_API_KEY: ${YELP_API_KEY}
-      SIGNING_KEY: niteout
-      DATABASE_URL: postgresql://tripsdb:password@postgres/tripsdb
+      SIGNING_KEY: 308d2c047ed058f9eaebc3376b081b402f7521d185e704af8d86160f6d0cc335
+      # DATABASE_URL: postgresql://tripsdb:password@postgres/tripsdb
+      DATABASE_URL: postgres://urhalhih:4eYlEK7MyZAwSof-UvXZdtmO_G0uI071@otto.db.elephantsql.com/urhalhih
       WAIT_HOSTS: postgres:5432
 
   accounts:
@@ -49,8 +50,9 @@ services:
     volumes:
       - ./accounts:/app
     environment:
-      SIGNING_KEY: niteout
-      DATABASE_URL: postgresql://accounts:password@postgres/accounts
+      SIGNING_KEY: 308d2c047ed058f9eaebc3376b081b402f7521d185e704af8d86160f6d0cc335
+      # DATABASE_URL: postgresql://accounts:password@postgres/accounts
+      DATABASE_URL: postgres://jgzmmcmv:e4ehWkfu_HAKx4IAtNfU9Xh12XsGdZcP@otto.db.elephantsql.com/jgzmmcmv
       WAIT_HOSTS: postgres:5432
 
   ghi:
@@ -66,7 +68,6 @@ services:
       NODE_ENV: development
       HOST: "0.0.0.0"
       PUBLIC_URL: http://localhost:3000
-      REACT_APP_SAMPLE_SERVICE_API_HOST: http://localhost:8000
       REACT_APP_AUTH_API_HOST: http://localhost:8080
       REACT_APP_TRIPS_API_HOST: http://localhost:8001
       REACT_APP_MAP_TOKEN: ${REACT_APP_MAP_TOKEN}
