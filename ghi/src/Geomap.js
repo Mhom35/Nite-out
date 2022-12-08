@@ -34,7 +34,7 @@ const AddLocation = () => {
   const [yelpPopup, setYelpPopUp] = useState(false);
   const [yelpData, setYelpData] = useState([]);
   const [backendData, setBackendData] = useState([]);
-  const [location, setLocation] = useState({});
+  // const [location, setLocation] = useState({});
   const [locations, setLocations] = useState([]);
   const dispatch = useDispatch();
 
@@ -105,7 +105,8 @@ const AddLocation = () => {
   }, [locations]);
 
   const handleAddLocation = async () => {
-    selectedPlace ? setLocation(selectedPlace) : setLocation(yelpSelectedPlace);
+    // selectedPlace ? setLocation(selectedPlace) : setLocation(yelpSelectedPlace);
+    const location = selectedPlace ? selectedPlace : yelpSelectedPlace
     if (!location["bar_id"]) {
       const yelp_id = location.id;
       const data = {
