@@ -16,7 +16,7 @@ import LocalBar from "@mui/icons-material/LocalBar";
 // import { styled, alpha } from '@mui/material/styles';
 // import InputBase from '@mui/material/InputBase';
 import { useNavigate } from "react-router-dom";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function NavBar() {
     // const [openNavMenu, setOpenNavMenu] = React.useState(null);
