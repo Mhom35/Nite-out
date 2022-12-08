@@ -1,5 +1,14 @@
 from pydantic import BaseModel
-from queries.pool import pool
+from psycopg import connect
+import os
+
+
+keepalive_kwargs = {
+ "keepalives": 1,
+ "keepalives_idle": 60,
+ "keepalives_interval": 10,
+ "keepalives_count": 5
+}
 
 
 class TripBarIn(BaseModel):
@@ -22,7 +31,7 @@ class TripBarRepository:
     def create_trip_bar(self, trip_bars: TripBarIn) -> TripBarOut:
         try:
             # connect to database
-            with pool.connection() as conn:
+            with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
                 # get cursor (something to run SQL with)
                 with conn.cursor() as db:
                     # Run our INSERT statement
@@ -75,7 +84,7 @@ class TripBarRepository:
             """
         try:
             # connect to database
-            with pool.connection() as conn:
+            with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
                 # get cursor (something to run SQL with)
                 with conn.cursor() as db:
                     # Run our SELECT statement
@@ -96,7 +105,7 @@ class TripBarRepository:
     def delete_bar_from_trip(self, trip_id: int, bar_id: int):
         try:
             # connect to database
-            with pool.connection() as conn:
+            with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
                 # get cursor (something to run SQL with)
                 with conn.cursor() as db:
                     # Run our INSERT statement
