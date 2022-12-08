@@ -6,6 +6,7 @@ from queries.bars import BarsRepository
 
 client = TestClient(app)
 
+
 # Mitchell Unit Test
 class EmptyTripRepository:
     def get_all_trips(TripOut):
