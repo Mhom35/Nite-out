@@ -41,6 +41,10 @@ function NavBar() {
         setAnchorElUser(null);
     };
 
+    // const handleLogoClick = () => {
+    //     navigate(``)
+    // }
+
     const handleTopTripsClick = () => {
         navigate(`/trips`);
     };
@@ -66,7 +70,6 @@ function NavBar() {
                         variant="h6"
                         noWrap
                         component="a"
-                        href="/"
                         sx={{
                             mr: 2,
                             display: { xs: "none", md: "flex" },
@@ -77,7 +80,7 @@ function NavBar() {
                             textDecoration: "none",
                         }}
                     >
-                        NiteOut
+                        <Button key="Home" sx={{ my: 2, color: "white", display: "block" }} onClick={() => navigate(`/`)}>NiteOut</Button>
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
