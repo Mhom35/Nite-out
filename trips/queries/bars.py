@@ -1,6 +1,16 @@
 from pydantic import BaseModel
 from typing import Optional, List, Union
-from queries.pool import pool
+# from queries.pool import pool
+from psycopg import connect
+import os
+
+
+keepalive_kwargs = {
+ "keepalives": 1,
+ "keepalives_idle": 60,
+ "keepalives_interval": 10,
+ "keepalives_count": 5
+}
 
 
 class Error(BaseModel):
@@ -41,7 +51,7 @@ class BarsRepository:
     def get_bar(self, yelp_id: str) -> Optional[BarOut]:
         try:
             # connect the database
-            with pool.connection() as conn:
+            with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
                 # get a cursor (something to run SQL with)
                 with conn.cursor() as db:
                     # Run our SELECT statement
@@ -64,7 +74,7 @@ class BarsRepository:
     def get_all_bars(self) -> Union[List[BarOut], Error]:
         try:
             # connect to database
-            with pool.connection() as conn:
+            with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
                 # get cursor (something to run SQL with)
                 with conn.cursor() as db:
                     # Run our SELECT statement
@@ -84,7 +94,7 @@ class BarsRepository:
     def create_bar(self, bar: BarIn) -> BarOut:
         try:
             # connect to database
-            with pool.connection() as conn:
+            with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
                 # get cursor (something to run SQL with)
                 with conn.cursor() as db:
                     # Run our INSERT statement

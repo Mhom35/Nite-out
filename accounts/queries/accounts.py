@@ -1,8 +1,17 @@
 from pydantic import BaseModel
 from typing import Optional
-
+from psycopg import connect
+import os
 # from datetime import date
-from queries.pool import pool
+# from queries.pool import pool
+
+
+keepalive_kwargs = {
+ "keepalives": 1,
+ "keepalives_idle": 60,
+ "keepalives_interval": 10,
+ "keepalives_count": 5
+}
 
 
 class Account(BaseModel):
@@ -27,7 +36,7 @@ class AccountOut(BaseModel):
 class AccountRepo:
     def get(self, username: str) -> Optional[Account]:
         # connect the database
-        with pool.connection() as conn:
+        with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
             # get a cursor (something to run SQL with)
             with conn.cursor() as db:
                 # Run our SELECT statement
@@ -55,7 +64,7 @@ class AccountRepo:
 
     def create(self, account: AccountIn, hashed_password: str) -> Account:
         # connect the database
-        with pool.connection() as conn:
+        with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
             # get a cursor (something to run SQL with)
             with conn.cursor() as db:
                 # Run our INSERT statement

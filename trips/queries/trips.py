@@ -1,8 +1,18 @@
 from pydantic import BaseModel
 from typing import Optional, List, Union
-from queries.pool import pool
+# from queries.pool import pool
+from psycopg import connect
 from datetime import datetime
 from .bars import BarOutWithPosition
+import os
+
+
+keepalive_kwargs = {
+ "keepalives": 1,
+ "keepalives_idle": 60,
+ "keepalives_interval": 10,
+ "keepalives_count": 5
+}
 
 
 class Error(BaseModel):
@@ -31,40 +41,10 @@ class TripOut(BaseModel):
 
 
 class TripRepository:
-    # def get_one_trip(self, trip_id: int) -> Optional[TripOut]:
-    #     try:
-    #         # connect the database
-    #         with pool.connection() as conn:
-    #             # get a cursor (something to run SQL with)
-    #             with conn.cursor() as db:
-    #                 # Run our SELECT statement
-    #                 result = db.execute(
-    #                     """
-    #                     SELECT id
-    #                         , trip_name
-    #                         , locations
-    #                         , description
-    #                         , created_on
-    #                         , image_url
-    #                         , likes
-    #                         , distance
-    #                     FROM trips
-    #                     WHERE id = %s
-    #                     """,
-    #                     [trip_id],
-    #                 )
-    #                 record = result.fetchone()
-    #                 if record is None:
-    #                     return None
-    #                 return self.record_to_trip_out(record)
-    #     except Exception as e:
-    #         print(e)
-    #         return {"message": "Could not get that trip"}
-
     def delete_trip(self, trip_id: int) -> bool:
         try:
             # connect the database
-            with pool.connection() as conn:
+            with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
                 # get a cursor (something to run SQL with)
                 with conn.cursor() as db:
                     db.execute(
@@ -82,7 +62,7 @@ class TripRepository:
     def delete_all_bars_from_trip(self, trip_id: int):
         try:
             # connect the database
-            with pool.connection() as conn:
+            with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
                 # get a cursor (something to run SQL with)
                 with conn.cursor() as db:
                     db.execute(
@@ -100,7 +80,7 @@ class TripRepository:
     def update_trip(self, trip_id: int, trip: TripIn) -> Union[TripOut, Error]:
         try:
             # connect to database
-            with pool.connection() as conn:
+            with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
                 # get cursor (something to run SQL with)
                 with conn.cursor() as db:
                     # Run our SELECT statement
@@ -134,7 +114,7 @@ class TripRepository:
     def create_trip(self, trip: TripIn) -> TripOut:
         try:
             # connect to database
-            with pool.connection() as conn:
+            with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
                 # get cursor (something to run SQL with)
                 with conn.cursor() as db:
                     # Run our INSERT statement
@@ -160,7 +140,7 @@ class TripRepository:
 
     def get_bars_for_trip(self, trip_id: int):
         try:
-            with pool.connection() as conn:
+            with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
                 with conn.cursor() as db:
                     bars = []
                     result = db.execute(
@@ -210,7 +190,7 @@ class TripRepository:
 
     def get_all_trips(self) -> Union[List[TripOut], Error]:
         try:
-            with pool.connection() as conn:
+            with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
                 with conn.cursor() as db:
                     trips = []
                     trips_dict = {}
