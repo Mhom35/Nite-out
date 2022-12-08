@@ -68,7 +68,7 @@ const AddLocation = () => {
 
   useEffect(() => {
     const search = async () => {
-      let url = `${process.env.REACT_APP_TRIPS_API_HOST}/api/bars?term=restaurants&latitude=${lat}&longitude=${lng}`;
+      let url = `${process.env.REACT_APP_TRIPS_API_HOST}/api/bars?term=bar&latitude=${lat}&longitude=${lng}`;
       const response = await fetch(url);
       if (response.ok) {
         let data = await response.json();
