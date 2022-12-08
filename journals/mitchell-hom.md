@@ -1,6 +1,10 @@
+## December 7, 2022
+
+Ran out of minutes on gitlab so progress was slow. But started CD as a group and had to change a lot of our yaml files to get to a deployed state. Still ran into deployment issues where addLocation will not work as intended.
+
 ## December 6, 2022
 
-We fixed minor bugs in the sign up and login, and merged to main. Then we added logout functionality. I created the NavBar and Landing page components, and fixed an issue with navigate not functioning as intended by calling it within a useEffect.
+We fixed minor bugs in the sign up and login, and merged to main. Then we added logout functionality. Led group to have like functionality and sorting by likes functionality.
 
 ## December 5, 2022
 
@@ -8,19 +12,19 @@ Successfully implemented front end authentication as a group and achieved login 
 
 ## December 3, 2022
 
-I was finally successful in implementing the navigation from the list of top trips, to a details page for each of those trips. Had to utilize redux to pass the state from the list page to the detail page.
+Succesfully implemented redux to autorefetch data for get all trips after an updated trip. Will refetch based on the id.
 
 ## December 2, 2022
 
-Worked as a group to refactor the backend so that our frontend didn’t have to hit the yelp API which was causing a preflight CORS error. Created a new endpoint on the backend that our frontend can hit to bypass the CORS issue. Spent the rest of the evening trying, unsuccessfully, to figure out how to manage the state of a trip’s id for the dynamic routing.
+Worked as a group to refactor the backend so that our frontend didn’t have to hit the yelp API which was causing a preflight CORS error. This was done by recreating an endpoint to fetch yelp businesses via the search params that yelp fusion api asks us to provide. Then I finished the edit page to update the trip correctly.
 
 ## December 1, 2022
 
-Finished the create trip form by using redux to manage the state of each bar/location in the map component, to then be used in the form component. Started on a trip details page that would be linked to from the list of top trips, but can’t figure out yet how to set up the navigation to dynamically route to the correct trip id.
+Finished the create trip form by using redux to manage the state of each bar/location in the map component, to then be used in the form component. Started the edit page to dynamically change bars of a trip based on order. This was done by using the pangea dnd; with draggable and droppable components; need to splice the list to replace/ swap values.
 
 ## November 30, 2022
 
-Finally figured out how to implement backend auth into our other microservice. We spent 6 hours trying to fix CORS errors and ended up having to refactor one of our create methods in the process.
+Finally figured out how to implement backend auth into our other microservice. Ran into cors preflight error when trying to pull from yelp fusion api. Found a work around for that via We spent 6 hours trying to fix CORS errors and ended up having to refactor one of our create methods in the process.
 
 ## November 29, 2022
 
