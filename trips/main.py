@@ -1,11 +1,13 @@
 from fastapi import FastAPI
 from routers import trips, bars, tripBars
 from fastapi.middleware.cors import CORSMiddleware
+import os
 
 app = FastAPI()
 
 origins = [
     "http://localhost:3000",
+    os.environ.get("CORS_HOST"),
 ]
 
 app.add_middleware(
