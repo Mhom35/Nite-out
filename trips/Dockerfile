@@ -16,4 +16,4 @@ COPY routers routers
 COPY migrations migrations
 
 RUN pip install -r requirements.txt
-CMD python migrate &&   uvicorn main:app --reload --host 0.0.0.0 --port $PORT
+CMD uvicorn main:app --reload --host 0.0.0.0 --port $PORT
