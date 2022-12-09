@@ -11,32 +11,32 @@ stages:
 #     - pip install flake8
 #     - flake8 trips
 
-lint-accounts-test-job:
-  image: python:3-bullseye
-  stage: test
-  script:
-    - pip install flake8
-    - flake8 accounts
+# lint-accounts-test-job:
+#   image: python:3-bullseye
+#   stage: test
+#   script:
+#     - pip install flake8
+#     - flake8 accounts
 
 # Run the unit tests
-trips-unit-test-job:
-  image: python:3-bullseye
-  stage: test
-  # needs:
-    # - lint-trips-test-job
-  script:
-    - cd trips
-    - pip install -r requirements.txt
-    - pip install requests
-    - python -m pytest
+# trips-unit-test-job:
+#   image: python:3-bullseye
+#   stage: test
+#   # needs:
+#     # - lint-trips-test-job
+#   script:
+#     - cd trips
+#     - pip install -r requirements.txt
+#     - pip install requests
+#     - python -m pytest
 
 # Build the React/JavaScript front-end
 build-front-end-job:
   stage: build
   image: node:lts-bullseye
-  needs:
-    # - lint-trips-test-job
-    - lint-accounts-test-job
+  # needs:
+  #   - lint-trips-test-job
+  #   - lint-accounts-test-job
   variables:
     # If either of these variables is defined in the GitLab
     # CI/CD variables, that value will override the value here.

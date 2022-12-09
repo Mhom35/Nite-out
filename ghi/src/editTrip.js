@@ -197,7 +197,7 @@ export default function EditTrip() {
                   onClick={ConfirmDeletion}
                 >
                   {" "}
-                  delete Trip{" "}
+                  Delete Trip{" "}
                 </Button>
               </>
             )}
@@ -265,13 +265,13 @@ export default function EditTrip() {
             >
               Yes
             </button>
-            <button
+            {/* <button
               type="button"
               onClick={NotDeleting}
               className="btn btn-danger"
             >
               No
-            </button>
+            </button> */}
           </div>
         </div>
         <button
