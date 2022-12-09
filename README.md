@@ -4,12 +4,18 @@
 - Tyler Dempsey
 - Derrick Wan
 
-## MVP
+## Intended Market
 
-- App Name: NiteOut
-- Customers: Tourist looking for something to do or locals looking for a night out
-- Needs/Desires: Customers want an app that helps them plan out what bars they want to hit and the ones that are more popular than others at certain times of the day.
-- Features: a map with bars in a certain neighborhood and a heat map that shows the popularity of each bar at certain times of the day. A user creation and login feature that allows users to plan a night out by adding bars to their itinerary, and allows other users to upvote existing itineraries.
+Anyone looking for bars to plan their next night out. Tourists looking for bars in the area, or locals looking to discover new bars.
+
+## Functionality
+
+- Our app allows users to plan their next bar hopping trip by using our interactive map to show the nearest 20 bars in a 50 mile radius.
+- Users can create a new trip and add trips to their itinerary via a pop up on the map.
+- A top trips list that shows a list of the trips with the most likes that others have created, and the ability to upvote trips after trying them out.
+- Sign up for an account and log in before being able to create a trip.
+- The ability to edit a trip and rearrange the order in which the different bars are visited.
+- The option to delete a trip.
 
 ## Getting started
 
@@ -17,19 +23,6 @@ You have a project repository, now what? The next section
 lists all of the deliverables that are due at the end of the
 week. Below is some guidance for getting started on the
 tasks for this week.
-
-## Install Extensions
-
-- Prettier: <https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode>
-- Black Formatter: <https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter>
-
-## Deliverables
-
-- [ ] Wire-frame diagrams
-- [ ] API documentation
-- [ ] Project is deployed to Render.com/GitLab-pages
-- [ ] GitLab issue board is setup and in use
-- [ ] Journals
 
 ## Project layout
 
