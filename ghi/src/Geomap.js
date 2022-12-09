@@ -287,15 +287,7 @@ export default AddLocation;
 //     withCredentials: true,
 //     credentials: "include",
 //     headers: {
-//       "Access-Control-Request-Headers": "*",
-//       /* prettier-ignore */ "Authorization": `${bearer}`,
-//       "Content-Type": "application/json",
-//     },
-
-// const corsProxy = "https://proxy-ibmasyzzya-uc.a.run.app/";
-// const yelpApi = "https://api.yelp.com/v3/businesses/";
-// const searchParams = `${location.id}`;
-// const fetchOptions = { headers: { Authorization: `Bearer ${API_KEY}` } };
+//       "Access-Control-Request-Headers": "*",         
 // const result = await fetch(
 //   corsProxy + yelpApi + searchParams,
 //   fetchOptions
