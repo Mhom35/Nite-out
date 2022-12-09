@@ -197,7 +197,7 @@ export default function EditTrip() {
                   onClick={ConfirmDeletion}
                 >
                   {" "}
-                  delete Trip{" "}
+                  Delete Trip{" "}
                 </Button>
               </>
             )}
