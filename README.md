@@ -1,4 +1,8 @@
-# Module3 Project Gamma
+# NiteOut
+
+- Mitchell Hom
+- Tyler Dempsey
+- Derrick Wan
 
 ## MVP
 
