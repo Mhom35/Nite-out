@@ -6,44 +6,25 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-// import MenuIcon from '@mui/icons-material/Menu';
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import LocalBar from "@mui/icons-material/LocalBar";
-// import SearchIcon from '@mui/icons-material/Search';
-// import { styled, alpha } from '@mui/material/styles';
-// import InputBase from '@mui/material/InputBase';
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
 function NavBar() {
-    // const [openNavMenu, setOpenNavMenu] = React.useState(null);
-    // const [closeNavMenu, setCloseNavMenu] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const navigate = useNavigate();
-
-    // const handleOpenNavMenu = (event) => {
-    //     setOpenNavMenu(event.currentTarget);
-    // };
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     };
 
-    // const handleCloseNavMenu = () => {
-    //     // setOpenNavMenu(null);
-    //     setCloseNavMenu(null);
-    // };
-
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
-
-    // const handleLogoClick = () => {
-    //     navigate(``)
-    // }
 
     const handleTopTripsClick = () => {
         navigate(`/trips`);
@@ -127,7 +108,6 @@ function NavBar() {
                                 </NavLink>
                             </MenuItem>
                             <MenuItem key="login" onClick={handleLogoutClick}>
-                                {/* <Button textAlign="center">Logout</Button> */}
                                 <NavLink textalign="center" style={{ textDecoration: "none" }}>
                                     Logout
                                 </NavLink>

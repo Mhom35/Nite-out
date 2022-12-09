@@ -5,7 +5,6 @@ import Signup from "./signup.js";
 import SignIn from "./signin.js";
 import TopTrips from "./toptrips.js";
 import Trip from "./createatrip.js";
-// import YelpMap from "./yelpmap";
 import AddLocation from "./Geomap";
 import TripDetail from "./tripDetail";
 import EditBars from "./EditBars.js";

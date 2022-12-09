@@ -47,7 +47,7 @@ export default function EditTrip() {
   useEffect(() => {
     const fetchTripData = async () => {
       //get all the yelp bars added to database
-      const url = `${process.env.REACT_APP_TRIPS_API_HOST}/trips/${tripId}/getbars`
+      const url = `${process.env.REACT_APP_TRIPS_API_HOST}/trips/${tripId}/getbars`;
       const response = await fetch(url);
       const data = await response.json();
       setGetTripInfo(data);
@@ -100,13 +100,6 @@ export default function EditTrip() {
   } else if (deleteResult.isError) {
     console.log("nowork");
   }
-
-  const NotDeleting = () => {
-    const card = document.getElementById("card");
-    const DeleteConfirmation = document.getElementById("alert");
-    card.classList.remove("d-none");
-    DeleteConfirmation.classList.add("d-none");
-  };
 
   return (
     <ThemeProvider theme={theme}>

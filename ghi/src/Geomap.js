@@ -17,7 +17,6 @@ import MapBoxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import { useAuthContext } from "./frontendAuth";
 import { useNavigate } from "react-router-dom";
 
-
 const blueMarker = require("./assets/blue-marker.png");
 const redMarker = require("./assets/red-marker.png");
 
@@ -43,21 +42,20 @@ const AddLocation = () => {
 
   const { token } = useAuthContext();
 
-  console.log("TOKEN OUTSIDE, BEFORE USEEFFECT", token)
+  console.log("TOKEN OUTSIDE, BEFORE USEEFFECT", token);
 
   useEffect(() => {
-    console.log("TOKEN INSIDE USE EFFECT", token)
+    console.log("TOKEN INSIDE USE EFFECT", token);
     if (!token) {
       // console.log("TOKEN DATA IN CREATE", tokenData)
-      navigate("/")
+      navigate("/");
     }
-  }, [token, navigate])
-
+  }, [token, navigate]);
 
   useEffect(() => {
     const fetchYelpData = async () => {
       //get all the yelp bars added to database
-      const url = `${process.env.REACT_APP_TRIPS_API_HOST}/bars/`
+      const url = `${process.env.REACT_APP_TRIPS_API_HOST}/bars/`;
       const response = await fetch(url);
       const data = await response.json();
       setBackendData(data);
@@ -90,7 +88,9 @@ const AddLocation = () => {
   }, [lng, lat]);
 
   const Geocoder = () => {
-    const mapboxAccessToken = `${process.env.REACT_APP_MAP_TOKEN}`;
+    const mapboxAccessToken =
+      "pk.eyJ1IjoiZHJyY2t3YW4iLCJhIjoiY2xhYTlsMnR2MDV3MzNybnQzbGo1dWloaSJ9.GAh-bzyBqqjNEYeIDfT94g";
+    // const mapboxAccessToken = `${process.env.REACT_APP_MAP_TOKEN}`;
     const ctrl = new MapBoxGeocoder({
       accessToken: mapboxAccessToken,
       marker: false,
@@ -122,7 +122,7 @@ const AddLocation = () => {
 
   const handleAddLocation = async () => {
     // selectedPlace ? setLocation(selectedPlace) : setLocation(yelpSelectedPlace);
-    const location = selectedPlace ? selectedPlace : yelpSelectedPlace
+    const location = selectedPlace ? selectedPlace : yelpSelectedPlace;
     if (!location["bar_id"]) {
       const yelp_id = location.id;
       const data = {
@@ -287,15 +287,7 @@ export default AddLocation;
 //     withCredentials: true,
 //     credentials: "include",
 //     headers: {
-//       "Access-Control-Request-Headers": "*",
-//       /* prettier-ignore */ "Authorization": `${bearer}`,
-//       "Content-Type": "application/json",
-//     },
-
-// const corsProxy = "https://proxy-ibmasyzzya-uc.a.run.app/";
-// const yelpApi = "https://api.yelp.com/v3/businesses/";
-// const searchParams = `${location.id}`;
-// const fetchOptions = { headers: { Authorization: `Bearer ${API_KEY}` } };
+//       "Access-Control-Request-Headers": "*",         
 // const result = await fetch(
 //   corsProxy + yelpApi + searchParams,
 //   fetchOptions
