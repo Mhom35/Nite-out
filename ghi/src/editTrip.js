@@ -248,43 +248,6 @@ export default function EditTrip() {
             )
           }
         </Box>
-        {/* <div
-          className="alert alert-success d-none"
-          role="alert"
-          id="alert"
-          style={{ backgroundColor: "#DBF7DE" }}
-        >
-          <h4 className="alert-heading">Confirm Delete</h4>
-          <p>Are you sure you want to delete this trip?</p>
-          <hr />
-          <div className="d-grid gap-2 d-md-block">
-            <button
-              type="button"
-              onClick={ConfirmDeletion}
-              className="btn btn-success m-2"
-            >
-              Yes
-            </button>
-            <button
-              type="button"
-              onClick={NotDeleting}
-              className="btn btn-danger"
-            >
-              No
-            </button>
-          </div>
-        </div> */}
-        {/* <button
-          type="button"
-          className="btn btn-lg btn-danger d-none"
-          onClick={() => navigate("/trip")}
-          id="sendBack"
-          data-bs-toggle="popover"
-          data-bs-title="Popover title"
-          data-bs-content=""
-        >
-          Click here to go back to trips list
-        </button> */}
       </Container>
     </ThemeProvider>
   );
