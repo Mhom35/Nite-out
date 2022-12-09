@@ -1,7 +1,7 @@
 ### Log in
 
 - Endpoint path: /token
-- Endpoint method: POST
+- Endpoint method: GET
 
 - Request shape (form):
 
