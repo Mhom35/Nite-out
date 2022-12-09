@@ -248,7 +248,7 @@ export default function EditTrip() {
             )
           }
         </Box>
-        <div
+        {/* <div
           className="alert alert-success d-none"
           role="alert"
           id="alert"
@@ -273,8 +273,8 @@ export default function EditTrip() {
               No
             </button> */}
           </div>
-        </div>
-        <button
+        </div> */}
+        {/* <button
           type="button"
           className="btn btn-lg btn-danger d-none"
           onClick={() => navigate("/trip")}
@@ -284,7 +284,7 @@ export default function EditTrip() {
           data-bs-content=""
         >
           Click here to go back to trips list
-        </button>
+        </button> */}
       </Container>
     </ThemeProvider>
   );
