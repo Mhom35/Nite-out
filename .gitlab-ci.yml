@@ -4,12 +4,12 @@ stages:
   - deploy
 
 # Run flake8 to check for code quality
-lint-trips-test-job:
-  image: python:3-bullseye
-  stage: test
-  script:
-    - pip install flake8
-    - flake8 trips
+# lint-trips-test-job:
+#   image: python:3-bullseye
+#   stage: test
+#   script:
+#     - pip install flake8
+#     - flake8 trips
 
 lint-accounts-test-job:
   image: python:3-bullseye
@@ -19,22 +19,23 @@ lint-accounts-test-job:
     - flake8 accounts
 
 # Run the unit tests
-# api-trips-unit-test-job:
-#   image: python:3-bullseye
-#   stage: test
-#   needs:
-#     - lint-test-job
-#   script:
-#     - cd trips
-#     - pip install -r requirements.txt
-#     - python -m pytest
+trips-unit-test-job:
+  image: python:3-bullseye
+  stage: test
+  # needs:
+    # - lint-trips-test-job
+  script:
+    - cd trips
+    - pip install -r requirements.txt
+    - pip install requests
+    - python -m pytest
 
 # Build the React/JavaScript front-end
 build-front-end-job:
   stage: build
   image: node:lts-bullseye
   needs:
-    - lint-trips-test-job
+    # - lint-trips-test-job
     - lint-accounts-test-job
   variables:
     # If either of these variables is defined in the GitLab

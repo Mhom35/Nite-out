@@ -1,3 +1,8 @@
+from os import environ
+environ["SIGNING_KEY"] = "key1"
+environ["YELP_API_KEY"] = "key2"
+environ["DATABASE_URL"] = "key3"
+environ["WAIT_HOSTS"] = "key4"
 from fastapi.testclient import TestClient
 from main import app
 from queries.trips import TripRepository
@@ -46,3 +51,22 @@ def test_get_all_bars():
     # Clean Up
     assert response.status_code == 200
     assert response.json() == []
+
+
+# Tyler Unit Test
+class DeleteTable:
+    def delete_all_bars_from_trip():
+        return True
+
+
+def test_delete_all_bars_from_trip():
+
+    # Arrange
+    app.dependency_overrides[TripRepository] = DeleteTable
+
+    # Act
+    response = client.delete("/trips/1/delete-bar-connection/1")
+
+    # Clean Up
+    assert response.status_code == 200
+    assert response.json() is False

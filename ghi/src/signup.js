@@ -4,15 +4,12 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-// import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-// import { useToken } from './frontendAuth';
-import { useGetTokenQuery } from "./app/authApiSlice";
 import { useNavigate } from 'react-router-dom';
 import { useSignUpMutation } from './app/authApiSlice';
 
@@ -21,12 +18,8 @@ const theme = createTheme();
 
 export default function SignUp() {
   const [signUp] = useSignUpMutation();
-  // const [token, login, logout, signup] = useToken();
-  // const [token, login, , signup] = useToken();
   const navigate = useNavigate();
-
-  const { data: tokenData } = useGetTokenQuery();
-
+  // const { data: tokenData } = useGetTokenQuery();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,17 +27,11 @@ export default function SignUp() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // console.log("TOKENDATA BEFORE SIGNUP", tokenData)
-    console.log("TOKEN DATA before", tokenData)
     const response = await signUp({ username, email, password })
-    // signUp({ username, email, password });
     if (response.data.access_token) {
       navigate('/trips/new')
     }
   };
-  // useEffect(() => {
-  //   console.log("TOKEN AFTER SIGNUP OUTSIDE HANDLE", tokenData)
-  // }, [tokenData])
 
   return (
     <ThemeProvider theme={theme}>

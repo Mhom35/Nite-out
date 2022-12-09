@@ -1,20 +1,15 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-// import { useForm } from "react-hook-form";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-// import FormControlLabel from '@mui/material/FormControlLabel';
-// import Checkbox from '@mui/material/Checkbox';
-// import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-// import { json } from "react-router-dom";
 import { useToken } from "./frontendAuth";
 import { useNavigate } from "react-router-dom";
 
@@ -23,7 +18,6 @@ const theme = createTheme();
 export default function SignIn() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  // const { register, handleSubmit, formState: { errors }, } = useForm();
   const navigate = useNavigate();
   const [token, login] = useToken();
 
@@ -72,9 +66,6 @@ export default function SignIn() {
                   setUsername(event.currentTarget.value);
                 }}
                 value={username}
-              // {...register("username", { required: "Required" })}
-              // error={!!errors?.email}
-              // helperText={errors?.email ? errors.email.message : null}
               />
               <TextField
                 margin="normal"
@@ -89,9 +80,6 @@ export default function SignIn() {
                   setPassword(event.currentTarget.value);
                 }}
                 value={password}
-              // {...register("password", { required: "Required Field" })}
-              // error={!!errors?.password}
-              // helperText={errors?.password ? errors.password.message : null}
               />
               <Button
                 type="submit"

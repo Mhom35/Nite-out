@@ -70,18 +70,6 @@ def delete_trip(
         return {"message": "trip does not exist"}
 
 
-# @router.get("/trips/{trip_id}", response_model=Optional[TripOut])
-# def get_one_trip(
-#     trip_id: int,
-#     response: Response,
-#     repo: TripRepository = Depends(),
-# ) -> TripOut:
-#     trip = repo.get_one_trip(trip_id)
-#     if trip is None:
-#         response.status_code = 404
-#     return trip
-
-
 @router.get("/trips/{trip_id}/getbars", response_model=Optional[TripOut])
 def get_trip_bars(
     trip_id: int,

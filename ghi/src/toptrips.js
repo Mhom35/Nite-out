@@ -20,12 +20,6 @@ const theme = createTheme();
 
 export default function TopTrips() {
   const { data: barData, isLoading } = useGetAllTripsQuery();
-
-  //   const { data, refetch } = useQuery("my_key", emulateFetch, {
-  //     refetchOnWindowFocus: false,
-  //     enabled: false, // disable this query from automatically running
-  //   });
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [updateTrip, result] = useUpdateTripMutation();
@@ -44,15 +38,13 @@ export default function TopTrips() {
   const handleLiked = async (event) => {
     event.preventDefault();
     const tripID = event.currentTarget.value;
-    console.log(tripID);
-    // const cleanedData = barData.map((trip) => trip.id === tripID);
-    console.log("bardata", barData);
+    const newLikes = 0;
     /* eslint-disable */
     const cleanedData = barData.filter((trip) => trip.id == tripID)[0];
     if (cleanedData.likes === null) {
-      const newLikes = 1;
+      newLikes = 1;
     }
-    const newLikes = cleanedData.likes + 1;
+    newLikes = cleanedData.likes + 1;
     const likeData = {
       trip_name: cleanedData.trip_name,
       locations: [],
