@@ -168,7 +168,7 @@ const AddLocation = () => {
         ref={mapRef}
         mapboxAccessToken="pk.eyJ1IjoiZHJyY2t3YW4iLCJhIjoiY2xhYTlsMnR2MDV3MzNybnQzbGo1dWloaSJ9.GAh-bzyBqqjNEYeIDfT94g"
         initialViewState={viewport}
-        mapStyle="mapbox://styles/mitchhh35/cl9yq5lbl000115o6la7ih9qr"
+        mapStyle="mapbox://styles/mapbox/streets-v12"
       >
         <Marker
           latitude={lat}
