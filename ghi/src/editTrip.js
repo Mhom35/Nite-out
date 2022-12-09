@@ -47,7 +47,7 @@ export default function EditTrip() {
   useEffect(() => {
     const fetchTripData = async () => {
       //get all the yelp bars added to database
-      const url = `${process.env.REACT_APP_TRIPS_API_HOST}/trips/${tripId}/getbars`
+      const url = `${process.env.REACT_APP_TRIPS_API_HOST}/trips/${tripId}/getbars`;
       const response = await fetch(url);
       const data = await response.json();
       setGetTripInfo(data);
