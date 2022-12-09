@@ -101,13 +101,6 @@ export default function EditTrip() {
     console.log("nowork");
   }
 
-  const NotDeleting = () => {
-    const card = document.getElementById("card");
-    const DeleteConfirmation = document.getElementById("alert");
-    card.classList.remove("d-none");
-    DeleteConfirmation.classList.add("d-none");
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">

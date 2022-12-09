@@ -91,7 +91,6 @@ export default function TripDetail() {
                     </Container>
                 </Box>
                 <Container sx={{ py: 8 }} maxWidth="lg">
-                    {/* <Grid container spacing={6}> */}
                     <ImageList variant="masonry" cols={3} gap={30}>
                         {locations.map((location) => (
                             <ImageListItem item key={location.bar_id} xs={2} sm={6} md={4}>
@@ -124,7 +123,6 @@ export default function TripDetail() {
                             </ImageListItem>
                         ))}
                     </ImageList>
-                    {/* </Grid> */}
                 </Container>
             </main>
         </ThemeProvider>
