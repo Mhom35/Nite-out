@@ -1,5 +1,4 @@
-from os import environ
-import config
+import config  # noqa F401
 from fastapi.testclient import TestClient
 from main import app
 from queries.trips import TripRepository
