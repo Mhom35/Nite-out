@@ -1,115 +1,176 @@
-### Log in
+# APIs
 
-- Endpoint path: /token
-- Endpoint method: POST
+## Authentication
 
-- Request shape (form):
+### Get Token
 
-  - username: string
-  - password: string
+- Endpoint path: `/token`
+- Endpoint method: `GET`
 
-- Response: Account information and a token
-- Response shape (JSON):
-  ```json
-  {
-    "account": {
-      «key»: type»,
-    },
-    "token": string
+```json
+{
+  "access_token": "string",
+  "token_type": "Bearer",
+  "account": {
+    "id": 1,
+    "email": "example@example.com",
+    "username": "user1"
   }
-  ```
+}
+```
 
-### Log out
+### Log In
 
-- Endpoint path: /token
-- Endpoint method: DELETE
+- Endpoint path: `/token`
+- Endpoint method: `POST`
 
-- Headers:
+Input:
 
-  - Authorization: Bearer token
+```json
+{
+  "username": "user1",
+  "password": "example@example.com"
+}
+```
 
-- Response: Always true
-- Response shape (JSON):
+Output:
+
+```json
+{
+  "access_token": "string",
+  "token_type": "Bearer"
+}
+```
+
+### Log Out
+
+- Endpoint path: `/token`
+- Endpoint method: `DELETE`
+
   ```json
   true
   ```
 
-## Sign Up
+### Create Account
 
-- Endpoint path: /token
-- Endpoint method: POST
+- Endpoint path: `/api/accounts`
+- Endpoint method: `POST`
 
-- Response: Always true
-- Response body (JSON):
-  ```json
-  {
-    "email": string,
-    "username": string,
-    "password": string,
+Input:
+
+```json
+{
+  "email": "example@example.com",
+  "username": "user1",
+  "password": "password"
+}
+```
+
+Output:
+
+```json
+{
+  "access_token": "string",
+  "token_type": "Bearer",
+  "account": {
+    "id": 1,
+    "email": "example@example.com",
+    "username": "user1"
   }
-  ```
+}
+```
 
-## Create a Trip
+## Trips
 
-- Endpoint path: /trips
-- Endpoint method: POST
+### Get all trips
 
-- Headers:
+- Endpoint path: `/trips`
+- Endpoint method: `GET`
 
-  - Authorization: Bearer token
-
-- Request body (JSON):
-
-  ```json
+```json
+[
   {
-    "trip name": string,
-    "locations" : [string],
-    "description" : string,
+    "id": 0,
+    "trip_name": "string",
+    "locations": ["string"],
+    "description": "string",
+    "created_on": "2022-12-09T22:49:39.028Z",
+    "image_url": "string",
+    "likes": 0,
+    "distance": 0
   }
-  ```
+]
+```
 
-- Response: Create a trip
-- Response shape (JSON):
-  ```json
-  {
-    "success": boolean,
-    "message": string
-  }
-  ```
+### Create a Trip
 
-## List popular Trips
+- Endpoint path: `/trips`
+- Endpoint method: `POST`
 
-- Endpoint path: /trips
-- Endpoint method:GET
+Input:
+
+```json
+{
+  "trip_name": "string",
+  "locations": ["string"],
+  "description": "string",
+  "created_on": "2022-12-09T22:51:05.143Z",
+  "image_url": "string",
+  "likes": 0
+}
+```
+
+Output:
+
+```json
+{
+  "id": 0,
+  "trip_name": "string",
+  "locations": ["string"],
+  "description": "string",
+  "created_on": "2022-12-09T22:51:05.150Z",
+  "image_url": "string",
+  "likes": 0
+}
+```
+
+### Update Trip
+
+- Endpoint path: `/trips/{trip_id}`
+- Endpoint method:`PUT`
 - Query parameters:
 
-  - top rated trips: see the top trips
+Input:
 
-- Headers:
+```json
+{
+  "id": 0,
+  "trip_name": "string",
+  "locations": ["string"],
+  "description": "string",
+  "image_url": "string",
+  "likes": 0
+}
+```
 
-  - Authorization: Bearer token
+Output:
 
-- Response: A list of trips
-- Response shape (JSON):
-  ```json
-  {
-   "trips": [
-     {
-       "account_name": string,
-       "trip name": string,
-       "locations" : [string],
-       "avatar_url": string,
-       "description": string,
-       "likes": number,
-     }
-   ]
-  }
-  ```
+```json
+{
+  "id": 0,
+  "trip_name": "string",
+  "locations": ["string"],
+  "description": "string",
+  "created_on": "2022-12-09T22:57:54.259Z",
+  "image_url": "string",
+  "likes": 0
+}
+```
 
-## Details
+## Delete A Trip
 
-- Endpoint path: /trips/:id
-- Endpoint method: GET
+- Endpoint path: `/trips/{trip_id}`
+- Endpoint method: `Delete`
 - Query parameters:
 
   - id: connect trip to id number
@@ -135,10 +196,10 @@
 
 - Response: See a trip
 
-## Delete
+## Get Trip Bars
 
-- Endpoint path: /trips/:id
-- Endpoint method: Delete
+- Endpoint path: `/trips/{trip_id}/getbars`
+- Endpoint method: `GET`
 - Query parameters:
 
   - id: connect trip to id number
@@ -153,10 +214,10 @@
   ```
 - Response: Always True
 
-## Update
+## Create Bar
 
-- Endpoint path: /trips/:id
-- Endpoint method: PUT
+- Endpoint path: `/bars/new`
+- Endpoint method: `POST`
 - Query parameters:
 
   - id: connect trip to id number
@@ -179,10 +240,10 @@
 
 - Response: Update a trip
 
-## User's trips
+## Add New Bar
 
-- Endpoint path: /account/trips
-- Endpoint method:GET
+- Endpoint path: `/bars/add/{yelp_id}`
+- Endpoint method: `POST`
 - Query parameters:
 
   - your trips: see your created trips
@@ -205,6 +266,36 @@
    ]
   }
   ```
+
+## Get Bars List
+
+- Endpoint path:`/api/bars`
+- Endpoint method:`GET`
+
+## Get All Bar
+
+- Endpoint path:`/bars`
+- Endpoint method:`GET`
+
+## Get One Bar
+
+- Endpoint path:`/bars/{yelp_id}`
+- Endpoint method:`GET`
+
+## Create Middle Table
+
+- Endpoint path:`/middletable`
+- Endpoint method:`POST`
+
+## Delete Bar From Trip
+
+- Endpoint path:`/trips/{trip_id}/delete-bar-connection/{bar_id}`
+- Endpoint method:`DELETE`
+
+## Update Bars For Trips
+
+- Endpoint path:`/trips/{trip_id}/delete-bar-connection/{bar_id}`
+- Endpoint method:`PUT`
 
 ## Yelp
 
@@ -236,149 +327,3 @@
 | parent_aliases    | string[] | List of aliases of parent categories.             |
 | country_whitelist | string[] | Countries for which this category is whitelisted. |
 | country_blacklist | string[] | Countries for which this category is blacklisted. |
-
-## Uber
-
-- Endpoint path: /v1.2/estimates/price
-- Endpoint method: GET
-- Query parameters:
-
-| NAME                 | TYPE  | DESCRIPTION                                                                |
-| -------------------- | ----- | -------------------------------------------------------------------------- |
-| start_latitude       | float | Latitude component of start location.                                      |
-| start_longitude      | float | Longitude component of start location.                                     |
-| end_latitude         | float | Latitude component of end location.                                        |
-| end_longitude        | float | Longitude component of end location.                                       |
-| seat_count(optional) | int   | The number of seats required for uberPOOL. Default and maximum value is 2. |
-
-- Example Request:
-  To use a user access token:
-
-```json
-    curl -H 'Authorization: Bearer <USER_ACCESS_TOKEN>' \
-        -H 'Accept-Language: en_US' \
-        -H 'Content-Type: application/json' \
-        'https://api.uber.com/v1.2/estimates/price?start_latitude=37.7752315&start_longitude=-122.418075&end_latitude=37.7752415&end_longitude=-122.518075'
-```
-
-- Response body (JSON):
-  ```json
-  {
-    "prices": [
-      {
-        "localized_display_name": "POOL",
-        "distance": 6.17,
-        "display_name": "POOL",
-        "product_id": "26546650-e557-4a7b-86e7-6a3942445247",
-        "high_estimate": 15,
-        "low_estimate": 13,
-        "duration": 1080,
-        "estimate": "$13-14",
-        "currency_code": "USD"
-      },
-      {
-        "localized_display_name": "uberX",
-        "distance": 6.17,
-        "display_name": "uberX",
-        "product_id": "a1111c8c-c720-46c3-8534-2fcdd730040d",
-        "high_estimate": 17,
-        "low_estimate": 13,
-        "duration": 1080,
-        "estimate": "$13-17",
-        "currency_code": "USD"
-      },
-      {
-        "localized_display_name": "uberXL",
-        "distance": 6.17,
-        "display_name": "uberXL",
-        "product_id": "821415d8-3bd5-4e27-9604-194e4359a449",
-        "high_estimate": 26,
-        "low_estimate": 20,
-        "duration": 1080,
-        "estimate": "$20-26",
-        "currency_code": "USD"
-      },
-      {
-        "localized_display_name": "SELECT",
-        "distance": 6.17,
-        "display_name": "SELECT",
-        "product_id": "57c0ff4e-1493-4ef9-a4df-6b961525cf92",
-        "high_estimate": 38,
-        "low_estimate": 30,
-        "duration": 1080,
-        "estimate": "$30-38",
-        "currency_code": "USD"
-      },
-      {
-        "localized_display_name": "BLACK",
-        "distance": 6.17,
-        "display_name": "BLACK",
-        "product_id": "d4abaae7-f4d6-4152-91cc-77523e8165a4",
-        "high_estimate": 43,
-        "low_estimate": 43,
-        "duration": 1080,
-        "estimate": "$43.10",
-        "currency_code": "USD"
-      },
-      {
-        "localized_display_name": "SUV",
-        "distance": 6.17,
-        "display_name": "SUV",
-        "product_id": "8920cb5e-51a4-4fa4-acdf-dd86c5e18ae0",
-        "high_estimate": 63,
-        "low_estimate": 50,
-        "duration": 1080,
-        "estimate": "$50-63",
-        "currency_code": "USD"
-      },
-      {
-        "localized_display_name": "ASSIST",
-        "distance": 6.17,
-        "display_name": "ASSIST",
-        "product_id": "ff5ed8fe-6585-4803-be13-3ca541235de3",
-        "high_estimate": 17,
-        "low_estimate": 13,
-        "duration": 1080,
-        "estimate": "$13-17",
-        "currency_code": "USD"
-      },
-      {
-        "localized_display_name": "WAV",
-        "distance": 6.17,
-        "display_name": "WAV",
-        "product_id": "2832a1f5-cfc0-48bb-ab76-7ea7a62060e7",
-        "high_estimate": 33,
-        "low_estimate": 25,
-        "duration": 1080,
-        "estimate": "$25-33",
-        "currency_code": "USD"
-      },
-      {
-        "localized_display_name": "TAXI",
-        "distance": 6.17,
-        "display_name": "TAXI",
-        "product_id": "3ab64887-4842-4c8e-9780-ccecd3a0391d",
-        "high_estimate": null,
-        "low_estimate": null,
-        "duration": 1080,
-        "estimate": "Metered",
-        "currency_code": null
-      }
-    ]
-  }
-  ```
-- Response:
-
-| NAME                   | TYPE   | DESCRIPTION                                                                                                                                                                         |
-| ---------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| product_id             | string | Unique identifier representing a specific product for a given latitude & longitude. For example, uberX in San Francisco will have a different product_id than uberX in Los Angeles. |
-| currency_code          | string | ISO 4217 currency code.                                                                                                                                                             |
-| display_name           | string | Display name of product.                                                                                                                                                            |
-| localized_display_name | string | Localized display name of product.                                                                                                                                                  |
-| estimate               | string | Formatted string of estimate in local currency of the start location. Estimate could be a range, a single number (flat rate) or “Metered” for TAXI.                                 |
-| minimum                | int    | Minimum price for product.                                                                                                                                                          |
-| low_estimate           | int    | Lower bound of the estimated price                                                                                                                                                  |
-| high_estimate          | int    | Upper bound of the estimated price.                                                                                                                                                 |
-| surge_multiplier       | float  | Expected surge multiplier. Surge is active if surge_multiplier is greater than 1. Price estimate already factors in the surge multiplier.                                           |
-| duration               | int    | Expected activity duration (in seconds). Always show duration in minutes.                                                                                                           |
-| distance               | float  | Expected activity distance (in miles).                                                                                                                                              |
