@@ -6,8 +6,8 @@
 
 ## Design
 
-- [API design](docs/api-design.md)
-- [Data model](docs/data-model.md)
+- [API Design](docs/api-design.md)
+- [Website Design](docs/website-design.md)
 
 ## Intended Market
 

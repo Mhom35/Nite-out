@@ -1,8 +1,5 @@
 from os import environ
-environ["SIGNING_KEY"] = "key1"
-environ["YELP_API_KEY"] = "key2"
-environ["DATABASE_URL"] = "key3"
-environ["WAIT_HOSTS"] = "key4"
+import config
 from fastapi.testclient import TestClient
 from main import app
 from queries.trips import TripRepository
