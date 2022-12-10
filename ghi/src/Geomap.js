@@ -88,9 +88,9 @@ const AddLocation = () => {
   }, [lng, lat]);
 
   const Geocoder = () => {
-    const mapboxAccessToken =
-      "pk.eyJ1IjoiZHJyY2t3YW4iLCJhIjoiY2xhYTlsMnR2MDV3MzNybnQzbGo1dWloaSJ9.GAh-bzyBqqjNEYeIDfT94g";
-    // const mapboxAccessToken = `${process.env.REACT_APP_MAP_TOKEN}`;
+    // const mapboxAccessToken =
+    //   "pk.eyJ1IjoiZHJyY2t3YW4iLCJhIjoiY2xhYTlsMnR2MDV3MzNybnQzbGo1dWloaSJ9.GAh-bzyBqqjNEYeIDfT94g";
+    const mapboxAccessToken = `${process.env.REACT_APP_MAP_TOKEN}`;
     const ctrl = new MapBoxGeocoder({
       accessToken: mapboxAccessToken,
       marker: false,
@@ -287,7 +287,7 @@ export default AddLocation;
 //     withCredentials: true,
 //     credentials: "include",
 //     headers: {
-//       "Access-Control-Request-Headers": "*",         
+//       "Access-Control-Request-Headers": "*",
 // const result = await fetch(
 //   corsProxy + yelpApi + searchParams,
 //   fetchOptions
