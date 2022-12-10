@@ -38,7 +38,7 @@ export default function TopTrips() {
   const handleLiked = async (event) => {
     event.preventDefault();
     const tripID = event.currentTarget.value;
-    const newLikes = 0;
+    let newLikes = 0;
     /* eslint-disable */
     const cleanedData = barData.filter((trip) => trip.id == tripID)[0];
     if (cleanedData.likes === null) {
@@ -58,7 +58,7 @@ export default function TopTrips() {
     updateTrip(likeData);
   };
   if (result.isSuccess) {
-    navigate(0)
+    navigate(0);
   } else if (result.isError) {
     console.log("nowork");
   }
