@@ -83,6 +83,7 @@ export default function Trip() {
       });
       clearState();
       navigate(`/trips`)
+      navigate(0)
     }
   };
   const clearState = () => {

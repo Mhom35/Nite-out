@@ -80,7 +80,7 @@ export default function TopTrips() {
                 Trip Name
               </TableCell>
               <TableCell align="center" width="125">
-                Bar Name
+                Description
               </TableCell>
               <TableCell align="center">Image</TableCell>
               <TableCell align="center">Likes</TableCell>
@@ -97,8 +97,11 @@ export default function TopTrips() {
                     {trip.trip_name}
                   </Button>
                 </TableCell>
-                <TableCell align="center">
+                {/* <TableCell align="center">
                   {trip.locations[0].bar_name}
+                </TableCell> */}
+                <TableCell align="center">
+                  {trip.description}
                 </TableCell>
                 <TableCell align="center">
                   <img src={trip.locations[0].image_url} width="200" alt="" />
