@@ -45,6 +45,7 @@ build-front-end-job:
     PUBLIC_URL: https://niteout1.gitlab.io/nite-out
     REACT_APP_TRIPS_API_HOST: https://niteout-trips-api.onrender.com
     REACT_APP_AUTH_API_HOST: https://niteout-accounts-api.onrender.com
+    REACT_APP_MAP_TOKEN: pk.eyJ1IjoiZHJyY2t3YW4iLCJhIjoiY2xiZTBuZmdlMDRjaDN2b2F6bWJyaHV5aCJ9.M0caMxJB6cZWjNJ4f2h2uQ
   script:
     - cd ghi
     - npm install

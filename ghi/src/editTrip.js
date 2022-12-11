@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import {
   useDeleteTripMutation,
   useUpdateLocationsMutation,
+  useUpdateTripMutation,
 } from "./app/tripsApi";
 
 const theme = createTheme();
@@ -23,6 +24,7 @@ export default function EditTrip() {
   let extraLocations = useSelector((state) => state.addLocations.value);
   const [deleteTrip, deleteResult] = useDeleteTripMutation();
   const [updateLocations, updateResult] = useUpdateLocationsMutation();
+  const [updateTrip, updateTripResult] = useUpdateTripMutation();
   const [notFinishEdit, setNotFinishedEdit] = useState(true);
   let tripId = useSelector((state) => state.getTripId.value);
 
@@ -82,7 +84,18 @@ export default function EditTrip() {
       locations: editLocation.concat(extraLocations),
       id: tripId,
     };
+    const tripData = {
+      trip_name: tripName,
+      locations: [],
+      description: description,
+      created_on: getTripInfo.created_on,
+      image_url: getTripInfo.image_url,
+      likes: getTripInfo.likes,
+      distance: getTripInfo.distance,
+      id: tripId,
+    };
     updateLocations(locationData);
+    updateTrip(tripData);
   };
 
   const ConfirmDeletion = async (e) => {
@@ -95,10 +108,12 @@ export default function EditTrip() {
     console.log("nowork");
   }
 
-  if (updateResult.isSuccess) {
+  if (updateResult.isSuccess && updateResult.isSuccess) {
     navigate("/trips");
   } else if (deleteResult.isError) {
     console.log("nowork");
+  } else if (updateResult.isError) {
+    console.log("updateTrip didnt work");
   }
 
   return (
