@@ -90,6 +90,7 @@ export const tripsApi = createApi({
       }),
       invalidatesTags: (result, error, arg) => [
         { type: "TripsList", id: arg.id },
+        "TripsList",
       ],
     }),
     updateTrip: builder.mutation({
@@ -100,6 +101,7 @@ export const tripsApi = createApi({
       }),
       invalidatesTags: (result, error, arg) => [
         { type: "TripsList", id: arg.id },
+        "TripsList",
       ],
     }),
   }),

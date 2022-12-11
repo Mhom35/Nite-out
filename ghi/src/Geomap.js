@@ -42,10 +42,7 @@ const AddLocation = () => {
 
   const { token } = useAuthContext();
 
-  console.log("TOKEN OUTSIDE, BEFORE USEEFFECT", token);
-
   useEffect(() => {
-    console.log("TOKEN INSIDE USE EFFECT", token);
     if (!token) {
       // console.log("TOKEN DATA IN CREATE", tokenData)
       navigate("/");
@@ -235,9 +232,18 @@ const AddLocation = () => {
             onClose={() => setShowPopup(false)}
           >
             <h2>{selectedPlace.bar_name}</h2>
-            <h3>Price</h3>
-            <button onClick={handleAddLocation}>+</button>
-            <p>{selectedPlace.price}</p>
+            <button onClick={handleAddLocation}>+ add location</button>
+            <a
+              href={selectedPlace.url}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              <img
+                className="pop-up-image"
+                src={selectedPlace.image_url}
+                alt="bar"
+              ></img>
+            </a>
           </Popup>
         )}
         {yelpPopup && (
@@ -250,9 +256,19 @@ const AddLocation = () => {
             onClose={() => setYelpPopUp(false)}
           >
             <h2>{yelpSelectedPlace.name}</h2>
-            <h3>Price</h3>
-            <p>{yelpSelectedPlace.price}</p>
-            <button onClick={handleAddLocation}>+</button>
+            <h3>link</h3>
+            <a
+              href={yelpSelectedPlace.url}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              <img
+                className="pop-up-image"
+                src={yelpSelectedPlace.image_url}
+                alt="bar"
+              ></img>
+            </a>
+            <button onClick={handleAddLocation}>+ add location</button>
           </Popup>
         )}
 
