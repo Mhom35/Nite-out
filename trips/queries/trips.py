@@ -8,12 +8,15 @@ import os
 
 
 keepalive_kwargs = {
- "keepalives": 1,
- "keepalives_idle": 60,
- "keepalives_interval": 10,
- "keepalives_count": 5
+    "autocommit": True
+#  "keepalives": 1,
+#  "keepalives_idle": 60,
+#  "keepalives_interval": 10,
+#  "keepalives_count": 5
 }
 
+kwargs = {"autocommit": True}
+# connection = psycopg.connect(conninfo=os.environ["DATABASE_URL"], **kwargs)
 
 class Error(BaseModel):
     message: str
@@ -213,6 +216,8 @@ class TripRepository:
                         indiv_trip = self.get_bars_for_trip(trip)
                         trips.append(indiv_trip)
                     return trips
+
+
         except Exception:
             return {"message": "trip does not exist"}
 
