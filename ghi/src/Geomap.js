@@ -42,10 +42,7 @@ const AddLocation = () => {
 
   const { token } = useAuthContext();
 
-  console.log("TOKEN OUTSIDE, BEFORE USEEFFECT", token);
-
   useEffect(() => {
-    console.log("TOKEN INSIDE USE EFFECT", token);
     if (!token) {
       // console.log("TOKEN DATA IN CREATE", tokenData)
       navigate("/");
@@ -256,11 +253,13 @@ const AddLocation = () => {
           >
             <h2>{yelpSelectedPlace.name}</h2>
             <h3>link</h3>
-            <img
-              className="pop-up-image"
-              src={yelpSelectedPlace.image_url}
-              alt="image for bar"
-            ></img>
+            <a href={yelpSelectedPlace.url} target="_blank">
+              <img
+                className="pop-up-image"
+                src={yelpSelectedPlace.image_url}
+                alt="image for bar"
+              ></img>
+            </a>
             <button onClick={handleAddLocation}>+ add location</button>
           </Popup>
         )}
