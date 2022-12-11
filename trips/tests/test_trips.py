@@ -15,7 +15,6 @@ class EmptyTripRepository:
 
 
 def test_get_all_trips():
-
     # Arrange
     app.dependency_overrides[TripRepository] = EmptyTripRepository
 
