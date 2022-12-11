@@ -233,11 +233,15 @@ const AddLocation = () => {
           >
             <h2>{selectedPlace.bar_name}</h2>
             <button onClick={handleAddLocation}>+ add location</button>
-            <a href={selectedPlace.url} target="_blank">
+            <a
+              href={selectedPlace.url}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
               <img
                 className="pop-up-image"
                 src={selectedPlace.image_url}
-                alt="image for bar"
+                alt="bar"
               ></img>
             </a>
           </Popup>
@@ -253,11 +257,15 @@ const AddLocation = () => {
           >
             <h2>{yelpSelectedPlace.name}</h2>
             <h3>link</h3>
-            <a href={yelpSelectedPlace.url} target="_blank">
+            <a
+              href={yelpSelectedPlace.url}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
               <img
                 className="pop-up-image"
                 src={yelpSelectedPlace.image_url}
-                alt="image for bar"
+                alt="bar"
               ></img>
             </a>
             <button onClick={handleAddLocation}>+ add location</button>
