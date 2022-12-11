@@ -108,7 +108,7 @@ export default function EditTrip() {
     console.log("nowork");
   }
 
-  if (updateResult.isSuccess && updateResult.isSuccess) {
+  if (updateResult.isSuccess && updateTripResult.isSuccess) {
     navigate("/trips");
   } else if (deleteResult.isError) {
     console.log("nowork");
