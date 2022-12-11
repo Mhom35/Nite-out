@@ -42,6 +42,10 @@ function NavBar() {
         navigate(`/trips/new`);
     };
 
+    const handleHeatMapClick = () => {
+        navigate(`/trips`)
+    }
+
     return (
         <AppBar position="static">
             <Container maxWidth="xl">
@@ -78,6 +82,13 @@ function NavBar() {
                             sx={{ my: 2, color: "white", display: "block" }}
                         >
                             Create a Trip
+                        </Button>
+                        <Button
+                            key="Heat Map"
+                            onClick={handleHeatMapClick}
+                            sx={{ my: 2, color: "white", display: "block" }}
+                        >
+                            Heat Map
                         </Button>
                     </Box>
                     <Box sx={{ flexGrow: 0 }}>
