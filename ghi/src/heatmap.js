@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import MapGL, { Marker, Popup, Layer, Source } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import sf_data from "./data/data.js";

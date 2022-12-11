@@ -18,14 +18,15 @@ SEARCH_PATH = "/v3/businesses/search"
 YELP_API_KEY = os.environ["YELP_API_KEY"]
 
 
-@router.post("/bars/new/", response_model=Union[BarOut, Error])
-def create_bar(
-    bar: BarIn,
-    response: Response,
-    yelp_id: str,
-    repo: BarsRepository = Depends(),
-):
-    return repo.create_bar(bar)
+# delete this?
+# @router.post("/bars/new/", response_model=Union[BarOut, Error])
+# def create_bar(
+#     bar: BarIn,
+#     response: Response,
+#     yelp_id: str,
+#     repo: BarsRepository = Depends(),
+# ):
+#     return repo.create_bar(bar)
 
 
 @router.post("/bars/add/{yelp_id}", response_model=Union[BarOut, Error])

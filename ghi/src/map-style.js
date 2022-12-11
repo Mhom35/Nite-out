@@ -1,4 +1,4 @@
-const MAX_ZOOM_LEVEL = 9;
+// const MAX_ZOOM_LEVEL = 9;
 
 export const heatmapLayer = {
   id: "bar-heat",

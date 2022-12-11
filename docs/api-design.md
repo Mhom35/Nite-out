@@ -1,151 +1,295 @@
-### Log in
+# APIs
 
-- Endpoint path: /token
-- Endpoint method: POST
+---
 
-- Request shape (form):
+## Authentication
 
-  - username: string
-  - password: string
+### Get Token
 
-- Response: Account information and a token
-- Response shape (JSON):
-  ```json
-  {
-    "account": {
-      «key»: type»,
-    },
-    "token": string
+- Endpoint path: `/token`
+- Endpoint method: `GET`
+
+Successful Response:
+
+```json
+{
+  "access_token": "string",
+  "token_type": "Bearer",
+  "account": {
+    "id": 1,
+    "email": "example@example.com",
+    "username": "user1"
   }
-  ```
+}
+```
 
-### Log out
+### Log In
 
-- Endpoint path: /token
-- Endpoint method: DELETE
+- Endpoint path: `/token`
+- Endpoint method: `POST`
 
-- Headers:
+Input:
 
-  - Authorization: Bearer token
+```json
+{
+  "username": "user1",
+  "password": "example@example.com"
+}
+```
 
-- Response: Always true
-- Response shape (JSON):
-  ```json
-  true
-  ```
+Output:
 
-## Sign Up
+```json
+{
+  "access_token": "string",
+  "token_type": "Bearer"
+}
+```
 
-- Endpoint path: /token
-- Endpoint method: POST
+### Log Out
 
-- Response: Always true
-- Response body (JSON):
-  ```json
-  {
-    "email": string,
-    "username": string,
-    "password": string,
+- Endpoint path: `/token`
+- Endpoint method: `DELETE`
+
+Successful Response:
+
+```json
+true
+```
+
+### Create Account
+
+- Endpoint path: `/api/accounts`
+- Endpoint method: `POST`
+
+Input:
+
+```json
+{
+  "email": "example@example.com",
+  "username": "user1",
+  "password": "password"
+}
+```
+
+Successful Response:
+
+```json
+{
+  "access_token": "string",
+  "token_type": "Bearer",
+  "account": {
+    "id": 1,
+    "email": "example@example.com",
+    "username": "user1"
   }
-  ```
+}
+```
 
-## Create a Trip
+---
 
-- Endpoint path: /trips
-- Endpoint method: POST
+## Trips
 
-- Headers:
+### Get all trips
 
-  - Authorization: Bearer token
+- Endpoint path: `/trips`
+- Endpoint method: `GET`
 
-- Request body (JSON):
+Successful Response:
 
-  ```json
+```json
+[
   {
-    "trip name": string,
-    "locations" : [string],
-    "description" : string,
-  }
-  ```
-
-- Response: Create a trip
-- Response shape (JSON):
-  ```json
-  {
-    "success": boolean,
-    "message": string
-  }
-  ```
-
-## List popular Trips
-
-- Endpoint path: /trips
-- Endpoint method:GET
-- Query parameters:
-
-  - top rated trips: see the top trips
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Response: A list of trips
-- Response shape (JSON):
-  ```json
-  {
-   "trips": [
-     {
-       "account_name": string,
-       "trip name": string,
-       "locations" : [string],
-       "avatar_url": string,
-       "description": string,
-       "likes": number,
-     }
-   ]
-  }
-  ```
-
-## Details
-
-- Endpoint path: /trips/:id
-- Endpoint method: GET
-- Query parameters:
-
-  - id: connect trip to id number
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Response shape (JSON):
-
-  ```json
+    "id": 0,
+    "trip_name": "string",
+    "locations": [
       {
-        "account_name": string,
-        "trip name": string,
-        "locations" : [string],
-        "avatar_url": string,
-        "description": string,
-        "image_url": string,
-        "likes": number,
-        "distance": number,
+        "bar_id": 1,
+        "yelp_id": "string",
+        "bar_name": "string",
+        "url": "string",
+        "lat": 37.820673,
+        "long": -122.3750203,
+        "image_url": "string",
+        "position": 0
       }
-  ```
+    ],
+    "description": "string",
+    "created_on": "2022-12-09T22:49:39.028Z",
+    "image_url": "string",
+    "likes": 0
+  }
+]
+```
 
-- Response: See a trip
+### Create a Trip
 
-## Delete
+- Endpoint path: `/trips`
+- Endpoint method: `POST`
 
-- Endpoint path: /trips/:id
-- Endpoint method: Delete
+Input:
+
+```json
+{
+  "trip_name": "string",
+  "locations": [
+    {
+      "bar_id": 1,
+      "yelp_id": "string",
+      "bar_name": "string",
+      "url": "string",
+      "lat": 37.820673,
+      "long": -122.3750203,
+      "image_url": "string",
+      "position": 0
+    }
+  ],
+  "description": "string",
+  "created_on": "2022-12-10T01:16:46.376Z",
+  "image_url": "string",
+  "likes": 0
+}
+```
+
+Successful Response:
+
+```json
+{
+  "id": 0,
+  "trip_name": "string",
+  "locations": [
+    {
+      "bar_id": 1,
+      "yelp_id": "string",
+      "bar_name": "string",
+      "url": "string",
+      "lat": 37.820673,
+      "long": -122.3750203,
+      "image_url": "string",
+      "position": 0
+    }
+  ],
+  "description": "string",
+  "created_on": "2022-12-09T22:51:05.150Z",
+  "image_url": "string",
+  "likes": 0
+}
+```
+
+### Update Trip
+
+- Endpoint path: `/trips/{trip_id}`
+- Endpoint method:`PUT`
 - Query parameters:
 
-  - id: connect trip to id number
+Input:
 
-- Headers:
+```json
+{
+  "id",
+  "trip_name": "string",
+  "locations": [
+    {
+        "bar_id": 1,
+        "yelp_id": "string",
+        "bar_name": "string",
+        "url": "string",
+        "lat": 37.820673,
+        "long": -122.3750203,
+        "image_url": "string",
+        "position": 0
+      }
+  ],
+  "description": "string",
+  "created_on": "2022-12-10T01:17:30.761Z",
+  "image_url": "string",
+  "likes": 0
+}
+```
 
-  - Authorization: Bearer token
+Successful Response:
+
+```json
+{
+  "id": 0,
+  "trip_name": "string",
+  "locations": [
+    {
+      "bar_id": 1,
+      "yelp_id": "string",
+      "bar_name": "string",
+      "url": "string",
+      "lat": 37.820673,
+      "long": -122.3750203,
+      "image_url": "string",
+      "position": 0
+    }
+  ],
+  "description": "string",
+  "created_on": "2022-12-10T01:17:30.762Z",
+  "image_url": "string",
+  "likes": 0,
+  "distance": 0
+}
+```
+
+## Delete A Trip
+
+- Endpoint path: `/trips/{trip_id}`
+- Endpoint method: `DELETE`
+
+Input:
+
+```json
+{
+  "id": 0
+}
+```
+
+Successful Response:
+
+```json
+true
+```
+
+## Get Trip Details
+
+- Endpoint path: `/trips/{trip_id}/getbars`
+- Endpoint method: `GET`
+
+Input:
+
+```json
+{
+  "id": 1
+}
+```
+
+Successful Response:
+
+```json
+{
+  "id": 0,
+  "trip_name": "string",
+  "locations": [
+    {
+      "bar_id": 64,
+      "yelp_id": "xAALy_s3a1dT6K09vSrAGQ",
+      "bar_name": "Mersea",
+      "url": "https://www.yelp.com/biz/mersea-san-francisco-4?adjust_creative=LqG002GDc6J0d7QGc1y7Qw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_lookup&utm_source=LqG002GDc6J0d7QGc1y7Qw",
+      "lat": 37.820673,
+      "long": -122.3750203,
+      "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/B0DqXHqXvGSRyetqoZ4VyQ/o.jpg",
+      "position": 0
+    }
+  ],
+  "description": "string",
+  "created_on": "2022-12-10T01:31:28.068Z",
+  "image_url": "string",
+  "likes": 0,
+  "distance": 0
+}
+```
 
 - Response shape (JSON):
   ```json
@@ -153,232 +297,195 @@
   ```
 - Response: Always True
 
-## Update
+## Add New Bar
 
-- Endpoint path: /trips/:id
-- Endpoint method: PUT
-- Query parameters:
+- Endpoint path: `/bars/add/{yelp_id}`
+- Endpoint method: `POST`
 
-  - id: connect trip to id number
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Response shape (JSON):
-
-  ```json
-      {
-        "trip name": string,
-        "locations" : [string],
-        "description": string,
-        "image_url": string,
-        "distance": number,
-      }
-  ```
-
-- Response: Update a trip
-
-## User's trips
-
-- Endpoint path: /account/trips
-- Endpoint method:GET
-- Query parameters:
-
-  - your trips: see your created trips
-
-- Headers:
-
-  - Authorization: Bearer token
-
-- Response: A users list of trips
-- Response shape (JSON):
-  ```json
-  {
-   "trips": [
-     {
-       "trip name": string,
-       "locations" : [string],
-       "description": string,
-       "likes": number,
-     }
-   ]
-  }
-  ```
-
-## Yelp
-
-- Endpoint path: https://api.yelp.com/v3/categories/{alias}
-- Endpoint method: GET
-- Query parameters:
-
-  - locale(string) : Optional. Specify the locale to return the event information in.
-  - alias(string) : Required. Specify the alias of the category.
-
-- Response body (JSON):
-  ```json
-  {
-    "category": {
-      "alias": "beer",
-      "title": "drinks",
-      "parent_aliases": ["bar"],
-      "country_whitelist": [],
-      "country_blacklist": []
-    }
-  }
-  ```
-- Response:
-
-| NAME              | TYPE     | DESCRIPTION                                       |
-| ----------------- | -------- | ------------------------------------------------- |
-| alias             | string   | Category alias.                                   |
-| title             | string   | Title of this category.                           |
-| parent_aliases    | string[] | List of aliases of parent categories.             |
-| country_whitelist | string[] | Countries for which this category is whitelisted. |
-| country_blacklist | string[] | Countries for which this category is blacklisted. |
-
-## Uber
-
-- Endpoint path: /v1.2/estimates/price
-- Endpoint method: GET
-- Query parameters:
-
-| NAME                 | TYPE  | DESCRIPTION                                                                |
-| -------------------- | ----- | -------------------------------------------------------------------------- |
-| start_latitude       | float | Latitude component of start location.                                      |
-| start_longitude      | float | Longitude component of start location.                                     |
-| end_latitude         | float | Latitude component of end location.                                        |
-| end_longitude        | float | Longitude component of end location.                                       |
-| seat_count(optional) | int   | The number of seats required for uberPOOL. Default and maximum value is 2. |
-
-- Example Request:
-  To use a user access token:
+Input:
 
 ```json
-    curl -H 'Authorization: Bearer <USER_ACCESS_TOKEN>' \
-        -H 'Accept-Language: en_US' \
-        -H 'Content-Type: application/json' \
-        'https://api.uber.com/v1.2/estimates/price?start_latitude=37.7752315&start_longitude=-122.418075&end_latitude=37.7752415&end_longitude=-122.518075'
+{
+  "yelp_id": "xAALy_s3a1dT6K09vSrAGQ",
+  "bar_name": "Mersea",
+  "url": "https://www.yelp.com/biz/mersea-san-francisco-4?adjust_creative=LqG002GDc6J0d7QGc1y7Qw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_lookup&utm_source=LqG002GDc6J0d7QGc1y7Qw",
+  "lat": 37.820673,
+  "long": -122.3750203,
+  "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/B0DqXHqXvGSRyetqoZ4VyQ/o.jpg"
+}
 ```
 
-- Response body (JSON):
-  ```json
-  {
-    "prices": [
-      {
-        "localized_display_name": "POOL",
-        "distance": 6.17,
-        "display_name": "POOL",
-        "product_id": "26546650-e557-4a7b-86e7-6a3942445247",
-        "high_estimate": 15,
-        "low_estimate": 13,
-        "duration": 1080,
-        "estimate": "$13-14",
-        "currency_code": "USD"
-      },
-      {
-        "localized_display_name": "uberX",
-        "distance": 6.17,
-        "display_name": "uberX",
-        "product_id": "a1111c8c-c720-46c3-8534-2fcdd730040d",
-        "high_estimate": 17,
-        "low_estimate": 13,
-        "duration": 1080,
-        "estimate": "$13-17",
-        "currency_code": "USD"
-      },
-      {
-        "localized_display_name": "uberXL",
-        "distance": 6.17,
-        "display_name": "uberXL",
-        "product_id": "821415d8-3bd5-4e27-9604-194e4359a449",
-        "high_estimate": 26,
-        "low_estimate": 20,
-        "duration": 1080,
-        "estimate": "$20-26",
-        "currency_code": "USD"
-      },
-      {
-        "localized_display_name": "SELECT",
-        "distance": 6.17,
-        "display_name": "SELECT",
-        "product_id": "57c0ff4e-1493-4ef9-a4df-6b961525cf92",
-        "high_estimate": 38,
-        "low_estimate": 30,
-        "duration": 1080,
-        "estimate": "$30-38",
-        "currency_code": "USD"
-      },
-      {
-        "localized_display_name": "BLACK",
-        "distance": 6.17,
-        "display_name": "BLACK",
-        "product_id": "d4abaae7-f4d6-4152-91cc-77523e8165a4",
-        "high_estimate": 43,
-        "low_estimate": 43,
-        "duration": 1080,
-        "estimate": "$43.10",
-        "currency_code": "USD"
-      },
-      {
-        "localized_display_name": "SUV",
-        "distance": 6.17,
-        "display_name": "SUV",
-        "product_id": "8920cb5e-51a4-4fa4-acdf-dd86c5e18ae0",
-        "high_estimate": 63,
-        "low_estimate": 50,
-        "duration": 1080,
-        "estimate": "$50-63",
-        "currency_code": "USD"
-      },
-      {
-        "localized_display_name": "ASSIST",
-        "distance": 6.17,
-        "display_name": "ASSIST",
-        "product_id": "ff5ed8fe-6585-4803-be13-3ca541235de3",
-        "high_estimate": 17,
-        "low_estimate": 13,
-        "duration": 1080,
-        "estimate": "$13-17",
-        "currency_code": "USD"
-      },
-      {
-        "localized_display_name": "WAV",
-        "distance": 6.17,
-        "display_name": "WAV",
-        "product_id": "2832a1f5-cfc0-48bb-ab76-7ea7a62060e7",
-        "high_estimate": 33,
-        "low_estimate": 25,
-        "duration": 1080,
-        "estimate": "$25-33",
-        "currency_code": "USD"
-      },
-      {
-        "localized_display_name": "TAXI",
-        "distance": 6.17,
-        "display_name": "TAXI",
-        "product_id": "3ab64887-4842-4c8e-9780-ccecd3a0391d",
-        "high_estimate": null,
-        "low_estimate": null,
-        "duration": 1080,
-        "estimate": "Metered",
-        "currency_code": null
-      }
-    ]
-  }
-  ```
-- Response:
+Successful Response:
 
-| NAME                   | TYPE   | DESCRIPTION                                                                                                                                                                         |
-| ---------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| product_id             | string | Unique identifier representing a specific product for a given latitude & longitude. For example, uberX in San Francisco will have a different product_id than uberX in Los Angeles. |
-| currency_code          | string | ISO 4217 currency code.                                                                                                                                                             |
-| display_name           | string | Display name of product.                                                                                                                                                            |
-| localized_display_name | string | Localized display name of product.                                                                                                                                                  |
-| estimate               | string | Formatted string of estimate in local currency of the start location. Estimate could be a range, a single number (flat rate) or “Metered” for TAXI.                                 |
-| minimum                | int    | Minimum price for product.                                                                                                                                                          |
-| low_estimate           | int    | Lower bound of the estimated price                                                                                                                                                  |
-| high_estimate          | int    | Upper bound of the estimated price.                                                                                                                                                 |
-| surge_multiplier       | float  | Expected surge multiplier. Surge is active if surge_multiplier is greater than 1. Price estimate already factors in the surge multiplier.                                           |
-| duration               | int    | Expected activity duration (in seconds). Always show duration in minutes.                                                                                                           |
-| distance               | float  | Expected activity distance (in miles).                                                                                                                                              |
+```json
+{
+  "bar_id": 1,
+  "yelp_id": "xAALy_s3a1dT6K09vSrAGQ",
+  "bar_name": "Mersea",
+  "url": "https://www.yelp.com/biz/mersea-san-francisco-4?adjust_creative=LqG002GDc6J0d7QGc1y7Qw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_lookup&utm_source=LqG002GDc6J0d7QGc1y7Qw",
+  "lat": 37.820673,
+  "long": -122.3750203,
+  "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/B0DqXHqXvGSRyetqoZ4VyQ/o.jpg"
+}
+```
+
+## Get Bars List
+
+- Endpoint path:`/api/bars`
+- Endpoint method:`GET`
+
+Input:
+
+```json
+{
+  "latitude": 37.80025542866086,
+  "longitude": -122.40962076757808
+}
+```
+
+Successful Response
+
+```json
+{
+  "businesses": [
+    {
+      "id": "5g-rHq-WXf9UiN-BEc8AcQ",
+      "name": "Third Rail",
+      "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/jxMO6J7CAaitjK7sLdDx3Q/o.jpg",
+      "url": "https://www.yelp.com/biz/third-rail-san-francisco?adjust_creative=LqG002GDc6J0d7QGc1y7Qw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=LqG002GDc6J0d7QGc1y7Qw",
+      "coordinates": {
+        "latitude": 37.7606207,
+        "longitude": -122.3881324
+      }
+    }
+  ]
+}
+```
+
+## Get All Bar
+
+- Endpoint path:`/bars`
+- Endpoint method:`GET`
+
+Successful Response:
+
+```json
+[
+  {
+    "bar_id": 1,
+    "yelp_id": "xAALy_s3a1dT6K09vSrAGQ",
+    "bar_name": "Mersea",
+    "url": "https://www.yelp.com/biz/mersea-san-francisco-4?adjust_creative=LqG002GDc6J0d7QGc1y7Qw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_lookup&utm_source=LqG002GDc6J0d7QGc1y7Qw",
+    "lat": 37.820673,
+    "long": -122.3750203,
+    "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/B0DqXHqXvGSRyetqoZ4VyQ/o.jpg"
+  }
+]
+```
+
+## Get One Bar
+
+- Endpoint path:`/bars/{yelp_id}`
+- Endpoint method:`GET`
+
+Input:
+
+```json
+{
+  "yelp_id": "xAALy_s3a1dT6K09vSrAGQ"
+}
+```
+
+Successful Response:
+
+```json
+{
+  "bar_id": 1,
+  "yelp_id": "xAALy_s3a1dT6K09vSrAGQ",
+  "bar_name": "Mersea",
+  "url": "https://www.yelp.com/biz/mersea-san-francisco-4?adjust_creative=LqG002GDc6J0d7QGc1y7Qw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_lookup&utm_source=LqG002GDc6J0d7QGc1y7Qw",
+  "lat": 37.820673,
+  "long": -122.3750203,
+  "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/B0DqXHqXvGSRyetqoZ4VyQ/o.jpg"
+}
+```
+
+## Create Middle Table
+
+- Endpoint path:`/middletable`
+- Endpoint method:`POST`
+
+This endpoint is hit when a user wants to add a bar to their trip. The bar_id of the bar is added to the particular trip, along with the position of the bar in the list.
+
+Input and Response:
+
+```json
+{
+  "trip_id": 5,
+  "bar_id": 12,
+  "positions": 1
+}
+```
+
+## Delete Bar From Trip
+
+- Endpoint path:`/trips/{trip_id}/delete-bar-connection/{bar_id}`
+- Endpoint method:`DELETE`
+
+Input:
+
+```json
+{
+  "trip_id": 5,
+  "bar_id": 12
+}
+```
+
+Successful Response:
+
+```json
+true
+```
+
+## Update Bars For Trips
+
+- Endpoint path:`/trips/{trip_id}/delete-bar-connection/{bar_id}`
+- Endpoint method:`PUT`
+
+This endpoint takes a trip_id and deletes the bars and positions from it. Then it adds the newly rearranged positions of each bar back to the trip to update the trip's bars.
+
+Input:
+
+```json
+{
+  "trip_id": 5,
+  "locations": [
+    {
+      "bar_id": 12,
+      "positions": 1
+    }
+    {
+      "bar_id": 6,
+      "positions": 2
+    }
+  ]
+}
+```
+
+Successful Response:
+
+```json
+{
+  "trip_id": 5,
+  "locations": [
+    {
+      "bar_id": 6,
+      "positions": 1
+    }
+    {
+      "bar_id": 12,
+      "positions": 2
+    }
+  ]
+}
+```

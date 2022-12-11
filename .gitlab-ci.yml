@@ -4,12 +4,12 @@ stages:
   - deploy
 
 # Run flake8 to check for code quality
-# lint-trips-test-job:
-#   image: python:3-bullseye
-#   stage: test
-#   script:
-#     - pip install flake8
-#     - flake8 trips
+lint-trips-test-job:
+  image: python:3-bullseye
+  stage: test
+  script:
+    - pip install flake8
+    - flake8 trips
 
 # lint-accounts-test-job:
 #   image: python:3-bullseye
@@ -19,6 +19,7 @@ stages:
 #     - flake8 accounts
 
 # Run the unit tests
+<<<<<<< HEAD
 # trips-unit-test-job:
 #   image: python:3-bullseye
 #   stage: test
@@ -29,14 +30,32 @@ stages:
 #     - pip install -r requirements.txt
 #     - pip install requests
 #     - python -m pytest
+=======
+trips-unit-test-job:
+  image: python:3-bullseye
+  stage: test
+  needs:
+    - lint-trips-test-job
+  script:
+    - cd trips
+    - pip install -r requirements.txt
+    - pip install requests
+    - python -m pytest
+>>>>>>> main
 
 # Build the React/JavaScript front-end
 build-front-end-job:
   stage: build
   image: node:lts-bullseye
+<<<<<<< HEAD
   # needs:
   #   - lint-trips-test-job
   #   - lint-accounts-test-job
+=======
+  needs:
+    - lint-trips-test-job
+    - lint-accounts-test-job
+>>>>>>> main
   variables:
     # If either of these variables is defined in the GitLab
     # CI/CD variables, that value will override the value here.
@@ -45,7 +64,12 @@ build-front-end-job:
     PUBLIC_URL: https://niteout1.gitlab.io/nite-out
     REACT_APP_TRIPS_API_HOST: https://niteout-trips-api.onrender.com
     REACT_APP_AUTH_API_HOST: https://niteout-accounts-api.onrender.com
+<<<<<<< HEAD
     REACT_APP_MAP_TOKEN: pk.eyJ1IjoiZHJyY2t3YW4iLCJhIjoiY2xiZTBuZmdlMDRjaDN2b2F6bWJyaHV5aCJ9.M0caMxJB6cZWjNJ4f2h2uQ
+=======
+    REACT_APP_MAP_TOKEN: ${REACT_APP_MAP_TOKEN}
+
+>>>>>>> main
   script:
     - cd ghi
     - npm install

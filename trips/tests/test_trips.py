@@ -1,8 +1,4 @@
-from os import environ
-environ["SIGNING_KEY"] = "key1"
-environ["YELP_API_KEY"] = "key2"
-environ["DATABASE_URL"] = "key3"
-environ["WAIT_HOSTS"] = "key4"
+import config  # noqa F401
 from fastapi.testclient import TestClient
 from main import app
 from queries.trips import TripRepository
@@ -19,7 +15,6 @@ class EmptyTripRepository:
 
 
 def test_get_all_trips():
-
     # Arrange
     app.dependency_overrides[TripRepository] = EmptyTripRepository
 
