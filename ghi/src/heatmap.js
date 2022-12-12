@@ -81,15 +81,15 @@ function HeatMap({ setCurrentValue }) {
     return popularityByHour(popularityData, selectedHour, selectedDay);
   }, [selectedHour, selectedDay]);
 
-  useEffect(() => {
-    if ((lng || lat) && mapRef.current) {
-      mapRef.current.flyTo({
-        center: [lng, lat],
-      });
-    }
-    console.log(lat);
-    console.log(lng);
-  }, [popularityData]);
+  // useEffect(() => {
+  //   if ((lng || lat) && mapRef.current) {
+  //     mapRef.current.flyTo({
+  //       center: [lng, lat],
+  //     });
+  //   }
+  //   console.log(lat);
+  //   console.log(lng);
+  // }, [popularityData]);
 
   const mapboxAccessToken = `${process.env.REACT_APP_MAP_TOKEN}`;
 
