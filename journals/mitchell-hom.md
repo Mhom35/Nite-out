@@ -1,3 +1,19 @@
+## December 12, 2022
+
+Added in the heatmap component from earlier. Using a useRef to lock our map we will be able to fly to different cities. All data comes from populartimes repo on github (via googleplaces api)
+
+## December 9, 2022
+
+Changed babel compiler in ghi package.json so that in production we wont have compiling errors. (newer mapbox doesnt work on certain browswers)
+
+"browserslist": {
+"production": [
+">0.2%, not dead, not ie 11, not chrome < 51, not safari < 10, not android < 51",
+
+## December 8, 2022
+
+Changed the location to state to get rid of first click undefined. Invalid token was reffering to mapbox token, so we fixed it by changing the environment varibles in gitlab yaml
+
 ## December 7, 2022
 
 Ran out of minutes on gitlab so progress was slow. But started CD as a group and had to change a lot of our yaml files to get to a deployed state. Still ran into deployment issues where addLocation will not work as intended.
