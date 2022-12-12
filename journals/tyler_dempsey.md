@@ -1,6 +1,20 @@
+## December 11, 2022
+
+Today, I work on:
+
+Finishing out all the read me doc and all my journals. Basically tying up all the lose ends, clearing console logs and comments. Also pulled data for heat map.
+
+## December 9, 2022
+
+Today, I work on:
+
+Finished cd with the group and unit testing. Talked with andrew and daniel some stuff making sure we met all their requirements for the project. With the group commented back in the unit testing and lint testing back into main.
+
 ## December 8, 2022
 
 Today, I work on:
+
+Worked on cd with the group and came into a few problems with the lint testing and had some help from daniel on how to import things so the lint testing would pass. Fixed a few more errors with website in whole due to not loading pages.
 
 ## December 7, 2022
 
