@@ -8,6 +8,7 @@
 
 - [API Design](docs/api-design.md)
 - [Website Design](docs/website-design.md)
+- [Data Models](docs/data-models.md)
 
 ## Intended Market
 
