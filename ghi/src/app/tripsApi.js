@@ -42,37 +42,9 @@ export const tripsApi = createApi({
       }),
     }),
 
-    // addBar: builder.mutation({
-    //   query: (form) => {
-    //     const formData = new FormData(form);
-    //     const entries = Array.from(formData.entries());
-    //     const data = entries.reduce((acc, [key, value]) => {
-    //       acc[key] = Number.parseInt(value) || value;
-    //       return acc;
-    //     }, {});
-    //     return {
-    //       method: "post",
-    //       url: "/api/books",
-    //       credentials: "include",
-    //       body: data,
-    //     };
-    //   },
-    //   invalidatesTags: [{ type: "Books", id: "LIST" }],
-    // }),
-
     getAllTrips: builder.query({
       query: () => `/trips`,
       providesTags: ["TripsList"],
-      //   providesTags: (data) => {
-      //     const tags = [{ type: "Books", id: "LIST" }];
-      //     if (!data || !data.books) return tags;
-
-      //     const { books } = data;
-      //     if (books) {
-      //       tags.concat(...books.map(({ id }) => ({ type: "Books", id })));
-      //     }
-      //     return tags;
-      //   },
     }),
 
     deleteTrip: builder.mutation({

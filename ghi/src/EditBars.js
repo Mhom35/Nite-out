@@ -14,7 +14,7 @@ function EditBars() {
   useEffect(() => {
     const fetchBarsInTrip = async () => {
       //get all the yelp bars added to database
-      const url = `${process.env.REACT_APP_TRIPS_API_HOST}/trips/${tripId}/getbars`
+      const url = `${process.env.REACT_APP_TRIPS_API_HOST}/trips/${tripId}/getbars`;
       const response = await fetch(url);
       const data = await response.json();
       setEditedBars(data.locations);
@@ -23,9 +23,7 @@ function EditBars() {
     fetchBarsInTrip();
   }, [tripId]);
 
-  useEffect(() => {
-    console.log(Array.isArray(editedBars));
-  }, [editedBars]);
+  useEffect(() => {}, [editedBars]);
 
   function handleOnDragEnd(result) {
     if (!result.destination) return;

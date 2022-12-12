@@ -1,7 +1,8 @@
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
 import ReactMapGL, { Marker, Popup, Layer, Source } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import sfData from "./data/sfBarData";
+import switchData from "./data/dataSorting";
 import ReactSlider from "react-slider";
 import { circleLayer, heatmapLayer } from "./map-style";
 
@@ -19,6 +20,8 @@ function createObjData(filteredPopData, coordinatesData, barID) {
 
   return featuresObj;
 }
+
+const legend = require("./assets/heatmap-legend.png");
 
 function popularityByHour(data, hour, day) {
   let features = [];
@@ -58,149 +61,144 @@ function HeatMap({ setCurrentValue }) {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedHour, setSelectedHour] = useState(0);
   const [selectedDay, setSelectedDay] = useState("");
-  const [selectedDataSet, setSelectedDataSet] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [popularityData, setPopularityData] = useState(sfData);
+  // const [lat, setLat] = useState(37.783977);
+  // const [lng, setLng] = useState(-122.358809);
   const mapRef = useRef();
 
+  //useMemo to get the popularity by selectedHour, day and city
   const data = useMemo(() => {
-    return popularityByHour(sfData, selectedHour, selectedDay);
+    return popularityByHour(popularityData, selectedHour, selectedDay);
   }, [selectedHour, selectedDay]);
 
-  //   const layerStyle = {
-  //     id: "point",
-  //     type: "circle",
-  //     paint: {
-  //       "circle-radius": 10,
-  //       "circle-color": [
-  //         "interpolate",
-  //         ["linear"],
-  //         ["get", "hour"],
-  //         1,
-  //         "rgba(33,102,172,0)",
-  //         40,
-  //         "rgb(103,169,207)",
-  //         50,
-  //         "rgb(209,229,240)",
-  //         60,
-  //         "rgb(253,219,199)",
-  //         70,
-  //         "rgb(239,138,98)",
-  //         90,
-  //         "rgb(178,24,43)",
-  //       ],
-  //     },
-  //   };
-  //   const geojson = {
-  //     type: "FeatureCollection",
-  //     features: [
-  //       {
-  //         type: "Feature",
-  //         geometry: { type: "Point", coordinates: [-122.4, 37.8] },
-  //       },
-  //     ],
-  //   };
+  useEffect(() => {
+    //selectedDataSet ( from drop down menu)
+    const cityData = switchData(selectedCity);
+    setViewPort(cityData.viewPort);
+    // setLng(viewport.longitude);
+    // setLat(viewport.latitude);
+    setPopularityData(cityData.dataSet);
+  }, [selectedCity]);
+
+  // useEffect(() => {
+  //   if ((lng || lat) && mapRef.current) {
+  //     mapRef.current.flyTo({
+  //       center: [lng, lat],
+  //     });
+  //   }
+  //   console.log(lat);
+  //   console.log(lng);
+  // }, [popularityData]);
+
   const mapboxAccessToken = `${process.env.REACT_APP_MAP_TOKEN}`;
 
   return (
-    <div>
-      <ReactMapGL
-        initialViewState={viewport}
-        ref={mapRef}
-        style={{ width: "100vw", height: "80vh" }}
-        mapStyle="mapbox://styles/mitchhh35/cl9yq5lbl000115o6la7ih9qr"
-        mapboxAccessToken={mapboxAccessToken}
-      >
-        {sfData?.map((places) => (
-          <>
-            <Marker
-              key={places.id}
-              latitude={places.coordinates.lat}
-              longitude={places.coordinates.lng}
-            >
-              <button
-                className="marker-btn"
-                onClick={(e) => {
-                  setSelectedPlace(places);
-                  //have to set Popup is true
-                  setShowPopup(true);
-                }}
+    <>
+      <div>
+        <ReactMapGL
+          ref={mapRef}
+          initialViewState={viewport}
+          style={{ width: "100vw", height: "80vh" }}
+          mapStyle="mapbox://styles/mapbox/navigation-night-v1"
+          mapboxAccessToken={mapboxAccessToken}
+        >
+          {popularityData?.map((places) => (
+            <>
+              <Marker
+                key={places.id}
+                latitude={places.coordinates.lat}
+                longitude={places.coordinates.lng}
               >
-                {/* <img src="https://img.icons8.com/color/344/where.png" alt="hello" /> */}
-              </button>
-            </Marker>
-          </>
-        ))}
+                <button
+                  className="marker-btn"
+                  onClick={(e) => {
+                    setSelectedPlace(places);
+                    //have to set Popup is true
+                    setShowPopup(true);
+                  }}
+                >
+                  {/* <img src="https://img.icons8.com/color/344/where.png" alt="hello" /> */}
+                </button>
+              </Marker>
+            </>
+          ))}
 
-        {showPopup && (
-          <Popup
-            key={selectedPlace.id}
-            latitude={selectedPlace.coordinates.lat}
-            longitude={selectedPlace.coordinates.lng}
-            closeOnClick={false}
-            maxWidth="300px"
-            onClose={() => setShowPopup(false)}
-          >
-            <h2>{selectedPlace.name}</h2>
-            <h3>Type:</h3>
-            {selectedPlace.populartimes.map((time) =>
-              time.name === selectedDay ? (
-                <>
-                  <div>{time.data[selectedHour]}</div>
-                </>
-              ) : (
-                ""
-              )
-            )}
-          </Popup>
-        )}
-        <Source id="my-data" type="geojson" data={data}>
-          <Layer {...circleLayer} />
-          <Layer {...heatmapLayer} />
-        </Source>
-      </ReactMapGL>
-      <ReactSlider
-        className="customSlider"
-        thumbClassName="customSlider-thumb"
-        trackClassName="customSlider-track"
-        markClassName="customSlider-mark"
-        marks={1}
-        min={0}
-        max={23}
-        defaultValue={0}
-        value={selectedHour}
-        onChange={(value) => setSelectedHour(value)}
-        renderMark={(props) => {
-          if (props.key < selectedHour) {
-            props.className = "customSlider-mark customSlider-mark-before";
-          } else if (props.key === selectedHour) {
-            props.className = "customSlider-mark customSlider-mark-active";
-          }
-          return <span {...props} />;
-        }}
-      />
+          {showPopup && (
+            <Popup
+              key={selectedPlace.id}
+              latitude={selectedPlace.coordinates.lat}
+              longitude={selectedPlace.coordinates.lng}
+              closeOnClick={false}
+              maxWidth="300px"
+              onClose={() => setShowPopup(false)}
+            >
+              <h2>{selectedPlace.name}</h2>
+              <h3>Type:</h3>
+              {selectedPlace.populartimes.map((time) =>
+                time.name === selectedDay ? (
+                  <>
+                    <div>{time.data[selectedHour]}</div>
+                  </>
+                ) : (
+                  ""
+                )
+              )}
+            </Popup>
+          )}
+          <Source id="my-data" type="geojson" data={data}>
+            <Layer {...circleLayer} />
+            <Layer {...heatmapLayer} />
+          </Source>
+        </ReactMapGL>
+        <ReactSlider
+          className="customSlider"
+          thumbClassName="customSlider-thumb"
+          trackClassName="customSlider-track"
+          markClassName="customSlider-mark"
+          marks={1}
+          min={0}
+          max={23}
+          defaultValue={0}
+          value={selectedHour}
+          onChange={(value) => setSelectedHour(value)}
+          renderMark={(props) => {
+            if (props.key < selectedHour) {
+              props.className = "customSlider-mark customSlider-mark-before";
+            } else if (props.key === selectedHour) {
+              props.className = "customSlider-mark customSlider-mark-active";
+            }
+            return <span {...props} />;
+          }}
+        />
 
-      <select
-        value={selectedDay}
-        onChange={(event) => setSelectedDay(event.target.value)}
-      >
-        <option>Select a Day</option>
-        <option value="Monday">Monday</option>
-        <option value="Tuesday">Tuesday</option>
-        <option value="Wednesday">Wednesday</option>
-        <option value="Thursday">Thursday</option>
-        <option value="Friday">Friday</option>
-        <option value="Saturday">Saturday</option>
-        <option value="Sunday">Sunday</option>
-      </select>
-      <select
-        value={selectedDataSet}
-        onChange={(event) => setSelectedDataSet(event.target.value)}
+        <select
+          value={selectedDay}
+          onChange={(event) => setSelectedDay(event.target.value)}
+        >
+          <option>Select a Day</option>
+          <option value="Monday">Monday</option>
+          <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thursday">Thursday</option>
+          <option value="Friday">Friday</option>
+          <option value="Saturday">Saturday</option>
+          <option value="Sunday">Sunday</option>
+        </select>
+        {/* <select
+        value={selectedCity}
+        onChange={(event) => setSelectedCity(event.target.value)}
       >
         <option>Select a City</option>
         <option value="SF">San Francisco</option>
         <option value="LA">Los Angeles</option>
         <option value="NYC">New York</option>
-      </select>
-    </div>
+      </select> */}
+      </div>
+      <div>
+        <img className="heatmap" src={legend} alt="heatmap" />
+      </div>
+    </>
   );
 }
 export default HeatMap;

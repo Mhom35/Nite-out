@@ -2,8 +2,6 @@ from pydantic import BaseModel
 from typing import Optional
 from psycopg import connect
 import os
-# from datetime import date
-# from queries.pool import pool
 
 
 keepalive_kwargs = {

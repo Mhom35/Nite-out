@@ -4,8 +4,6 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 from pydantic import BaseModel
 
-# from models import AccountOut
-
 
 class AccountOut(BaseModel):
     id: int

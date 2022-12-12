@@ -11,16 +11,14 @@ function YelpMap() {
 
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
-
   const [yelpData, setYelpData] = useState([]);
-  const [location, setLocation] = useState({})
-  // const [locations, setLocations] = useState([]);
-  let locations = []
+  const [location, setLocation] = useState({});
+  let locations = [];
 
   useEffect(() => {
     const fetchYelpData = async () => {
       //get all the yelp bars added to database
-      const url = `${process.env.REACT_APP_TRIPS_API_HOST}/bars`
+      const url = `${process.env.REACT_APP_TRIPS_API_HOST}/bars`;
       const response = await fetch(url);
       const data = await response.json();
       setYelpData(data);
@@ -28,36 +26,27 @@ function YelpMap() {
 
     fetchYelpData();
   }, []);
-  console.log("yelp data", yelpData);
-
-
-  // const addLocationClicked = (event) => {
-  //   setClicked(true)
-  // }
-
-
 
   const handleAddLocation = async () => {
-    setLocation(selectedPlace)
-    if (!(location["bar_id"])) {
-      const data = {}
-      const barUrl = `${process.env.REACT_APP_TRIPS_API_HOST}/bars/new/`
+    setLocation(selectedPlace);
+    if (!location["bar_id"]) {
+      const data = {};
+      const barUrl = `${process.env.REACT_APP_TRIPS_API_HOST}/bars/new/`;
       const fetchConfig = {
         method: "post",
         body: JSON.stringify(data),
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-      }
+      };
       const response = await fetch(barUrl, fetchConfig);
       if (response.ok) {
         const newBar = await response.json();
-        console.log("new bar", newBar)
-        return newBar.bar_id
+        return newBar.bar_id;
       }
     }
-    location.bar_id && locations.push(location.bar_id)
-  }
+    location.bar_id && locations.push(location.bar_id);
+  };
 
   return (
     <div>
@@ -77,7 +66,6 @@ function YelpMap() {
               <button
                 className="marker-btn"
                 onClick={(e) => {
-                  // e.preventDefault();
                   setSelectedPlace(places);
                   //have to set Popup is true
                   setShowPopup(true);
@@ -112,5 +100,3 @@ function YelpMap() {
   );
 }
 export default YelpMap;
-
-// { () => setLocation(selectedPlace) }

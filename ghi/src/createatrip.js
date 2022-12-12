@@ -17,39 +17,32 @@ const theme = createTheme();
 
 export default function Trip() {
   let locations = useSelector((state) => state.addLocations.value);
-  // const [createTrip, result] = useCreateTripMutation;
   const [notFinished, setNotFinished] = useState(true);
   const locationsMapRef = useRef();
   const date = new Date();
   const dateTime = date.getTime().toString();
-
   const [tripName, setTripName] = useState("");
   const [description, setDescription] = useState("");
   const [clicked, setClicked] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-  // const { data: tokenData } = useGetTokenQuery()
-
+  const navigate = useNavigate();
   const { token } = useAuthContext();
 
   useEffect(() => {
     if (!token) {
-      // console.log("TOKEN DATA IN CREATE", tokenData)
-      navigate("/login")
+      navigate("/login");
     }
-  }, [token, navigate])
-
+  }, [token, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // createTrip(tripName, locations, description, dateTime);
     const data = {
       trip_name: tripName,
       locations: locations,
       description: description,
       created_on: dateTime,
     };
-    const tripUrl = `${process.env.REACT_APP_TRIPS_API_HOST}/trips`
+    const tripUrl = `${process.env.REACT_APP_TRIPS_API_HOST}/trips`;
     const fetchConfig = {
       method: "POST",
       body: JSON.stringify(data),
@@ -68,7 +61,7 @@ export default function Trip() {
           bar_id: bar_id,
           positions: position,
         };
-        const middleUrl = `${process.env.REACT_APP_TRIPS_API_HOST}/middletable`
+        const middleUrl = `${process.env.REACT_APP_TRIPS_API_HOST}/middletable`;
         const fetchConfig = {
           method: "POST",
           body: JSON.stringify(data),
@@ -82,8 +75,8 @@ export default function Trip() {
         }
       });
       clearState();
-      navigate(`/trips`)
-      navigate(0)
+      navigate(`/trips`);
+      navigate(0);
     }
   };
   const clearState = () => {

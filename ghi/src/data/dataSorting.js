@@ -3,9 +3,26 @@ import newYork from "./newYorkData.js";
 import sfData from "./sfBarData";
 
 const dataObj = {
-  SF: sfData,
-  NYC: newYork,
-  LA: la,
+  SF: {
+    dataSet: sfData,
+    viewPort: { latitude: 37.774929, longitude: -122.419418, zoom: 14 },
+  },
+  NYC: {
+    dataSet: newYork,
+    viewPort: {
+      latitude: 40.73061,
+      longitude: -73.935242,
+      zoom: 14,
+    },
+  },
+  LA: {
+    dataSet: la,
+    viewPort: {
+      latitude: 34.052235,
+      longitude: -118.243683,
+      zoom: 14,
+    },
+  },
 };
 
 const switchData = (data) => {
@@ -15,7 +32,9 @@ const switchData = (data) => {
     case "LA":
       return dataObj.LA;
     case "NYC":
-      return dataObj.LA;
+      return dataObj.NYC;
+    default:
+      return dataObj.SF;
   }
 };
 

@@ -17,15 +17,6 @@ services:
     ports:
       - 15432:5432
 
-  # fastapi:
-  #   build:
-  #     context: sample_service
-  #     dockerfile: Dockerfile.dev
-  #   ports:
-  #     - 8000:8000
-  #   volumes:
-  #     - ./sample_service:/app
-
   trips:
     build:
       context: ./trips
@@ -37,7 +28,6 @@ services:
     environment:
       YELP_API_KEY: ${YELP_API_KEY}
       SIGNING_KEY: 308d2c047ed058f9eaebc3376b081b402f7521d185e704af8d86160f6d0cc335
-      # DATABASE_URL: postgresql://tripsdb:password@postgres/tripsdb
       DATABASE_URL: postgres://urhalhih:4eYlEK7MyZAwSof-UvXZdtmO_G0uI071@otto.db.elephantsql.com/urhalhih
       WAIT_HOSTS: postgres:5432
 
@@ -51,7 +41,6 @@ services:
       - ./accounts:/app
     environment:
       SIGNING_KEY: 308d2c047ed058f9eaebc3376b081b402f7521d185e704af8d86160f6d0cc335
-      # DATABASE_URL: postgresql://accounts:password@postgres/accounts
       DATABASE_URL: postgres://jgzmmcmv:e4ehWkfu_HAKx4IAtNfU9Xh12XsGdZcP@otto.db.elephantsql.com/jgzmmcmv
       WAIT_HOSTS: postgres:5432
 

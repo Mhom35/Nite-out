@@ -35,7 +35,6 @@ const AddLocation = () => {
   const [yelpPopup, setYelpPopUp] = useState(false);
   const [yelpData, setYelpData] = useState([]);
   const [backendData, setBackendData] = useState([]);
-  // const [location, setLocation] = useState({});
   const [locations, setLocations] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -44,7 +43,6 @@ const AddLocation = () => {
 
   useEffect(() => {
     if (!token) {
-      // console.log("TOKEN DATA IN CREATE", tokenData)
       navigate("/");
     }
   }, [token, navigate]);
@@ -72,7 +70,6 @@ const AddLocation = () => {
         console.log("response not ok");
       }
     };
-    console.log(lat, lng);
     search();
   }, [lat, lng]);
 
@@ -112,12 +109,9 @@ const AddLocation = () => {
     setLat(e.coords.latitude);
   }
 
-  useEffect(() => {
-    console.log(locations);
-  }, [locations]);
+  useEffect(() => {}, [locations]);
 
   const handleAddLocation = async () => {
-    // selectedPlace ? setLocation(selectedPlace) : setLocation(yelpSelectedPlace);
     const location = selectedPlace ? selectedPlace : yelpSelectedPlace;
     if (!location["bar_id"]) {
       const yelp_id = location.id;
@@ -142,9 +136,7 @@ const AddLocation = () => {
       );
       if (barResponse.ok) {
         const newBar = await barResponse.json();
-        console.log(newBar);
         locations.push(newBar.bar_id);
-        console.log("locations", locations);
         return true;
       }
     }
@@ -156,7 +148,6 @@ const AddLocation = () => {
       sx={{
         height: 700,
         width: 1000,
-        // gap: 2,
         position: "relative",
       }}
     >
@@ -164,7 +155,7 @@ const AddLocation = () => {
         ref={mapRef}
         mapboxAccessToken={mapboxAccessToken}
         initialViewState={viewport}
-        mapStyle="mapbox://styles/mitchhh35/cl9yq5lbl000115o6la7ih9qr"
+        mapStyle="mapbox://styles/mapbox/navigation-night-v1"
       >
         <Marker
           latitude={lat}
@@ -294,23 +285,3 @@ const AddLocation = () => {
 };
 
 export default AddLocation;
-
-// const search = async () => {
-//   const url = `https://api.yelp.com/v3/businesses/search?term=bar&latitude=${lat}&longitude=${lng}`;
-//   const response = await fetch(url, {
-//     method: "GET",
-//     withCredentials: true,
-//     credentials: "include",
-//     headers: {
-//       "Access-Control-Request-Headers": "*",
-// const result = await fetch(
-//   corsProxy + yelpApi + searchParams,
-//   fetchOptions
-// );
-// const YelpResponse = await result.json();
-// const yelp_id = YelpResponse["id"];
-// const bar_name = YelpResponse["name"];
-// const url = YelpResponse["url"];
-// const lat = YelpResponse.coordinates.latitude;
-// const long = YelpResponse.coordinates.longitude;
-// const image_url = YelpResponse.image_url;
