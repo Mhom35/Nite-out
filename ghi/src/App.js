@@ -12,6 +12,7 @@ import EditTrip from "./editTrip";
 import SignOut from "./signout.js";
 import NavBar from "./NavBar";
 import Home from "./Home";
+import HeatMap from "./heatmap";
 
 function GetToken() {
   // Get token from JWT cookie (if already logged in)
@@ -41,6 +42,7 @@ function App() {
           <Route path="/location/add" element={<AddLocation />} />
           <Route path="/edit/trip/:id" element={<EditTrip />} />
           <Route path="/edit/bars" element={<EditBars />} />
+          <Route path="/heatmap" element={<HeatMap />} />
 
           <Route path="/logout" element={<SignOut />} />
         </Routes>

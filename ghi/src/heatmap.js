@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from "react";
-import MapGL, { Marker, Popup, Layer, Source } from "react-map-gl";
+import React, { useState, useRef, useMemo } from "react";
+import ReactMapGL, { Marker, Popup, Layer, Source } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import sf_data from "./data/data.js";
+import sfData from "./data/sfBarData";
 import ReactSlider from "react-slider";
 import { circleLayer, heatmapLayer } from "./map-style";
 
@@ -47,6 +47,7 @@ function popularityByHour(data, hour, day) {
 }
 
 function HeatMap({ setCurrentValue }) {
+  /* eslint-disable */
   const [viewport, setViewPort] = useState({
     latitude: 37.774929,
     longitude: -122.419418,
@@ -57,9 +58,11 @@ function HeatMap({ setCurrentValue }) {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedHour, setSelectedHour] = useState(0);
   const [selectedDay, setSelectedDay] = useState("");
+  const [selectedDataSet, setSelectedDataSet] = useState("");
+  const mapRef = useRef();
 
   const data = useMemo(() => {
-    return popularityByHour(sf_data, selectedHour, selectedDay);
+    return popularityByHour(sfData, selectedHour, selectedDay);
   }, [selectedHour, selectedDay]);
 
   //   const layerStyle = {
@@ -95,16 +98,18 @@ function HeatMap({ setCurrentValue }) {
   //       },
   //     ],
   //   };
+  const mapboxAccessToken = `${process.env.REACT_APP_MAP_TOKEN}`;
 
   return (
     <div>
-      <MapGL
+      <ReactMapGL
         initialViewState={viewport}
-        style={{ width: "100vw", height: "90vh" }}
+        ref={mapRef}
+        style={{ width: "100vw", height: "80vh" }}
         mapStyle="mapbox://styles/mitchhh35/cl9yq5lbl000115o6la7ih9qr"
-        mapboxAccessToken={process.env.REACT_APP_MAP_TOKEN}
+        mapboxAccessToken={mapboxAccessToken}
       >
-        {sf_data?.map((places) => (
+        {sfData?.map((places) => (
           <>
             <Marker
               key={places.id}
@@ -151,7 +156,7 @@ function HeatMap({ setCurrentValue }) {
           <Layer {...circleLayer} />
           <Layer {...heatmapLayer} />
         </Source>
-      </MapGL>
+      </ReactMapGL>
       <ReactSlider
         className="customSlider"
         thumbClassName="customSlider-thumb"
@@ -185,6 +190,15 @@ function HeatMap({ setCurrentValue }) {
         <option value="Friday">Friday</option>
         <option value="Saturday">Saturday</option>
         <option value="Sunday">Sunday</option>
+      </select>
+      <select
+        value={selectedDataSet}
+        onChange={(event) => setSelectedDataSet(event.target.value)}
+      >
+        <option>Select a City</option>
+        <option value="SF">San Francisco</option>
+        <option value="LA">Los Angeles</option>
+        <option value="NYC">New York</option>
       </select>
     </div>
   );
