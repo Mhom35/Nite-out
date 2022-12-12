@@ -24,6 +24,8 @@ function EditBars() {
   }, [tripId]);
 
   useEffect(() => {}, [editedBars]);
+  useEffect(() => {
+  }, [editedBars]);
 
   function handleOnDragEnd(result) {
     if (!result.destination) return;

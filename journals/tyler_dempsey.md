@@ -1,3 +1,9 @@
+## December 12, 2022
+
+Today, I work on:
+
+Finished up delete comments and console logs. Help change the heat map colors to go from yellow to red for how popular the bars are. Presented to andrew and then updated read me to ensure everything was in there. This will be my last journal entry as the project has been passed by andrew.
+
 ## December 11, 2022
 
 Today, I work on:
