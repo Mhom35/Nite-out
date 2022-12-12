@@ -68,9 +68,6 @@ function HeatMap({ setCurrentValue }) {
   const mapRef = useRef();
 
   //useMemo to get the popularity by selectedHour, day and city
-  const data = useMemo(() => {
-    return popularityByHour(popularityData, selectedHour, selectedDay);
-  }, [selectedHour, selectedDay]);
 
   useEffect(() => {
     //selectedDataSet ( from drop down menu)
@@ -80,16 +77,19 @@ function HeatMap({ setCurrentValue }) {
     // setLat(viewport.latitude);
     setPopularityData(cityData.dataSet);
   }, [selectedCity]);
+  const data = useMemo(() => {
+    return popularityByHour(popularityData, selectedHour, selectedDay);
+  }, [selectedHour, selectedDay]);
 
-  // useEffect(() => {
-  //   if ((lng || lat) && mapRef.current) {
-  //     mapRef.current.flyTo({
-  //       center: [lng, lat],
-  //     });
-  //   }
-  //   console.log(lat);
-  //   console.log(lng);
-  // }, [popularityData]);
+  useEffect(() => {
+    if ((lng || lat) && mapRef.current) {
+      mapRef.current.flyTo({
+        center: [lng, lat],
+      });
+    }
+    console.log(lat);
+    console.log(lng);
+  }, [popularityData]);
 
   const mapboxAccessToken = `${process.env.REACT_APP_MAP_TOKEN}`;
 
