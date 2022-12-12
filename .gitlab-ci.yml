@@ -3,7 +3,7 @@ stages:
   - build
   - deploy
 
-Run flake8 to check for code quality
+# Run flake8 to check for code quality
 lint-trips-test-job:
   image: python:3-bullseye
   stage: test
