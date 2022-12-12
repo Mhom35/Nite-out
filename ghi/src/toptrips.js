@@ -60,7 +60,7 @@ export default function TopTrips() {
   if (result.isSuccess) {
     navigate(0);
   } else if (result.isError) {
-    console.log("nowork");
+    console.log("error");
   }
   //  ensure likes are set to 0 instead of null else return the trip obj
   const tripsData = barData.map((trip) =>

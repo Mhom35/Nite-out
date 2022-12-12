@@ -98,15 +98,15 @@ export default function EditTrip() {
   if (deleteResult.isSuccess) {
     navigate("/trips");
   } else if (deleteResult.isError) {
-    console.log("nowork");
+    console.log("delete trip didn't work");
   }
 
   if (updateResult.isSuccess && updateTripResult.isSuccess) {
     navigate("/trips");
   } else if (deleteResult.isError) {
-    console.log("nowork");
+    console.log("delete trip didn't work");
   } else if (updateResult.isError) {
-    console.log("updateTrip didnt work");
+    console.log("updateTrip didn't work");
   }
 
   return (
