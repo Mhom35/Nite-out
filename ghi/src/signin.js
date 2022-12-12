@@ -28,10 +28,9 @@ export default function SignIn() {
 
   useEffect(() => {
     if (token) {
-      // console.log("TOKEN DATA IN CREATE", tokenData)
-      navigate("/")
+      navigate("/");
     }
-  }, [token, navigate])
+  }, [token, navigate]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -91,7 +90,10 @@ export default function SignIn() {
               </Button>
               <Grid container>
                 <Grid item>
-                  <Button onClick={() => navigate("/login/new")} variant="body2">
+                  <Button
+                    onClick={() => navigate("/login/new")}
+                    variant="body2"
+                  >
                     Don't have an account? Sign Up
                   </Button>
                 </Grid>

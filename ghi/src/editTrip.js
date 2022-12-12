@@ -27,15 +27,11 @@ export default function EditTrip() {
   const [updateTrip, updateTripResult] = useUpdateTripMutation();
   const [notFinishEdit, setNotFinishedEdit] = useState(true);
   let tripId = useSelector((state) => state.getTripId.value);
-
   const editLocationMapRef = useRef();
   const locationsMapRef = useRef();
-
   const [tripName, setTripName] = useState("");
-  // const [location, setLocation] = useState([]);
   const [description, setDescription] = useState("");
   const [editName, setEditName] = useState(false);
-  // const [editDescription, setEditDescription] = useState(false);
   const [editBarsforTrip, setEditBarsforTrip] = useState(false);
   const [getTripInfo, setGetTripInfo] = useState([]);
   const [addLocation, setAddLocation] = useState(false);
@@ -44,7 +40,6 @@ export default function EditTrip() {
   /* eslint-disable */
   const [deleteTrip2, setDeleteTrip2] = useState(true);
   //tracker will check if confirm edit has been hit, locations will be finalized
-  // const [tracker, setTracker] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchTripData = async () => {
@@ -59,8 +54,6 @@ export default function EditTrip() {
   }, [tripId]);
   //when editLocation is mounted (i.e we finished editing it we will close the editBars component)
   useEffect(() => {
-    console.log("editLocations", editLocation);
-    console.log("extra", extraLocations);
     if (editLocation.length > 0) {
       setNotFinishedEdit(false);
       setConfirmEdit(true);
@@ -184,9 +177,7 @@ export default function EditTrip() {
               id="outlined-multiline-static"
               multiline
               label="description"
-              // InputLabelProps={{ shrink: }}
               FilledInput={getTripInfo.description}
-              // inputRef={getTripInfo.description}
               name=""
               rows={3}
               value={description}
@@ -267,5 +258,3 @@ export default function EditTrip() {
     </ThemeProvider>
   );
 }
-
-// const barIDArray = items.map((bar) => bar.bar_id);

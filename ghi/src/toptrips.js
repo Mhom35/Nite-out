@@ -62,11 +62,11 @@ export default function TopTrips() {
   } else if (result.isError) {
     console.log("nowork");
   }
-  //   ensure likes are set to 0 instead of null else return the trip obj
+  //  ensure likes are set to 0 instead of null else return the trip obj
   const tripsData = barData.map((trip) =>
     trip.likes === null ? { ...trip, likes: 0 } : trip
   );
-  //sort by most popular (likes)
+  // sort by most popular (likes)
   tripsData.sort((a, b) => b.likes - a.likes);
 
   return (
@@ -100,9 +100,7 @@ export default function TopTrips() {
                 {/* <TableCell align="center">
                   {trip.locations[0].bar_name}
                 </TableCell> */}
-                <TableCell align="center">
-                  {trip.description}
-                </TableCell>
+                <TableCell align="center">{trip.description}</TableCell>
                 <TableCell align="center">
                   <img src={trip.locations[0].image_url} width="200" alt="" />
                 </TableCell>

@@ -23,6 +23,13 @@ code {
   height: 20px;
 }
 
+.heatmap {
+  width: 650px;
+  height: 150px;
+  display: block;
+  margin-left: auto;
+}
+
 .pop-up-image {
   width: 90%;
   border: 1px solid #ddd;

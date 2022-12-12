@@ -123,8 +123,6 @@ class BarsRepository:
                     )
 
                     id = result.fetchone()[0]
-                    # Return new data
-                    # old_data = trip.dict()
                     return self.bar_in_to_out(id, bar)
 
         except Exception:

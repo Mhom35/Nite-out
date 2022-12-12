@@ -26,7 +26,6 @@ class MyAuthenticator(Authenticator):
     async def get_account_data(
         self,
         username: str,
-        # accounts: AccountRepo,
     ):
         # Use your repo to get the account based on the
         # username (which could be an email)
@@ -35,7 +34,6 @@ class MyAuthenticator(Authenticator):
 
     def get_account_getter(
         self,
-        # accounts: AccountRepo = Depends(),
     ):
         # Return the accounts. That's it.
         # return accounts
@@ -46,11 +44,6 @@ class MyAuthenticator(Authenticator):
         # account object
         # return account.hashed_password
         pass
-
-    # def get_account_data_for_cookie(self, account: Account):
-    #     # Return the username and the data for the cookie.
-    #     # You must return TWO values from this method.
-    #     return account.email, AccountOut(**account.dict())
 
 
 authenticator = MyAuthenticator(os.environ["SIGNING_KEY"])
