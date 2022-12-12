@@ -47,6 +47,7 @@ function popularityByHour(data, hour, day) {
 }
 
 function HeatMap({ setCurrentValue }) {
+  /* eslint-disable */
   const [viewport, setViewPort] = useState({
     latitude: 37.774929,
     longitude: -122.419418,
