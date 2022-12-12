@@ -1,3 +1,19 @@
+## December 12, 2022
+
+Integrated the heatmap feature into our project, with a legend to indicate which colors correspond to which popularity scores. Made some final edits to the readme, and passed our demonstration.
+
+## December 9, 2022
+
+I worked on the readme a bit. We received guidance on how to set up one of our api keys to work while hidden, as initially we were getting an “invalid token” error. We did not have it added as an environment variable in gitlab, which was the reason why the key was not being recognized. Finished writing my unit test.
+
+## December 8, 2022
+
+Got help with some deployment issues and other bugs. Our state was not being handled correctly and was causing an undefined on the first try of adding a new location, so we fixed that. Kept getting an invalid token error in the deployed state when trying to add locations. The map would not show up. The problem ended up being react-map-gl not recognizing our environment variable api key. Temporary fix of hardcoding it in.
+
+## December 7, 2022
+
+We ran out of pipeline minutes while trying get CD set up. We started on unit tests but can’t really do much until we receive more minutes. Cannot figure out why the first value is always undefined when adding a new location.
+
 ## December 6, 2022
 
 We fixed minor bugs in the sign up and login, and merged to main. Then we added logout functionality. I created the NavBar and Landing page components, and fixed an issue with navigate not functioning as intended by calling it within a useEffect.
