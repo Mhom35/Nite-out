@@ -24,9 +24,36 @@ export default function TopTrips() {
   const navigate = useNavigate();
   const [updateTrip, result] = useUpdateTripMutation();
   if (isLoading) {
+    function beerRise() {
+      const fill = document.getElementsByClassName("beer");
+      const head = document.getElementsByClassName("active");
+      fill.classList.add("fill");
+      // head.classList.remove("d-none");
+      head.classList.add("active");
+    }
+    function pourBeer() {
+      const pour = document.getElementsByClassName("pouring");
+      beerRise();
+      setTimeout(function () {
+        pour.classList.add("end");
+      }, 1500);
+    }
+    setTimeout(function () {
+      pourBeer();
+    }, 3000);
+    pourBeer();
     return (
       // prettier-ignore
+      <>
       <CircularProgress />
+      <div id="containertwo">
+        <div className="glass">
+          <div className="beer"></div>
+        </div>
+      <div className="head"></div>
+      <div className="pour"></div>
+</div>
+</>
     );
   }
 
