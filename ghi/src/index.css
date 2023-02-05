@@ -99,23 +99,23 @@ li:hover {
 :root {
   --main-color: rgb(104, 117, 217);
   --main-color-hover: rgb(104, 117, 217, 0.2);
-  --track-color: #ddd;
+  --track-color: rgb(223, 215, 215);
   /* Default mark color*/
   --mark-color: #aaaaaa;
 }
 
 .customSlider {
   /* max width of your slider */
-  max-width: 800px;
+  max-width: 700px;
   /* Optional: Only If you want to center your slider in the page */
   margin: auto;
 }
 
 .customSlider-track {
   /* Top value to align your track to the center of your thumb */
-  top: 8px;
+  top: 10px;
   /* thickness of the track */
-  height: 6px;
+  height: 20px;
   /* default color of your track */
   background: var(--track-color);
 }
@@ -130,8 +130,8 @@ li:hover {
   /*color for the thumb */
   background: var(--main-color);
   /* shape of the thumb: circle */
-  width: 20px;
-  height: 20px;
+  width: 40px;
+  height: 40px;
   border-radius: 80%;
   /* remove default outline when selected */
   outline: none;
@@ -143,8 +143,8 @@ li:hover {
 
 .customSlider-mark {
   cursor: pointer;
-  top: 6px;
-  width: 1.5px;
-  height: 12px;
+  top: 10px;
+  width: 3px;
+  height: 24px;
   background-color: var(--mark-color);
 }

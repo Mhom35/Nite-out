@@ -1,5 +1,6 @@
 import React, { useState, useRef, useMemo, useEffect } from "react";
 import ReactMapGL, { Marker, Popup, Layer, Source } from "react-map-gl";
+import "./toggle.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import sfData from "./data/sfBarData";
 import switchData from "./data/dataSorting";
@@ -66,6 +67,12 @@ function HeatMap({ setCurrentValue }) {
   // const [lat, setLat] = useState(37.783977);
   // const [lng, setLng] = useState(-122.358809);
   const mapRef = useRef();
+  const [toggled, setToggled] = useState(false);
+  const [pm, setPm] = useState(false);
+  const handleClick = () => {
+      setToggled((s) => !s);
+      setPm(!toggled)
+  };
 
   //useMemo to get the popularity by selectedHour, day and city
 
@@ -90,6 +97,10 @@ function HeatMap({ setCurrentValue }) {
   //   console.log(lat);
   //   console.log(lng);
   // }, [popularityData]);
+  useEffect(() => {
+    console.log(pm)
+    console.log(selectedHour)
+  },[pm, selectedHour])
 
   const mapboxAccessToken = `${process.env.REACT_APP_MAP_TOKEN}`;
 
@@ -158,20 +169,55 @@ function HeatMap({ setCurrentValue }) {
           markClassName="customSlider-mark"
           marks={1}
           min={0}
-          max={23}
-          defaultValue={0}
-          value={selectedHour}
-          onChange={(value) => setSelectedHour(value)}
+          max={11}
+          defaultValue={1}
+          value={selectedHour - (pm ? 12: 0)}
+          onChange={(value) => setSelectedHour(value + (pm ? 12:0))}
           renderMark={(props) => {
-            if (props.key < selectedHour) {
+            if (props.key < (selectedHour - (pm ? 12:0))) {
               props.className = "customSlider-mark customSlider-mark-before";
-            } else if (props.key === selectedHour) {
+            } else if (props.key === (selectedHour - (pm ? 12:0))) {
               props.className = "customSlider-mark customSlider-mark-active";
             }
             return <span {...props} />;
           }}
+          renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
         />
 
+        {/* <select
+          value={selectedDay}
+          onChange={(event) => setSelectedDay(event.target.value)}
+        >
+          <option>Select a Day</option>
+          <option value="Monday">Monday</option>
+          <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thursday">Thursday</option>
+          <option value="Friday">Friday</option>
+          <option value="Saturday">Saturday</option>
+          <option value="Sunday">Sunday</option>
+        </select> */}
+        {/* <select
+        value={selectedCity}
+        onChange={(event) => setSelectedCity(event.target.value)}
+      >
+        <option>Select a City</option>
+        <option value="SF">San Francisco</option>
+        <option value="LA">Los Angeles</option>
+        <option value="NYC">New York</option>
+      </select> */}
+        <div onClick={handleClick} className={`toggle${toggled ? " night" : ""}`}>
+          <div className="notch">
+              <div className="crater" />
+              <div className="crater" />
+          </div>
+          <div>
+              <div className="shape sm" />
+              <div className="shape sm" />
+              <div className="shape md" />
+              <div className="shape lg" />
+          </div>
+        </div>
         <select
           value={selectedDay}
           onChange={(event) => setSelectedDay(event.target.value)}
@@ -185,15 +231,6 @@ function HeatMap({ setCurrentValue }) {
           <option value="Saturday">Saturday</option>
           <option value="Sunday">Sunday</option>
         </select>
-        {/* <select
-        value={selectedCity}
-        onChange={(event) => setSelectedCity(event.target.value)}
-      >
-        <option>Select a City</option>
-        <option value="SF">San Francisco</option>
-        <option value="LA">Los Angeles</option>
-        <option value="NYC">New York</option>
-      </select> */}
       </div>
       <div>
         <img className="heatmap" src={legend} alt="heatmap" />
