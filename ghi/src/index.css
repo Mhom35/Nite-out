@@ -148,3 +148,25 @@ li:hover {
   height: 24px;
   background-color: var(--mark-color);
 }
+
+.sliderContainer {
+  display:inline-block;
+  justify-content: center;
+  padding-top: 25px;
+  /* position: absolute;
+  left: 50%;
+  top: 50%; */
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  text-align:center;
+  vertical-align: middle;
+
+
+}
+
+.semantics {
+  text-align:center;
+  vertical-align: middle;
+
+}

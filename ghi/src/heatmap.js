@@ -99,8 +99,9 @@ function HeatMap({ setCurrentValue }) {
   // }, [popularityData]);
   useEffect(() => {
     console.log(pm)
-    console.log(selectedHour)
-  },[pm, selectedHour])
+    setSelectedHour(pm ? selectedHour + 12: selectedHour - 12)
+  },[pm])
+  console.log(selectedHour)
 
   const mapboxAccessToken = `${process.env.REACT_APP_MAP_TOKEN}`;
 
@@ -170,7 +171,7 @@ function HeatMap({ setCurrentValue }) {
           marks={1}
           min={0}
           max={11}
-          defaultValue={1}
+          defaultValue={0}
           value={selectedHour - (pm ? 12: 0)}
           onChange={(value) => setSelectedHour(value + (pm ? 12:0))}
           renderMark={(props) => {
@@ -181,43 +182,8 @@ function HeatMap({ setCurrentValue }) {
             }
             return <span {...props} />;
           }}
-          renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
         />
 
-        {/* <select
-          value={selectedDay}
-          onChange={(event) => setSelectedDay(event.target.value)}
-        >
-          <option>Select a Day</option>
-          <option value="Monday">Monday</option>
-          <option value="Tuesday">Tuesday</option>
-          <option value="Wednesday">Wednesday</option>
-          <option value="Thursday">Thursday</option>
-          <option value="Friday">Friday</option>
-          <option value="Saturday">Saturday</option>
-          <option value="Sunday">Sunday</option>
-        </select> */}
-        {/* <select
-        value={selectedCity}
-        onChange={(event) => setSelectedCity(event.target.value)}
-      >
-        <option>Select a City</option>
-        <option value="SF">San Francisco</option>
-        <option value="LA">Los Angeles</option>
-        <option value="NYC">New York</option>
-      </select> */}
-        <div onClick={handleClick} className={`toggle${toggled ? " night" : ""}`}>
-          <div className="notch">
-              <div className="crater" />
-              <div className="crater" />
-          </div>
-          <div>
-              <div className="shape sm" />
-              <div className="shape sm" />
-              <div className="shape md" />
-              <div className="shape lg" />
-          </div>
-        </div>
         <select
           value={selectedDay}
           onChange={(event) => setSelectedDay(event.target.value)}
@@ -231,10 +197,48 @@ function HeatMap({ setCurrentValue }) {
           <option value="Saturday">Saturday</option>
           <option value="Sunday">Sunday</option>
         </select>
+        {/* <select
+        value={selectedCity}
+        onChange={(event) => setSelectedCity(event.target.value)}
+      >
+        <option>Select a City</option>
+        <option value="SF">San Francisco</option>
+        <option value="LA">Los Angeles</option>
+        <option value="NYC">New York</option>
+      </select> */}
+
       </div>
-      <div>
+      {/* <div>
         <img className="heatmap" src={legend} alt="heatmap" />
-      </div>
+      </div> */}
+      <div className="semantics">
+        <div className="sliderContainer">
+          <div class={`digital-clock${pm ? " night": ""}`}>
+              {selectedHour > 0 ? pm ? selectedHour - 12 + 1: selectedHour + 1 : 1}:00
+            
+          </div>
+          <div onClick={handleClick} className={`toggle${toggled ? " night" : ""}`}>
+            <div className="notch">
+                <div className="crater" />
+                <div className="crater" />
+                <div className="crater" />
+            </div>
+            <div>
+                <div className="shape sm" />
+                <div className="shape sm" />
+                <div className="shape md" />
+                <div className="shape lg" />
+            </div>
+
+
+          </div>
+          <div className={`tod${pm ? " night": ""}`} >
+            {pm ? <p>PM</p>: <p>AM</p>}
+          </div>
+
+          
+        </div>
+    </div>
     </>
   );
 }
