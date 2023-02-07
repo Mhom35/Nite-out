@@ -66,7 +66,23 @@ export default function TopTrips() {
   const tripsData = barData.map((trip) =>
     trip.likes === null ? { ...trip, likes: 0 } : trip
   );
+
+
   // sort by most popular (likes)
+
+  // function insertionSort(arr) {
+  //   for (let i = 1; i < arr.length; i++) {
+  //     let currentValue = arr[i]
+  //     let j
+  //     for (j = i - 1; j >= 0 && arr[j].likes < currentValue.likes; j--) {
+  //       arr[j + 1] = arr[j]
+  //     }
+  //     arr[j + 1] = currentValue
+  //   }
+  //   return arr
+  // }
+
+  // insertionSort(tripsData)
   tripsData.sort((a, b) => b.likes - a.likes);
 
   return (

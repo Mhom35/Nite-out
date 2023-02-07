@@ -1,11 +1,18 @@
-import React, { useState, useRef, useMemo, useEffect } from "react";
-import ReactMapGL, { Marker, Popup, Layer, Source } from "react-map-gl";
+import React, { useState, useRef, useMemo, useEffect, useCallback } from "react";
+import ReactMapGL, { Marker, Popup, Layer, Source, useMap, MapProvider } from "react-map-gl";
 import "./toggle.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import sfData from "./data/sfBarData";
-import switchData from "./data/dataSorting";
+import dataObj from "./data/dataSorting";
 import ReactSlider from "react-slider";
 import { circleLayer, heatmapLayer } from "./map-style";
+import Form from 'react-bootstrap/Form';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Button from '@mui/material/Button';
+
 
 function createObjData(filteredPopData, coordinatesData, barID) {
   let featuresObj = {};
@@ -64,8 +71,8 @@ function HeatMap({ setCurrentValue }) {
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [popularityData, setPopularityData] = useState(sfData);
-  // const [lat, setLat] = useState(37.783977);
-  // const [lng, setLng] = useState(-122.358809);
+  const [lat, setLat] = useState(37.783977);
+  const [lng, setLng] = useState(-122.358809);
   const mapRef = useRef();
   const [toggled, setToggled] = useState(false);
   const [pm, setPm] = useState(false);
@@ -73,41 +80,53 @@ function HeatMap({ setCurrentValue }) {
       setToggled((s) => !s);
       setPm(!toggled)
   };
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
   //useMemo to get the popularity by selectedHour, day and city
 
-  useEffect(() => {
-    //selectedDataSet ( from drop down menu)
-    const cityData = switchData(selectedCity);
-    setViewPort(cityData.viewPort);
-    // setLng(viewport.longitude);
-    // setLat(viewport.latitude);
-    setPopularityData(cityData.dataSet);
-  }, [selectedCity]);
-  const data = useMemo(() => {
-    return popularityByHour(popularityData, selectedHour, selectedDay);
-  }, [selectedHour, selectedDay]);
-
   // useEffect(() => {
-  //   if ((lng || lat) && mapRef.current) {
-  //     mapRef.current.flyTo({
-  //       center: [lng, lat],
-  //     });
-  //   }
-  //   console.log(lat);
-  //   console.log(lng);
-  // }, [popularityData]);
+  //   //selectedDataSet ( from drop down menu)
+  //   const cityData = switchData(selectedCity);
+  //   setViewPort(cityData.viewPort);
+  //   setLng(viewport.longitude);
+  //   setLat(viewport.latitude);
+  //   setPopularityData(cityData.dataSet);
+
+  // }, [selectedCity]);
+
+
+  
+
+const data = useMemo(() => {
+    return popularityByHour(popularityData, selectedHour, selectedDay);
+}, [selectedHour, selectedDay, popularityData]);
+
+  const onSelectCity = useCallback((city) => {
+    setPopularityData(city.dataSet)
+    mapRef.current?.flyTo({center: [city.viewPort.longitude, city.viewPort.latitude], duration: 5000});
+  }, []);
+
+
+  
   useEffect(() => {
-    console.log(pm)
     setSelectedHour(pm ? selectedHour + 12: selectedHour - 12)
   },[pm])
-  console.log(selectedHour)
 
   const mapboxAccessToken = `${process.env.REACT_APP_MAP_TOKEN}`;
+
 
   return (
     <>
       <div>
+        <MapProvider>
         <ReactMapGL
           ref={mapRef}
           initialViewState={viewport}
@@ -163,6 +182,7 @@ function HeatMap({ setCurrentValue }) {
             <Layer {...heatmapLayer} />
           </Source>
         </ReactMapGL>
+        </MapProvider>
         <ReactSlider
           className="customSlider"
           thumbClassName="customSlider-thumb"
@@ -184,35 +204,56 @@ function HeatMap({ setCurrentValue }) {
           }}
         />
 
-        <select
-          value={selectedDay}
-          onChange={(event) => setSelectedDay(event.target.value)}
-        >
-          <option>Select a Day</option>
-          <option value="Monday">Monday</option>
-          <option value="Tuesday">Tuesday</option>
-          <option value="Wednesday">Wednesday</option>
-          <option value="Thursday">Thursday</option>
-          <option value="Friday">Friday</option>
-          <option value="Saturday">Saturday</option>
-          <option value="Sunday">Sunday</option>
-        </select>
-        {/* <select
-        value={selectedCity}
-        onChange={(event) => setSelectedCity(event.target.value)}
-      >
-        <option>Select a City</option>
-        <option value="SF">San Francisco</option>
-        <option value="LA">Los Angeles</option>
-        <option value="NYC">New York</option>
-      </select> */}
+        
+            <div className="control-panel">
+              {dataObj.map((city, index) => (
+                <div key={`btn-${index}`} className="input">
+                  <input
+                    type="radio"
+                    name="city"
+                    id={`city-${index}`}
+                    defaultChecked={city.city === 'San Francisco'}
+                    onClick={() => onSelectCity(city)}
+                  />
+                  <label htmlFor={`city-${index}`}>{city.city}</label>
+                </div>
+              ))}
+            </div>
 
       </div>
       {/* <div>
         <img className="heatmap" src={legend} alt="heatmap" />
       </div> */}
+
+
+
+
       <div className="semantics">
         <div className="sliderContainer">
+          <div className="dropdown">
+                <FormControl sx={{ minWidth: 120, pb: 5, }}>
+                  <InputLabel id="demo-controlled-open-select-label">Day</InputLabel>
+                  <Select
+                    labelId="demo-controlled-open-select-label"
+                    id="demo-controlled-open-select"
+                    open={open}
+                    onClose={handleClose}
+                    onOpen={handleOpen}
+                    value={selectedDay}
+                    label="Day"
+                    onChange={(event) => setSelectedDay(event.target.value)}
+                  >
+                    <MenuItem value="Monday">Monday</MenuItem>
+                    <MenuItem value="Tuesday">Tuesday</MenuItem>
+                    <MenuItem value="Wednesday">Wednesday</MenuItem>
+                    <MenuItem value="Thursday">Thursday</MenuItem>
+                    <MenuItem value="Friday">Friday</MenuItem>
+                    <MenuItem value="Saturday">Saturday</MenuItem>
+                    <MenuItem value="Sunday">Sunday</MenuItem>
+                  </Select>
+                </FormControl>
+
+          </div>
           <div class={`digital-clock${pm ? " night": ""}`}>
               {selectedHour > 0 ? pm ? selectedHour - 12 + 1: selectedHour + 1 : 1}:00
             

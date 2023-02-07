@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider, useToken } from "./frontendAuth";
 import "./App.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Signup from "./signup.js";
 import SignIn from "./signin.js";
 import TopTrips from "./toptrips.js";
@@ -23,6 +24,7 @@ function GetToken() {
 function App() {
   const domain = /https:\/\/[^/]+/;
   const basename = process.env.PUBLIC_URL.replace(domain, "");
+  
 
   return (
     <BrowserRouter basename={basename}>

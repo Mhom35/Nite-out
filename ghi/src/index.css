@@ -170,3 +170,41 @@ li:hover {
   vertical-align: middle;
 
 }
+
+
+.container {
+  display: flex;
+  height: 70vh;
+  justify-content: flex-start;
+  -items: center;
+  align-items: center;
+  gap: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #c8b7a6;
+}
+.offset {
+  width: 30%;
+}
+.main-wrapper {
+  display: flex;
+  gap: 10px;
+  width: 70%;
+}
+.item {
+  width: 8em;
+  height: 450px;
+  display: block;
+  transition: width 2s;
+}
+.item:hover {
+  width: 40em;
+}
+.item img {
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y;
+  object-fit: cover;
+  object-position: 50% 50%;
+  border-radius: 0.5em;
+}

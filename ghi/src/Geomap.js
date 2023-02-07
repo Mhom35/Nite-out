@@ -247,7 +247,6 @@ const AddLocation = () => {
             onClose={() => setYelpPopUp(false)}
           >
             <h2>{yelpSelectedPlace.name}</h2>
-            <h3>link</h3>
             <a
               href={yelpSelectedPlace.url}
               target="_blank"
