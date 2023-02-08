@@ -13,7 +13,10 @@ keepalive_kwargs = {
 
 kwargs = {"autocommit": True}
 # connection = psycopg.connect(conninfo=os.environ["DATABASE_URL"], **kwargs)
+import time
 
+def current_milli_time():
+    return round(time.time() * 1000)
 
 class Error(BaseModel):
     message: str
@@ -138,11 +141,13 @@ class TripRepository:
         except Exception:
             return {"message": "Create did not work"}
 
-    def get_bars_for_trip(self, trip_id: int):
+    def get_bars_for_trip(self, trip_list: list):
         try:
             with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
                 with conn.cursor() as db:
-                    bars = []
+                    # 
+                    new_dict = {}
+                    output = []
                     result = db.execute(
                         """
                         SELECT b.id AS bar_id, b.yelp_id, b.bar_name,
@@ -153,47 +158,61 @@ class TripRepository:
                         FROM trip_bars AS tb
                         JOIN bars AS b ON b.id = tb.bar_id
                         JOIN trips AS t ON t.id = tb.trip_id
-                        WHERE tb.trip_id = %s
+                        WHERE tb.trip_id = ANY (%s)
                         ORDER BY tb.positions;
                         """,
-                        [trip_id],
+                        [trip_list],
                     )
 
-                    for record in result:
-                        bars.append(
-                            BarOutWithPosition(
-                                bar_id=record[0],
-                                yelp_id=record[1],
-                                bar_name=record[2],
-                                url=record[3],
-                                lat=record[4],
-                                long=record[5],
-                                image_url=record[6],
-                                position=record[15],
+                    for trip in result:
+                        # trip_id 
+                        if trip[7] not in new_dict:
+                            new_dict[trip[7]] = TripOut(
+                                id=trip[7],
+                                trip_name=trip[8],
+                                locations=[BarOutWithPosition(
+                                bar_id=trip[0],
+                                yelp_id=trip[1],
+                                bar_name=trip[2],
+                                url=trip[3],
+                                lat=trip[4],
+                                long=trip[5],
+                                image_url=trip[6],
+                                position=trip[15],
+                                )
+                            ],
+                                description=trip[10],
+                                created_on=trip[11],
+                                image_url=trip[12],
+                                likes=trip[13],
+                                distance=trip[14],
                             )
-                        )
-                    trip = TripOut(
-                        id=record[7],
-                        trip_name=record[8],
-                        locations=record[9],
-                        description=record[10],
-                        created_on=record[11],
-                        image_url=record[12],
-                        likes=record[13],
-                        distance=record[14],
-                    )
-                    trip.locations = bars
-                    return trip
+                        else:
+                            new_dict[trip[7]].locations.append(
+                                BarOutWithPosition(
+                                    bar_id=trip[0],
+                                    yelp_id=trip[1],
+                                    bar_name=trip[2],
+                                    url=trip[3],
+                                    lat=trip[4],
+                                    long=trip[5],
+                                    image_url=trip[6],
+                                    position=trip[15],
+                                )
+
+                            )
+                    
+                    return list(new_dict.values())
 
         except Exception:
             return {"message": "trip does not exist"}
 
     def get_all_trips(self) -> Union[List[TripOut], Error]:
+        start = current_milli_time()
         try:
             with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
                 with conn.cursor() as db:
                     trips = []
-                    trips_dict = {}
                     result = db.execute(
                         """
                             SELECT t.id AS trip_id
@@ -203,16 +222,12 @@ class TripRepository:
                             ORDER BY tb.positions;
                             """
                     )
-                    for record in result:
-                        unique_tripid = record[0]
-                        if unique_tripid not in trips_dict:
-                            trips_dict[unique_tripid] = 1
-                        else:
-                            trips_dict[unique_tripid] += 1
-                    for trip in trips_dict:
-                        indiv_trip = self.get_bars_for_trip(trip)
-                        trips.append(indiv_trip)
-                    return trips
+                    result_hash = set(result)
+                    all_trip_ids = [trip[0] for trip in result_hash]
+                    trips = self.get_bars_for_trip(all_trip_ids)
+                    elapsed = current_milli_time() - start
+                    print(elapsed)
+                    return trips  
         except Exception:
             return {"message": "trip does not exist"}
 
