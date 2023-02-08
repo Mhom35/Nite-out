@@ -14,7 +14,6 @@ keepalive_kwargs = {
 kwargs = {"autocommit": True}
 # connection = psycopg.connect(conninfo=os.environ["DATABASE_URL"], **kwargs)
 
-
 class Error(BaseModel):
     message: str
 
