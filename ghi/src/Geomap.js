@@ -13,6 +13,7 @@ import ReactMapGL, {
 } from "react-map-gl";
 
 import "mapbox-gl/dist/mapbox-gl.css";
+import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css"
 import MapBoxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import { useAuthContext } from "./frontendAuth";
 import { useNavigate } from "react-router-dom";

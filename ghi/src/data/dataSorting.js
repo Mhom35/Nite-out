@@ -11,8 +11,8 @@ const dataObj = [
   {city:"New York",
     dataSet: newYork,
     viewPort: {
-      latitude: 40.73061,
-      longitude: -73.935242,
+      latitude: 40.673086,
+      longitude: -73.969427,
       zoom: 14,
     },
   },

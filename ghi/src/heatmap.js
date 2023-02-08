@@ -140,6 +140,8 @@ const data = useMemo(() => {
                 key={places.id}
                 latitude={places.coordinates.lat}
                 longitude={places.coordinates.lng}
+                clickTolerance={1000}
+                color="red"
               >
                 <button
                   className="marker-btn"
@@ -164,12 +166,12 @@ const data = useMemo(() => {
               maxWidth="300px"
               onClose={() => setShowPopup(false)}
             >
-              <h2>{selectedPlace.name}</h2>
-              <h3>Type:</h3>
+              <h1>{selectedPlace.name}</h1>
               {selectedPlace.populartimes.map((time) =>
                 time.name === selectedDay ? (
                   <>
-                    <div>{time.data[selectedHour]}</div>
+                  
+                    <h3>Popularity Score: {time.data[selectedHour]}</h3>
                   </>
                 ) : (
                   ""

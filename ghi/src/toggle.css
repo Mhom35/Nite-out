@@ -185,14 +185,15 @@
 
 .control-panel {
     position: absolute;
-    top: 0;
+    top: 10%;
     right: 0;
     max-width: 320px;
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    padding: 12px 24px;
+    width: 25%;
+    background: #e8f9fd;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    padding: 10px 12px;
     margin: 20px;
-    font-size: 13px;
+    font-size: 20px;
     line-height: 2;
     color: #6b6b76;
     text-transform: uppercase;
