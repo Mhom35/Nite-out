@@ -21,3 +21,4 @@ app.add_middleware(
 app.include_router(trips.router)
 app.include_router(bars.router)
 app.include_router(tripBars.router)
+# app.include_router(wishlist.router)

@@ -9,7 +9,8 @@ steps = [
             created_on TIMESTAMP NOT NULL,
             image_url VARCHAR(255),
             likes SMALLINT,
-            distance SMALLINT
+            distance SMALLINT,
+            account INT NOT NULL
         );
         """,
         """

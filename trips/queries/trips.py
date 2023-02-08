@@ -41,6 +41,7 @@ class TripOut(BaseModel):
     image_url: Optional[str]
     likes: Optional[int]
     distance: Optional[int]
+    account: int
 
 
 class TripRepository:
@@ -114,19 +115,21 @@ class TripRepository:
             print("error message:", e)
             return {"message": "Could not update trip"}
 
-    def create_trip(self, trip: TripIn) -> TripOut:
+    def create_trip(self, account_id: int, trip: TripIn) -> TripOut:
         try:
             # connect to database
             with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
                 # get cursor (something to run SQL with)
                 with conn.cursor() as db:
                     # Run our INSERT statement
+                    print("hello!!!!! _!_ !_! _!_ _! __")
                     result = db.execute(
                         """
                         INSERT INTO trips
-                            (trip_name, locations, description, created_on)
+                            (trip_name, locations, description, created_on, account)
                         VALUES
-                            (%s, %s, %s, %s)
+                            (%s, %s, %s, %s, %s)
+
                         RETURNING id;
                         """,
                         [
@@ -134,10 +137,13 @@ class TripRepository:
                             trip.locations,
                             trip.description,
                             trip.created_on,
+                            account_id
                         ],
                     )
+                    print("hello world")
                     id = result.fetchone()[0]
-                    return self.trip_in_to_out(id, trip)
+                    print("result--->", result)
+                    return self.trip_in_to_out(id, trip, account_id)
         except Exception:
             return {"message": "Create did not work"}
 
@@ -154,7 +160,7 @@ class TripRepository:
                         b.url, b.lat, b.long, b.image_url,
                         t.id AS trip_id, t.trip_name, t.locations,
                         t.description, t.created_on, t.image_url,
-                        t.likes, t.distance, tb.positions
+                        t.likes, t.distance, tb.positions, t.account
                         FROM trip_bars AS tb
                         JOIN bars AS b ON b.id = tb.bar_id
                         JOIN trips AS t ON t.id = tb.trip_id
@@ -186,6 +192,7 @@ class TripRepository:
                                 image_url=trip[12],
                                 likes=trip[13],
                                 distance=trip[14],
+                                account=trip[16]
                             )
                         else:
                             new_dict[trip[7]].locations.append(
@@ -231,9 +238,60 @@ class TripRepository:
         except Exception:
             return {"message": "trip does not exist"}
 
-    def trip_in_to_out(self, id: int, trip: TripIn):
+    def get_individual_trip(self, trip_id: int):
+        try:
+            with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
+                with conn.cursor() as db:
+                    bars = []
+                    result = db.execute(
+                        """
+                        SELECT b.id AS bar_id, b.yelp_id, b.bar_name,
+                        b.url, b.lat, b.long, b.image_url,
+                        t.id AS trip_id, t.trip_name, t.locations,
+                        t.description, t.created_on, t.image_url,
+                        t.likes, t.distance, tb.positions
+                        FROM trip_bars AS tb
+                        JOIN bars AS b ON b.id = tb.bar_id
+                        JOIN trips AS t ON t.id = tb.trip_id
+                        WHERE tb.trip_id = %s
+                        ORDER BY tb.positions;
+                        """,
+                        [trip_id],
+                    )
+
+                    for record in result:
+                        bars.append(
+                            BarOutWithPosition(
+                                bar_id=record[0],
+                                yelp_id=record[1],
+                                bar_name=record[2],
+                                url=record[3],
+                                lat=record[4],
+                                long=record[5],
+                                image_url=record[6],
+                                position=record[15],
+                            )
+                        )
+                    trip = TripOut(
+                        id=record[7],
+                        trip_name=record[8],
+                        locations=record[9],
+                        description=record[10],
+                        created_on=record[11],
+                        image_url=record[12],
+                        likes=record[13],
+                        distance=record[14],
+                    )
+                    trip.locations = bars
+                    return trip
+        except Exception:
+            return {"message": "trip does not exist"}
+
+
+
+    def trip_in_to_out(self, id: int, trip: TripIn, account_id: int):
         old_data = trip.dict()
-        return TripOut(id=id, **old_data)
+        return TripOut(id=id, account=account_id, **old_data)
 
     def record_to_trip_out(self, record):
         return TripOut(
@@ -245,4 +303,5 @@ class TripRepository:
             image_url=record[5],
             likes=record[6],
             distance=record[7],
+            account=record[8],
         )
