@@ -1,14 +1,6 @@
 import * as React from "react";
 // import Button from "@mui/material/Button";/
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-// import RecommendIcon from "@mui/icons-material/Recommend";
-// import Table from "@mui/material/Table";
-// import TableBody from "@mui/material/TableBody";
-// import TableCell from "@mui/material/TableCell";
-// import TableContainer from "@mui/material/TableContainer";
-// import TableHead from "@mui/material/TableHead";
-// import TableRow from "@mui/material/TableRow";
-// import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
 import { getTripId } from "./app/tripId";
 import { useDispatch } from "react-redux";
@@ -18,9 +10,11 @@ import { useUpdateTripMutation } from "./app/tripsApi";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Box from '@mui/material/Box';
+import * as Icon from 'react-bootstrap-icons';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { Container } from "@mui/system";
+import { lightBlue, red } from "@mui/material/colors";
 
 
 const theme = createTheme();
@@ -98,16 +92,24 @@ export default function TopTrips() {
       <Grid container spacing={7} columns={{ xs: 0, sm: 4, md: 8 }} >
             {tripsData?.map((trip) => 
               <Grid item xs={12} sm={4} md={2} lg={1}>
-                <Paper>
+                <Paper style={{width: '18rem'}}>
                   <Card style={{ width: '18rem' }}>
                     <Card.Img variant="bottom" style={{maxHeight: '15rem', minHeight: '15rem'}}src={trip.locations[0].image_url} />
                     <Card.Body>
-                      <Card.Title>{trip.trip_name}</Card.Title>
-                      <Card.Text>
-                        {trip.description}
+                      <Card.Title style={{fontSize: 30, fontSmooth: 3,}}>{trip.trip_name}</Card.Title>
+                      <Card.Text style={{fontSize: 20, color: "#8c92ac"}}>
+                        <Icon.PersonCircle className="me-2"/>
+
+                        {trip.username}
                       </Card.Text>
-                      <Button variant="primary" onClick={handleTripSelect} value={trip.id}>Details</Button>
-                      <Button value={trip.id} onClick={handleLiked}> {trip.likes}</Button>
+                      <Card.Text>
+                        <Icon.Quote className="ms-1 me-3"/>
+                        {trip.description.slice(0, 50)}
+                        <Icon.Quote className="ms-3 me-1" style={{color:red,}} />
+                      </Card.Text>
+                      <Button className="ms-1 me-5" variant="outline-primary"onClick={handleTripSelect} value={trip.id}>Details</Button>
+                      
+                      <Button className="me-4" variant="outline-primary" style={{marginLeft: 42, width: 60}} value={trip.id} onClick={handleLiked}> <Icon.BookmarkHeartFill/> {trip.likes}</Button>
                     </Card.Body>
                   </Card>
                 </Paper>
