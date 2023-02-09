@@ -1,14 +1,14 @@
 import * as React from "react";
 // import Button from "@mui/material/Button";/
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import RecommendIcon from "@mui/icons-material/Recommend";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+// import RecommendIcon from "@mui/icons-material/Recommend";
+// import Table from "@mui/material/Table";
+// import TableBody from "@mui/material/TableBody";
+// import TableCell from "@mui/material/TableCell";
+// import TableContainer from "@mui/material/TableContainer";
+// import TableHead from "@mui/material/TableHead";
+// import TableRow from "@mui/material/TableRow";
+// import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
 import { getTripId } from "./app/tripId";
 import { useDispatch } from "react-redux";
@@ -17,6 +17,11 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useUpdateTripMutation } from "./app/tripsApi";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+import { Container } from "@mui/system";
+
 
 const theme = createTheme();
 
@@ -88,64 +93,89 @@ export default function TopTrips() {
   tripsData.sort((a, b) => b.likes - a.likes);
 
   return (
-    <ThemeProvider theme={theme}>
-      <h1 align="center"> Top Trips </h1>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 400 }} aria-label="simple table">
-          <TableHead>
-            {/* <TableRow>
-              <TableCell align="center" width="100">
-                Trip Name
-              </TableCell>
-              <TableCell align="center" width="125">
-                Description
-              </TableCell>
-              <TableCell align="center">Image</TableCell>
-              <TableCell align="center">Likes</TableCell>
-            </TableRow> */}
-          </TableHead>
-          <TableBody>
-            {/* {tripsData?.map((trip) => (
-              <TableRow
-                key={trip.name}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell align="center" component="th" scope="row">
-                  <Button onClick={handleTripSelect} value={trip.id}>
-                    {trip.trip_name}
-                  </Button>
-                </TableCell> */}
-                {/* <TableCell align="center">
-                  {trip.locations[0].bar_name}
-                </TableCell> */}
-                {/* <TableCell align="center">{trip.description}</TableCell>
-                <TableCell align="center">
-                  <img src={trip.locations[0].image_url} width="200" alt="" />
-                </TableCell>
-                <TableCell align="center">
-                  <Button value={trip.id} onClick={handleLiked}>
-                    <RecommendIcon />
-                    {trip.likes}
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))} */}
+  <Container>
+     <h1 align="center"> Top Trips </h1>
+      <Grid container spacing={7} columns={{ xs: 0, sm: 4, md: 8 }} >
             {tripsData?.map((trip) => 
+              <Grid item xs={12} sm={4} md={2} lg={1}>
+                <Paper>
                   <Card style={{ width: '18rem' }}>
-                    <Card.Img variant="top" src={trip.locations[0].image_url} />
+                    <Card.Img variant="bottom" style={{maxHeight: '15rem', minHeight: '15rem'}}src={trip.locations[0].image_url} />
                     <Card.Body>
                       <Card.Title>{trip.trip_name}</Card.Title>
                       <Card.Text>
                         {trip.description}
                       </Card.Text>
-                      <Button variant="primary">Go somewhere</Button>
+                      <Button variant="primary" onClick={handleTripSelect} value={trip.id}>Details</Button>
+                      <Button value={trip.id} onClick={handleLiked}> {trip.likes}</Button>
                     </Card.Body>
                   </Card>
+                </Paper>
+              </Grid>
 
             )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </ThemeProvider>
-  );
+      </Grid>
+ </Container>
+  )
+
+  //   <ThemeProvider theme={theme}>
+  //     <h1 align="center"> Top Trips </h1>
+  //     <TableContainer component={Paper}>
+  //       <Table sx={{ minWidth: 400 }} aria-label="simple table">
+  //         <TableHead>
+  //           {/* <TableRow>
+  //             <TableCell align="center" width="100">
+  //               Trip Name
+  //             </TableCell>
+  //             <TableCell align="center" width="125">
+  //               Description
+  //             </TableCell>
+  //             <TableCell align="center">Image</TableCell>
+  //             <TableCell align="center">Likes</TableCell>
+  //           </TableRow> */}
+  //         </TableHead>
+  //         <TableBody>
+  //           {/* {tripsData?.map((trip) => (
+  //             <TableRow
+  //               key={trip.name}
+  //               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+  //             >
+  //               <TableCell align="center" component="th" scope="row">
+  //                 <Button onClick={handleTripSelect} value={trip.id}>
+  //                   {trip.trip_name}
+  //                 </Button>
+  //               </TableCell> */}
+  //               {/* <TableCell align="center">
+  //                 {trip.locations[0].bar_name}
+  //               </TableCell> */}
+  //               {/* <TableCell align="center">{trip.description}</TableCell>
+  //               <TableCell align="center">
+  //                 <img src={trip.locations[0].image_url} width="200" alt="" />
+  //               </TableCell>
+  //               <TableCell align="center">
+  //                 <Button value={trip.id} onClick={handleLiked}>
+  //                   <RecommendIcon />
+  //                   {trip.likes}
+  //                 </Button>
+  //               </TableCell>
+  //             </TableRow>
+  //           ))} */}
+            // {tripsData?.map((trip) => 
+            //       <Card style={{ width: '18rem' }}>
+            //         <Card.Img variant="top" src={trip.locations[0].image_url} />
+            //         <Card.Body>
+            //           <Card.Title>{trip.trip_name}</Card.Title>
+            //           <Card.Text>
+            //             {trip.description}
+            //           </Card.Text>
+            //           <Button variant="primary">Go somewhere</Button>
+            //         </Card.Body>
+            //       </Card>
+
+            // )}
+  //         </TableBody>
+  //       </Table>
+  //     </TableContainer>
+  //   </ThemeProvider>
+  // );
 }
