@@ -10,7 +10,8 @@ steps = [
             image_url VARCHAR(255),
             likes SMALLINT,
             distance SMALLINT,
-            account INT NOT NULL
+            account INT NOT NULL,
+            username VARCHAR(255)
         );
         """,
         """

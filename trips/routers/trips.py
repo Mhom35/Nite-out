@@ -35,7 +35,8 @@ def create_trip(
     # account: dict = Depends(get_current_user),
 ):
     try:
-        created_trip = repo.create_trip(account_data["id"],trip)
+        print(account_data["username"])
+        created_trip = repo.create_trip(account_data["id"], account_data["username"],trip)
         return created_trip
     except Exception:
         response.status_code = 400

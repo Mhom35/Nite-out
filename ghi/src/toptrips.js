@@ -1,5 +1,5 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
+// import Button from "@mui/material/Button";/
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import RecommendIcon from "@mui/icons-material/Recommend";
 import Table from "@mui/material/Table";
@@ -15,6 +15,8 @@ import { useDispatch } from "react-redux";
 import { useGetAllTripsQuery } from "./app/tripsApi";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useUpdateTripMutation } from "./app/tripsApi";
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 
 const theme = createTheme();
 
@@ -91,7 +93,7 @@ export default function TopTrips() {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 400 }} aria-label="simple table">
           <TableHead>
-            <TableRow>
+            {/* <TableRow>
               <TableCell align="center" width="100">
                 Trip Name
               </TableCell>
@@ -100,10 +102,10 @@ export default function TopTrips() {
               </TableCell>
               <TableCell align="center">Image</TableCell>
               <TableCell align="center">Likes</TableCell>
-            </TableRow>
+            </TableRow> */}
           </TableHead>
           <TableBody>
-            {tripsData?.map((trip) => (
+            {/* {tripsData?.map((trip) => (
               <TableRow
                 key={trip.name}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -112,11 +114,11 @@ export default function TopTrips() {
                   <Button onClick={handleTripSelect} value={trip.id}>
                     {trip.trip_name}
                   </Button>
-                </TableCell>
+                </TableCell> */}
                 {/* <TableCell align="center">
                   {trip.locations[0].bar_name}
                 </TableCell> */}
-                <TableCell align="center">{trip.description}</TableCell>
+                {/* <TableCell align="center">{trip.description}</TableCell>
                 <TableCell align="center">
                   <img src={trip.locations[0].image_url} width="200" alt="" />
                 </TableCell>
@@ -127,7 +129,20 @@ export default function TopTrips() {
                   </Button>
                 </TableCell>
               </TableRow>
-            ))}
+            ))} */}
+            {tripsData?.map((trip) => 
+                  <Card style={{ width: '18rem' }}>
+                    <Card.Img variant="top" src={trip.locations[0].image_url} />
+                    <Card.Body>
+                      <Card.Title>{trip.trip_name}</Card.Title>
+                      <Card.Text>
+                        {trip.description}
+                      </Card.Text>
+                      <Button variant="primary">Go somewhere</Button>
+                    </Card.Body>
+                  </Card>
+
+            )}
           </TableBody>
         </Table>
       </TableContainer>

@@ -42,6 +42,7 @@ class TripOut(BaseModel):
     likes: Optional[int]
     distance: Optional[int]
     account: int
+    username: Optional[str]
 
 
 class TripRepository:
@@ -115,7 +116,7 @@ class TripRepository:
             print("error message:", e)
             return {"message": "Could not update trip"}
 
-    def create_trip(self, account_id: int, trip: TripIn) -> TripOut:
+    def create_trip(self, account_id: int, username: str, trip: TripIn) -> TripOut:
         try:
             # connect to database
             with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
@@ -125,9 +126,9 @@ class TripRepository:
                     result = db.execute(
                         """
                         INSERT INTO trips
-                            (trip_name, locations, description, created_on, account)
+                            (trip_name, locations, description, created_on, account, username)
                         VALUES
-                            (%s, %s, %s, %s, %s)
+                            (%s, %s, %s, %s, %s, %s)
 
                         RETURNING id;
                         """,
@@ -136,11 +137,13 @@ class TripRepository:
                             trip.locations,
                             trip.description,
                             trip.created_on,
-                            account_id
+                            account_id,
+                            username
                         ],
                     )
                     id = result.fetchone()[0]
-                    return self.trip_in_to_out(id, trip, account_id)
+                    result = self.trip_in_to_out(id, trip, account_id, username)
+                    return result
         except Exception:
             return {"message": "Create did not work"}
 
@@ -157,7 +160,7 @@ class TripRepository:
                         b.url, b.lat, b.long, b.image_url,
                         t.id AS trip_id, t.trip_name, t.locations,
                         t.description, t.created_on, t.image_url,
-                        t.likes, t.distance, tb.positions, t.account
+                        t.likes, t.distance, tb.positions, t.account, t.username
                         FROM trip_bars AS tb
                         JOIN bars AS b ON b.id = tb.bar_id
                         JOIN trips AS t ON t.id = tb.trip_id
@@ -167,29 +170,32 @@ class TripRepository:
                         [trip_list],
                     )
 
+
                     for trip in result:
-                        # trip_id 
+                        # trip id 
+
+                        print("trip", trip)
                         if trip[7] not in new_dict:
                             new_dict[trip[7]] = TripOut(
                                 id=trip[7],
                                 trip_name=trip[8],
                                 locations=[BarOutWithPosition(
-                                bar_id=trip[0],
-                                yelp_id=trip[1],
-                                bar_name=trip[2],
-                                url=trip[3],
-                                lat=trip[4],
-                                long=trip[5],
-                                image_url=trip[6],
-                                position=trip[15],
-                                )
-                            ],
+                                    bar_id=trip[0],
+                                    yelp_id=trip[1],
+                                    bar_name=trip[2],
+                                    url=trip[3],
+                                    lat=trip[4],
+                                    long=trip[5],
+                                    image_url=trip[6],
+                                    position=trip[15],
+                                )],
                                 description=trip[10],
                                 created_on=trip[11],
                                 image_url=trip[12],
                                 likes=trip[13],
                                 distance=trip[14],
-                                account=trip[16]
+                                account=trip[16],
+                                username=trip[17],
                             )
                         else:
                             new_dict[trip[7]].locations.append(
@@ -205,6 +211,8 @@ class TripRepository:
                                 )
 
                             )
+                        print("here")
+
                     
                     return list(new_dict.values())
 
@@ -246,7 +254,7 @@ class TripRepository:
                         b.url, b.lat, b.long, b.image_url,
                         t.id AS trip_id, t.trip_name, t.locations,
                         t.description, t.created_on, t.image_url,
-                        t.likes, t.distance, tb.positions, t.account
+                        t.likes, t.distance, tb.positions, t.account, t.username
                         FROM trip_bars AS tb
                         JOIN bars AS b ON b.id = tb.bar_id
                         JOIN trips AS t ON t.id = tb.trip_id
@@ -257,6 +265,7 @@ class TripRepository:
                     )
 
                     for record in result:
+                        print("record--->", record)
                         bars.append(
                             BarOutWithPosition(
                                 bar_id=record[0],
@@ -278,8 +287,10 @@ class TripRepository:
                         image_url=record[12],
                         likes=record[13],
                         distance=record[14],
-                        account=record[16]
+                        account=record[16],
+                        username=record[17]
                     )
+                    
                     trip.locations = bars
                     return trip
         except Exception:
@@ -287,9 +298,9 @@ class TripRepository:
 
 
 
-    def trip_in_to_out(self, id: int, trip: TripIn, account_id: int):
+    def trip_in_to_out(self, id: int, trip: TripIn, account_id: int, username: str):
         old_data = trip.dict()
-        return TripOut(id=id, account=account_id, **old_data)
+        return TripOut(id=id, account=account_id, username=username, **old_data)
 
     def record_to_trip_out(self, record):
         return TripOut(
@@ -302,6 +313,7 @@ class TripRepository:
             likes=record[6],
             distance=record[7],
             account=record[8],
+            username=record[9],
         )
 
     
