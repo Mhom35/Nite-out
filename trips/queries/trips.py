@@ -81,7 +81,7 @@ class TripRepository:
             print(e)
             return False
 
-    def update_trip(self, trip_id: int, trip: TripIn) -> Union[TripOut, Error]:
+    def update_trip(self, account_id: int, trip_id: int, trip: TripIn) -> Union[TripOut, Error]:
         try:
             # connect to database
             with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
@@ -110,7 +110,7 @@ class TripRepository:
                             trip_id,
                         ],
                     )
-                    return self.trip_in_to_out(trip_id, trip)
+                    return self.trip_in_to_out(trip_id, trip, account_id)
         except Exception as e:
             print("error message:", e)
             return {"message": "Could not update trip"}
@@ -122,7 +122,6 @@ class TripRepository:
                 # get cursor (something to run SQL with)
                 with conn.cursor() as db:
                     # Run our INSERT statement
-                    print("hello!!!!! _!_ !_! _!_ _! __")
                     result = db.execute(
                         """
                         INSERT INTO trips
@@ -140,9 +139,7 @@ class TripRepository:
                             account_id
                         ],
                     )
-                    print("hello world")
                     id = result.fetchone()[0]
-                    print("result--->", result)
                     return self.trip_in_to_out(id, trip, account_id)
         except Exception:
             return {"message": "Create did not work"}
@@ -249,7 +246,7 @@ class TripRepository:
                         b.url, b.lat, b.long, b.image_url,
                         t.id AS trip_id, t.trip_name, t.locations,
                         t.description, t.created_on, t.image_url,
-                        t.likes, t.distance, tb.positions
+                        t.likes, t.distance, tb.positions, t.account
                         FROM trip_bars AS tb
                         JOIN bars AS b ON b.id = tb.bar_id
                         JOIN trips AS t ON t.id = tb.trip_id
@@ -281,6 +278,7 @@ class TripRepository:
                         image_url=record[12],
                         likes=record[13],
                         distance=record[14],
+                        account=record[16]
                     )
                     trip.locations = bars
                     return trip
@@ -305,3 +303,5 @@ class TripRepository:
             distance=record[7],
             account=record[8],
         )
+
+    

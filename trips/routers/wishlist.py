@@ -16,31 +16,35 @@ sys.path.append("..")
 router = APIRouter()
 
 
-@router.get("/wishlist", response_model=Union[List[TripOut], Error])
+@router.get("/wishlist")
 def get_wishlist(
-    repo: wishlistRepository = Depends(),
+    repo: WishListRepository = Depends(),
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     return repo.get_wishlist(account_data["id"])
 
 
-@router.put("/wishlist/{wishlist_id}", response_model=Union[wishlistOut, Error])
-def update_trip(
-    wishlist_id: int,
-    wishlist: WishlistIn,
-    repo: wishlistRepository = Depends(),
-) -> Union[TripOut, Error]:
-    return repo.update_wishlist(trip_id, wishlist)
+@router.delete("/wishlist/{trip_id}", response_model=bool)
+def delete_from_wishlist(
+    wishlist: WishListIn,
+    trip_id: int,
+    account_data: dict = Depends(authenticator.get_current_account_data),
+    repo: WishListRepository = Depends(),
+) -> bool:
+    return repo.delete_from_wishlist(account_data["id"], trip_id, wishlist)
 
 
-@router.post("/wishlist", response_model=Union[wishlistOut, Error])
+@router.post("/wishlist", response_model=Union[WishListOut, Error])
 def create_wishlist(
-    wishlist: wishlistIn,
+    wishlist: WishListIn,
     response: Response,
     repo: WishListRepository = Depends(),
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
+        # if repo.get_wishlist(account_data["id"]):
+        #     return repo.get_wishlist(account_data["id"])
+        # else:
         created_wishlist = repo.create_wishlist(account_data["id"],wishlist)
         return created_wishlist
     except Exception:

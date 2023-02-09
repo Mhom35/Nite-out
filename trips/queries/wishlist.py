@@ -25,24 +25,24 @@ class Error(BaseModel):
 
 
 class WishListIn(BaseModel):
-    wishlist: dict
-    account: int
+    wishlist: list
 
 class WishListOut(BaseModel):
     id: int
-    wishlist: dict
+    wishlist: list
     account: int
 
 
 # Trip helper injection
 trip_class = TripRepository()
-get_trip_helper = trip_class.get_individual_trip
+get_trip_helper = trip_class.get_bars_for_trip
 
 
 
 
-class wishlistRepository:
-    def create_trip(self, account_id: int, wishlist: WishListIn) -> TripOut:
+
+class WishListRepository:
+    def create_wishlist(self, account_id: int, wishlist: WishListIn) -> TripOut:
         try:
             # connect to database
             with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
@@ -51,9 +51,9 @@ class wishlistRepository:
                     result = db.execute(
                         """
                         INSERT INTO wishlist
-                            (wishlist, account_id)
+                            (wishlist, account)
                         VALUES
-                            (%s, %s, %s)
+                            (%s, %s)
 
                         RETURNING id;
                         """,
@@ -65,34 +65,16 @@ class wishlistRepository:
                     )
                     id = result.fetchone()[0]
                     return self.wishlist_in_to_out(id, wishlist, account_id)
-
-    def add_to_wishlist(self, account_id: int, trip_id: int, wishlist: WishListIn) -> Union[WishListOut, Error]:
-        try:
-            # connect to database
-            with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
-                # get cursor (something to run SQL with)
-                with conn.cursor() as db:
-                    # Run our SELECT statement
-                    result = db.execute(
-                        """
-                        UPDATE wishlist
-                        SET wishlist = %s,
-                        WHERE account_id = %s
-                        """,
-                        [
-                            trip.trip_name,
-                            trip.wishlist,
-                            account_id,
-                        ],
-                    )
-
-                    
-                    result.wishlist[trip_id] = (get_trip_helper(trip_id))
-
-                    return result
         except Exception as e:
             print("error message:", e)
-            return {"message": "Could add to wishlist"}
+            return {"message": "Could not create wishlist"}
+
+    def added_to_wishlist(self, trip_list: list):
+        try:
+            return get_trip_helper(trip_list)
+
+        except Exception:
+            return {"message": "trip does not exist"}
     
     def delete_from_wishlist(self, account_id: int, trip_id: int, wishlist: WishListIn) -> Union[WishListOut, Error]:
         try:
@@ -129,18 +111,21 @@ class wishlistRepository:
                 # get a cursor (something to run SQL with)
                 with conn.cursor() as db:
                     # Run our SELECT statement
+                    trips = []
                     result = db.execute(
                         """
-                        SELECT *
-                        FROM wishlist
-                        WHERE account_id = %s
-                        """,
+                            SELECT t.id AS trip_id
+                            FROM wishlist_trips AS wlt
+                            JOIN wishlist AS wl ON wl.id = wlt.wishlist_id
+                            JOIN trips AS t ON t.id = wlt.trip_id
+                            WHERE wl.account = %s
+                            """,
                         [account_id],
                     )
-                    record = result.fetchone()
-                    if record is None:
-                        return None
-                    return self.record_to_wishlist_out(record)
+                    result_hash = set(result)
+                    all_trip_ids = [trip[0] for trip in result_hash]
+                    trips = self.added_to_wishlist(all_trip_ids)
+                    return trips  
         except Exception as e:
             print(e)
             return {"message": "BAR DON'T EXIST"}
@@ -152,18 +137,20 @@ class wishlistRepository:
         old_data = wishlist.dict()
         return WishListOut(id=id, account=account_id, **old_data)
 
+    def wishlist_add_to(self, wishlist: WishListIn, account_id: int, trip_id:int):
+        old_data = wishlist.dict()
+        trip_dict = {}
+        trip_dict[trip_id] = get_trip_helper(trip_id)
+        old_data["wishlist"].append(trip_dict)
+        return WishListOut(id=account_id, account=account_id, **old_data)
+
     def record_to_wishlist_out(self, record):
-        return WishlistOut(
-            wishlist_id=record[0],
+        return WishListOut(
+            id=record[0],
             wishlist=record[1],
-            account_id=record[2],
+            account=record[2],
         )
 
 
 
-create_wishlist
-
-update_wishlist
-
-get_wishlist
 
