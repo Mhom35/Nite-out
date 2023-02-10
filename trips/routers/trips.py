@@ -4,6 +4,7 @@ from typing import List, Union, Optional
 from queries.trips import (
     Error,
     TripIn,
+    TripInWithAccount,
     TripRepository,
     TripOut,
 )
@@ -35,7 +36,6 @@ def create_trip(
     # account: dict = Depends(get_current_user),
 ):
     try:
-        print(account_data["username"])
         created_trip = repo.create_trip(account_data["id"], account_data["username"],trip)
         return created_trip
     except Exception:
@@ -64,11 +64,11 @@ def get_indiv_trip(
 @router.put("/trips/{trip_id}", response_model=Union[TripOut, Error])
 def update_trip(
     trip_id: int,
-    trip: TripIn,
+    trip: TripInWithAccount,
     account_data: dict = Depends(authenticator.get_current_account_data),
     repo: TripRepository = Depends(),
 ) -> Union[TripOut, Error]:
-    return repo.update_trip(account_data["id"],trip_id, trip)
+    return repo.update_trip(trip_id, trip)
 
 
 @router.delete("/trips/{trip_id}", response_model=bool)

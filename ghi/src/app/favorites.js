@@ -1,20 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    show: null,
-    username: '',
-    password: '',
-    full_name: '',
+    wishlist_id : 0,
+    trip_id: 0
 }
 
 export const favoritesSlice = createSlice({
     name: 'favorites',
     initialState,
     reducers: {
-        updateField: (state, action) => {
+        addToFav: (state, action) => {
             state[action.payload.field] = action.payload.value;
         },
-        showModal: (state, action) => {
+        deleteFromFav: (state, action) => {
             state.show = action.payload;
         },
         clearForm: () => {
@@ -25,9 +23,9 @@ export const favoritesSlice = createSlice({
 
 export const {
     clearForm,
-    updateField,
+    addToFav,
     showModal,
-} = accountSlice.actions;
+} = favoritesSlice.actions;
 
-export const LOG_IN_MODAL = 'LOG_IN_MODAL';
-export const SIGN_UP_MODAL = 'SIGN_UP_MODAL';
+
+export default favoritesSlice.reducer;

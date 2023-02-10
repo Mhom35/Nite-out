@@ -15,6 +15,9 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { Container } from "@mui/system";
 import { lightBlue, red } from "@mui/material/colors";
+import { addToFav } from "./app/favorites.js";
+import { useAddTripToWishListMutation }  from "./app/favoritesAPI";
+import Alert from 'react-bootstrap/Alert';
 
 
 const theme = createTheme();
@@ -24,12 +27,14 @@ export default function TopTrips() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [updateTrip, result] = useUpdateTripMutation();
+  const [ addTripToWishList,  bookmarkResult ] = useAddTripToWishListMutation();
   if (isLoading) {
     return (
       // prettier-ignore
       <CircularProgress />
     );
   }
+
 
   const handleTripSelect = async (event) => {
     let tripId = event.currentTarget.value;
@@ -38,10 +43,13 @@ export default function TopTrips() {
   };
   const handleLiked = async (event) => {
     event.preventDefault();
-    const tripID = event.currentTarget.value;
+    const trip_id = event.currentTarget.value;
+    const wishlist_id = 0
+    // await addTripToWishList({ wishlist_id, trip_id})
+    
     let newLikes = 0;
     /* eslint-disable */
-    const cleanedData = barData.filter((trip) => trip.id == tripID)[0];
+    const cleanedData = barData.filter((trip) => trip.id == trip_id)[0];
     if (cleanedData.likes === null) {
       newLikes = 1;
     }
@@ -54,15 +62,36 @@ export default function TopTrips() {
       image_url: cleanedData.image_url,
       likes: newLikes,
       distance: 0,
+      account: cleanedData.account,
+      username: cleanedData.username,
       id: cleanedData.id,
     };
-    updateTrip(likeData);
+    console.log("pooop")
+    updateTrip(likeData)
+  
   };
-  if (result.isSuccess) {
-    navigate(0);
-  } else if (result.isError) {
+  if (bookmarkResult.isSuccess) {
+    
+    const bookmark = document.getElementById('bookmark')
+    bookmark.classList.remove("d-none")
+    setTimeout(() => {
+      bookmark.classList.add("d-none");
+    }, "2000")
+    
+  } else if (bookmarkResult.isError) {
+    const failBookmark = document.getElementById('failbookmark')
+    failBookmark.classList.remove("d-none")
+    setTimeout(() => {
+      failBookmark.classList.add("d-none");
+    }, "2000")
     console.log("error");
   }
+  if (result.isSuccess){
+    console.log("yah")
+  } else if (result.isError){ 
+    console.log("nah")
+  }
+
   //  ensure likes are set to 0 instead of null else return the trip obj
   const tripsData = barData.map((trip) =>
     trip.likes === null ? { ...trip, likes: 0 } : trip
@@ -89,6 +118,12 @@ export default function TopTrips() {
   return (
   <Container>
      <h1 align="center"> Top Trips </h1>
+      <Alert key="success" variant="success" id="bookmark" className="d-none">
+          Added To Favorites!
+      </Alert>
+      <Alert key="danger" variant="danger" id="failbookmark" className="d-none">
+          Already added to bookmarks!
+      </Alert>
       <Grid container spacing={7} columns={{ xs: 0, sm: 4, md: 8 }} >
             {tripsData?.map((trip) => 
               <Grid item xs={12} sm={4} md={2} lg={1}>
@@ -119,65 +154,4 @@ export default function TopTrips() {
       </Grid>
  </Container>
   )
-
-  //   <ThemeProvider theme={theme}>
-  //     <h1 align="center"> Top Trips </h1>
-  //     <TableContainer component={Paper}>
-  //       <Table sx={{ minWidth: 400 }} aria-label="simple table">
-  //         <TableHead>
-  //           {/* <TableRow>
-  //             <TableCell align="center" width="100">
-  //               Trip Name
-  //             </TableCell>
-  //             <TableCell align="center" width="125">
-  //               Description
-  //             </TableCell>
-  //             <TableCell align="center">Image</TableCell>
-  //             <TableCell align="center">Likes</TableCell>
-  //           </TableRow> */}
-  //         </TableHead>
-  //         <TableBody>
-  //           {/* {tripsData?.map((trip) => (
-  //             <TableRow
-  //               key={trip.name}
-  //               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-  //             >
-  //               <TableCell align="center" component="th" scope="row">
-  //                 <Button onClick={handleTripSelect} value={trip.id}>
-  //                   {trip.trip_name}
-  //                 </Button>
-  //               </TableCell> */}
-  //               {/* <TableCell align="center">
-  //                 {trip.locations[0].bar_name}
-  //               </TableCell> */}
-  //               {/* <TableCell align="center">{trip.description}</TableCell>
-  //               <TableCell align="center">
-  //                 <img src={trip.locations[0].image_url} width="200" alt="" />
-  //               </TableCell>
-  //               <TableCell align="center">
-  //                 <Button value={trip.id} onClick={handleLiked}>
-  //                   <RecommendIcon />
-  //                   {trip.likes}
-  //                 </Button>
-  //               </TableCell>
-  //             </TableRow>
-  //           ))} */}
-            // {tripsData?.map((trip) => 
-            //       <Card style={{ width: '18rem' }}>
-            //         <Card.Img variant="top" src={trip.locations[0].image_url} />
-            //         <Card.Body>
-            //           <Card.Title>{trip.trip_name}</Card.Title>
-            //           <Card.Text>
-            //             {trip.description}
-            //           </Card.Text>
-            //           <Button variant="primary">Go somewhere</Button>
-            //         </Card.Body>
-            //       </Card>
-
-            // )}
-  //         </TableBody>
-  //       </Table>
-  //     </TableContainer>
-  //   </ThemeProvider>
-  // );
 }

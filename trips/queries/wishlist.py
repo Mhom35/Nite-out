@@ -90,7 +90,6 @@ class WishListRepository:
                         WHERE account_id = %s
                         """,
                         [
-                            trip.trip_name,
                             trip.wishlist,
                             account_id,
                         ],

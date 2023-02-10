@@ -5,6 +5,7 @@ export const tripsApi = createApi({
   reducerPath: "trips",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_TRIPS_API_HOST,
+    credentials: `include`,
     prepareHeaders: (headers, { getState }) => {
       const selector = authApiSlice.endpoints.getToken.select();
       const { data: tokenData } = selector(getState());
@@ -26,7 +27,7 @@ export const tripsApi = createApi({
           return acc;
         }, {});
         return {
-          method: "post",
+          method: "POST",
           url: "/api/books",
           credentials: "include",
           body: data,
@@ -38,7 +39,7 @@ export const tripsApi = createApi({
       query: (data) => ({
         url: "/trips",
         body: data,
-        method: "post",
+        method: "POST",
       }),
     }),
 

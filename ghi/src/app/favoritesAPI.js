@@ -5,6 +5,7 @@ export const wishListApi = createApi({
   reducerPath: "wishlist",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_TRIPS_API_HOST,
+    credentials: `include`,
     prepareHeaders: (headers, { getState }) => {
       const selector = authApiSlice.endpoints.getToken.select();
       const { data: tokenData } = selector(getState());
@@ -14,7 +15,7 @@ export const wishListApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["TripsList"],
+  tagTypes: ["WishList"],
 
   endpoints: (builder) => ({
     createWishList: builder.mutation({
@@ -22,13 +23,12 @@ export const wishListApi = createApi({
         url: "/wishlist",
         body: data,
         credentials: "include",
-        method: "post",
+        method: "POST",
       }),
     }),
 
     getWishList: builder.query({
-      query: () => `/wishlist`,
-      credentials: "include",
+      query: (args) => "/wishlist", 
       providesTags: ["WishList"],
     }),
 
@@ -41,9 +41,8 @@ export const wishListApi = createApi({
     }),
     addTripToWishList: builder.mutation({
         query: (data) => ({
-            url: "/wishlist",
+            url: "/wltrip",
             body: data,
-            credentials: "include",
             method: "post",
         }),
         invalidatesTags: ["WishList"],
@@ -53,7 +52,7 @@ export const wishListApi = createApi({
 
 export const {
   useCreateWishListMutation,
-  useAddTripToWishListTripMutation,
+  useAddTripToWishListMutation,
   useDeleteTripFromWishListMutation,
   useGetWishListQuery
 } = wishListApi;

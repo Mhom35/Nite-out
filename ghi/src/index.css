@@ -174,15 +174,16 @@ li:hover {
 
 
 .container {
-  display: flex;
-  height: 70vh;
+  display: flex; 
+  height: 25vh;
   justify-content: flex-start;
   -items: center;
-  align-items: center;
-  gap: 10px;
-  overflow-y: auto;
+  align-items: start;
+  overflow-y: hidden;
   overflow-x: hidden;
-  background-color: #c8b7a6;
+  /* background-color: #c8b7a6; */
+  width: 10vw;
+  max-width: 20%;
 }
 .offset {
   width: 30%;
@@ -190,16 +191,18 @@ li:hover {
 .main-wrapper {
   display: flex;
   gap: 10px;
-  width: 70%;
+  width: 50%;
 }
 .item {
   width: 8em;
-  height: 450px;
+  height: 10vh;
+  min-height: 10vh;
+  max-height: 10vh;
   display: block;
   transition: width 2s;
 }
 .item:hover {
-  width: 40em;
+  width: 15em;
 }
 .item img {
   width: 100%;

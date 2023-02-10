@@ -44,6 +44,18 @@ class TripOut(BaseModel):
     account: int
     username: Optional[str]
 
+class TripInWithAccount(BaseModel):
+    id: int
+    trip_name: str
+    locations: list
+    description: str
+    created_on: datetime
+    image_url: Optional[str]
+    likes: Optional[int]
+    distance: Optional[int]
+    account: int
+    username: Optional[str]
+
 
 class TripRepository:
     def delete_trip(self, trip_id: int) -> bool:
@@ -82,14 +94,14 @@ class TripRepository:
             print(e)
             return False
 
-    def update_trip(self, account_id: int, trip_id: int, trip: TripIn) -> Union[TripOut, Error]:
+    def update_trip(self,  trip_id: int, trip: TripInWithAccount) -> Union[TripOut, Error]:
         try:
             # connect to database
             with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
                 # get cursor (something to run SQL with)
                 with conn.cursor() as db:
                     # Run our SELECT statement
-                    db.execute(
+                    result = db.execute(
                         """
                         UPDATE trips
                         SET trip_name = %s
@@ -97,6 +109,9 @@ class TripRepository:
                             , description = %s
                             , image_url = %s
                             , likes = %s
+                            , distance = %s 
+                            , account = %s
+                            , username = %s
                         WHERE id = %s
                         """,
                         # , likes = %s
@@ -107,11 +122,16 @@ class TripRepository:
                             trip.description,
                             trip.image_url,
                             trip.likes,
-                            # trip.distance,
-                            trip_id,
+                            trip.distance,
+                            trip.account,
+                            trip.username,
+                            trip_id
                         ],
                     )
-                    return self.trip_in_to_out(trip_id, trip, account_id)
+                    record = result.fetchone()
+                    print(record)
+
+                    return self.record_to_trip_out(record)
         except Exception as e:
             print("error message:", e)
             return {"message": "Could not update trip"}
@@ -173,8 +193,6 @@ class TripRepository:
 
                     for trip in result:
                         # trip id 
-
-                        print("trip", trip)
                         if trip[7] not in new_dict:
                             new_dict[trip[7]] = TripOut(
                                 id=trip[7],
@@ -211,7 +229,6 @@ class TripRepository:
                                 )
 
                             )
-                        print("here")
 
                     
                     return list(new_dict.values())
@@ -265,7 +282,6 @@ class TripRepository:
                     )
 
                     for record in result:
-                        print("record--->", record)
                         bars.append(
                             BarOutWithPosition(
                                 bar_id=record[0],

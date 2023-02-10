@@ -42,10 +42,10 @@ def create_wishlist(
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        # if repo.get_wishlist(account_data["id"]):
-        #     return repo.get_wishlist(account_data["id"])
-        # else:
-        created_wishlist = repo.create_wishlist(account_data["id"],wishlist)
+        if repo.get_wishlist(account_data["id"]):
+            return repo.get_wishlist(account_data["id"])
+        else:
+            created_wishlist = repo.create_wishlist(account_data["id"],wishlist)
         return created_wishlist
     except Exception:
         response.status_code = 400
