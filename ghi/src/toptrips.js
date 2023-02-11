@@ -9,15 +9,13 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useUpdateTripMutation } from "./app/tripsApi";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import Box from '@mui/material/Box';
 import * as Icon from 'react-bootstrap-icons';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { Container } from "@mui/system";
-import { lightBlue, red } from "@mui/material/colors";
-import { addToFav } from "./app/favorites.js";
 import { useAddTripToWishListMutation }  from "./app/favoritesAPI";
 import Alert from 'react-bootstrap/Alert';
+import { useAuthContext } from "./frontendAuth";
 
 
 const theme = createTheme();
@@ -28,6 +26,8 @@ export default function TopTrips() {
   const navigate = useNavigate();
   const [updateTrip, result] = useUpdateTripMutation();
   const [ addTripToWishList,  bookmarkResult ] = useAddTripToWishListMutation();
+  const { token } = useAuthContext();
+
   if (isLoading) {
     return (
       // prettier-ignore
@@ -41,15 +41,19 @@ export default function TopTrips() {
     dispatch(getTripId(tripId));
     navigate(`/trips/details/${tripId}`);
   };
-  const handleLiked = async (event) => {
-    event.preventDefault();
-    const trip_id = event.currentTarget.value;
+  const handleBookMark = async (e) => {
+    e.preventDefault();
+    const trip_id = e.currentTarget.value;
     const wishlist_id = 0
-    // await addTripToWishList({ wishlist_id, trip_id})
-    
+    addTripToWishList({ wishlist_id, trip_id})
+
+  };
+
+  const handleUpdateLikes = async (e) => {
+    e.preventDefault()
+    const tripId = e.currentTarget.value;
     let newLikes = 0;
-    /* eslint-disable */
-    const cleanedData = barData.filter((trip) => trip.id == trip_id)[0];
+    const cleanedData = barData.filter((trip) => trip.id == tripId)[0];
     if (cleanedData.likes === null) {
       newLikes = 1;
     }
@@ -66,12 +70,13 @@ export default function TopTrips() {
       username: cleanedData.username,
       id: cleanedData.id,
     };
-    console.log("pooop")
     updateTrip(likeData)
-  
-  };
-  if (bookmarkResult.isSuccess) {
     
+  }
+
+  if (bookmarkResult.isSuccess) {
+    /* eslint-disable */
+
     const bookmark = document.getElementById('bookmark')
     bookmark.classList.remove("d-none")
     setTimeout(() => {
@@ -79,18 +84,31 @@ export default function TopTrips() {
     }, "2000")
     
   } else if (bookmarkResult.isError) {
-    const failBookmark = document.getElementById('failbookmark')
-    failBookmark.classList.remove("d-none")
-    setTimeout(() => {
-      failBookmark.classList.add("d-none");
-    }, "2000")
-    console.log("error");
+    if (!token){
+      const notLoggedIn = document.getElementById('needLogin')
+      notLoggedIn.classList.remove("d-none")
+      setTimeout(() => {
+        notLoggedIn.classList.add("d-none");
+      }, "2000")
+
+    
+    } else {
+      const failBookmark = document.getElementById('failbookmark')
+      failBookmark.classList.remove("d-none")
+      setTimeout(() => {
+        failBookmark.classList.add("d-none");
+      }, "2000")
+      console.log("error");
+    }
   }
+
   if (result.isSuccess){
     console.log("yah")
   } else if (result.isError){ 
     console.log("nah")
   }
+
+  
 
   //  ensure likes are set to 0 instead of null else return the trip obj
   const tripsData = barData.map((trip) =>
@@ -100,19 +118,6 @@ export default function TopTrips() {
 
   // sort by most popular (likes)
 
-  // function insertionSort(arr) {
-  //   for (let i = 1; i < arr.length; i++) {
-  //     let currentValue = arr[i]
-  //     let j
-  //     for (j = i - 1; j >= 0 && arr[j].likes < currentValue.likes; j--) {
-  //       arr[j + 1] = arr[j]
-  //     }
-  //     arr[j + 1] = currentValue
-  //   }
-  //   return arr
-  // }
-
-  // insertionSort(tripsData)
   tripsData.sort((a, b) => b.likes - a.likes);
 
   return (
@@ -123,6 +128,9 @@ export default function TopTrips() {
       </Alert>
       <Alert key="danger" variant="danger" id="failbookmark" className="d-none">
           Already added to bookmarks!
+      </Alert>
+      <Alert key="needLogin" variant="danger" id="needLogin" className="d-none">
+          Please login to add to bookmarks!
       </Alert>
       <Grid container spacing={7} columns={{ xs: 0, sm: 4, md: 8 }} >
             {tripsData?.map((trip) => 
@@ -140,11 +148,12 @@ export default function TopTrips() {
                       <Card.Text>
                         <Icon.Quote className="ms-1 me-3"/>
                         {trip.description.slice(0, 50)}
-                        <Icon.Quote className="ms-3 me-1" style={{color:red,}} />
+                        <Icon.Quote className="ms-3 me-1"  />
                       </Card.Text>
-                      <Button className="ms-1 me-5" variant="outline-primary"onClick={handleTripSelect} value={trip.id}>Details</Button>
+                      <Button className="ms-1 me-1" variant="outline-primary"onClick={handleTripSelect} value={trip.id}>Details</Button>
                       
-                      <Button className="me-4" variant="outline-primary" style={{marginLeft: 42, width: 60}} value={trip.id} onClick={handleLiked}> <Icon.BookmarkHeartFill/> {trip.likes}</Button>
+                      <Button variant="outline-primary" style={{marginLeft: 0, width: 50}} value={trip.id} onClick={(e) => handleBookMark(e)}> <Icon.BookmarkHeartFill/> </Button>
+                      <Button className="me-4" variant="outline-primary" style={{marginLeft: 35, width: 60}} value={trip.id} onClick={(e) => handleUpdateLikes(e)}> <Icon.Heart/> {trip.likes}</Button>
                     </Card.Body>
                   </Card>
                 </Paper>

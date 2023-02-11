@@ -12,6 +12,8 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { useSignUpMutation } from "./app/authApiSlice";
+import { useCreateWishListMutation }  from "./app/favoritesAPI";
+import { create } from "@mui/material/styles/createTransitions";
 
 const theme = createTheme();
 
@@ -21,14 +23,23 @@ export default function SignUp() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [createWishList, createResult] =  useCreateWishListMutation()
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const response = await signUp({ username, email, password });
     if (response.data.access_token) {
+      const wishlist = ["dummy"]
+      createWishList({wishlist})
       navigate("/trips/new");
     }
   };
+
+  if (createResult.isSuccess){
+    console.log("Make wishlist yah")
+  } else if (createResult.isError){ 
+    console.log("nah")
+  }
 
   return (
     <ThemeProvider theme={theme}>

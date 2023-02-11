@@ -25,6 +25,7 @@ export const wishListApi = createApi({
         credentials: "include",
         method: "POST",
       }),
+      invalidatesTags: ["WishList"],
     }),
 
     getWishList: builder.query({

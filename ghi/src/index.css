@@ -174,7 +174,7 @@ li:hover {
 
 
 .container {
-  display: flex; 
+  /* display: flex;  */
   height: 25vh;
   justify-content: flex-start;
   -items: center;
@@ -191,7 +191,7 @@ li:hover {
 .main-wrapper {
   display: flex;
   gap: 10px;
-  width: 50%;
+  width: 100%;
 }
 .item {
   width: 8em;
@@ -211,4 +211,8 @@ li:hover {
   object-fit: cover;
   object-position: 50% 50%;
   border-radius: 0.5em;
+}
+
+.fav {
+  color: white
 }

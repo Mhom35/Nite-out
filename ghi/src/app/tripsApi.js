@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { authApiSlice } from "./authApiSlice";
+import { favoritesSlice } from "./favorites";
 
 export const tripsApi = createApi({
   reducerPath: "trips",
@@ -48,6 +49,11 @@ export const tripsApi = createApi({
       providesTags: ["TripsList"],
     }),
 
+    getOneTrip: builder.query({
+      query: (trip_id) => `/trips/${trip_id}`,
+      providesTags: ["IndivList"],
+    }),
+
     deleteTrip: builder.mutation({
       query: (trip_id) => ({
         method: "delete",
@@ -74,7 +80,7 @@ export const tripsApi = createApi({
       }),
       invalidatesTags: (result, error, arg) => [
         { type: "TripsList", id: arg.id },
-        "TripsList",
+        "TripsList", "WishList"
       ],
     }),
   }),
@@ -88,5 +94,6 @@ export const {
   useUpdateLocationsMutation,
   useUpdateTripMutation,
   useGetAllTripsQuery,
+  useGetOneTripQuery,
   useReturnBookMutation,
 } = tripsApi;
