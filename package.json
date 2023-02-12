@@ -1,8 +1,7 @@
 {
   "dependencies": {
-    "react-hook-form": "^7.40.0"
-  },
-  "devDependencies": {
-    "jest": "^29.3.1"
+    "bootstrap": "^5.2.3",
+    "react-bootstrap": "^2.7.0",
+    "react-icons": "^4.7.1"
   }
 }

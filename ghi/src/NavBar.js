@@ -37,6 +37,9 @@ function NavBar() {
   const handleLogoutClick = () => {
     navigate(`/logout`);
   };
+  const handleFavoritesClick = () => {
+    navigate(`/favorites`);
+  };
 
   const handleCreateTripClick = () => {
     navigate(`/trips/new`);
@@ -127,6 +130,11 @@ function NavBar() {
               <MenuItem key="login" onClick={handleLogoutClick}>
                 <NavLink textalign="center" style={{ textDecoration: "none" }}>
                   Logout
+                </NavLink>
+              </MenuItem>
+              <MenuItem key="login" onClick={handleFavoritesClick }>
+                <NavLink textalign="center" style={{ textDecoration: "none" }}>
+                    Favorites
                 </NavLink>
               </MenuItem>
             </Menu>

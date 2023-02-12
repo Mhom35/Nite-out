@@ -4,6 +4,7 @@ from typing import List, Union, Optional
 from queries.trips import (
     Error,
     TripIn,
+    TripInWithAccount,
     TripRepository,
     TripOut,
 )
@@ -35,7 +36,7 @@ def create_trip(
     # account: dict = Depends(get_current_user),
 ):
     try:
-        created_trip = repo.create_trip(trip)
+        created_trip = repo.create_trip(account_data["id"], account_data["username"],trip)
         return created_trip
     except Exception:
         response.status_code = 400
@@ -48,10 +49,23 @@ def get_all_trips(
     return repo.get_all_trips()
 
 
+@router.get("/trips/{trip_id}", response_model=Optional[TripOut])
+def get_indiv_trip(
+    trip_id: int,
+    response: Response,
+    repo: TripRepository = Depends(),
+) -> TripOut:
+    trip_bars = repo.get_individual_trip(trip_id=trip_id)
+    if trip_bars is None:
+        response.status_code = 404
+    return trip_bars
+
+
 @router.put("/trips/{trip_id}", response_model=Union[TripOut, Error])
 def update_trip(
     trip_id: int,
-    trip: TripIn,
+    trip: TripInWithAccount,
+    account_data: dict = Depends(authenticator.get_current_account_data),
     repo: TripRepository = Depends(),
 ) -> Union[TripOut, Error]:
     return repo.update_trip(trip_id, trip)
@@ -76,7 +90,7 @@ def get_trip_bars(
     response: Response,
     repo: TripRepository = Depends(),
 ) -> TripOut:
-    trip_bars = repo.get_bars_for_trip(trip_id=trip_id)
-    if trip_bars is None:
+    trip_w_bars = repo.get_individual_trip(trip_id=trip_id)
+    if trip_w_bars is None:
         response.status_code = 404
-    return trip_bars
+    return trip_w_bars

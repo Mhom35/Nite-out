@@ -99,23 +99,23 @@ li:hover {
 :root {
   --main-color: rgb(104, 117, 217);
   --main-color-hover: rgb(104, 117, 217, 0.2);
-  --track-color: #ddd;
+  --track-color: rgb(223, 215, 215);
   /* Default mark color*/
   --mark-color: #aaaaaa;
 }
 
 .customSlider {
   /* max width of your slider */
-  max-width: 800px;
+  max-width: 700px;
   /* Optional: Only If you want to center your slider in the page */
   margin: auto;
 }
 
 .customSlider-track {
   /* Top value to align your track to the center of your thumb */
-  top: 8px;
+  top: 10px;
   /* thickness of the track */
-  height: 6px;
+  height: 20px;
   /* default color of your track */
   background: var(--track-color);
 }
@@ -130,8 +130,8 @@ li:hover {
   /*color for the thumb */
   background: var(--main-color);
   /* shape of the thumb: circle */
-  width: 20px;
-  height: 20px;
+  width: 40px;
+  height: 40px;
   border-radius: 80%;
   /* remove default outline when selected */
   outline: none;
@@ -143,8 +143,80 @@ li:hover {
 
 .customSlider-mark {
   cursor: pointer;
-  top: 6px;
-  width: 1.5px;
-  height: 12px;
+  top: 10px;
+  width: 3px;
+  height: 24px;
   background-color: var(--mark-color);
 }
+
+.sliderContainer {
+  display:inline-block;
+  justify-content: center;
+  padding-top: 25px;
+  /* position: absolute;
+  left: 50%;
+  top: 50%; */
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  text-align:center;
+  vertical-align: middle;
+
+
+}
+
+.semantics {
+  text-align:center;
+  vertical-align: middle;
+  padding-top: 20px;
+
+}
+
+
+.container {
+  /* display: flex;  */
+  height: 25vh;
+  justify-content: flex-start;
+  -items: center;
+  align-items: start;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  /* background-color: #c8b7a6; */
+  width: 10vw;
+  max-width: 20%;
+}
+.offset {
+  width: 30%;
+}
+.main-wrapper {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+.item {
+  width: 8em;
+  height: 10vh;
+  min-height: 10vh;
+  max-height: 10vh;
+  display: block;
+  transition: width 2s;
+}
+.item:hover {
+  width: 15em;
+}
+.item img {
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y;
+  object-fit: cover;
+  object-position: 50% 50%;
+  border-radius: 0.5em;
+}
+
+.fav {
+  color: white
+}
+
+a:link { text-decoration: none; }
+a:visited { text-decoration: none; }
+a:active { text-decoration: none; }

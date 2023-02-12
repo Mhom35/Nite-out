@@ -1,21 +1,23 @@
 import la from "./laBarData.js";
 import newYork from "./newYorkData.js";
 import sfData from "./sfBarData";
+import * as React from 'react';
 
-const dataObj = {
-  SF: {
-    dataSet: sfData,
-    viewPort: { latitude: 37.774929, longitude: -122.419418, zoom: 14 },
+const dataObj = [
+  {city: "San Francisco",
+  dataSet: sfData,
+  viewPort: { latitude: 37.774929, longitude: -122.419418, zoom: 14 },
   },
-  NYC: {
+  {city:"New York",
     dataSet: newYork,
     viewPort: {
-      latitude: 40.73061,
-      longitude: -73.935242,
+      latitude: 40.673086,
+      longitude: -73.969427,
       zoom: 14,
     },
   },
-  LA: {
+  {
+    city: "Los Angeles",
     dataSet: la,
     viewPort: {
       latitude: 34.052235,
@@ -23,7 +25,7 @@ const dataObj = {
       zoom: 14,
     },
   },
-};
+];
 
 const switchData = (data) => {
   switch (data) {
@@ -38,4 +40,28 @@ const switchData = (data) => {
   }
 };
 
-export default switchData;
+// function ControlPanel(props) {
+//   return (
+//     <div className="control-panel">
+
+//       {dataObj.map((city, index) => (
+//         <div key={`btn-${index}`} className="input">
+//           <input
+//             type="radio"
+//             name="city"
+//             id={`city-${index}`}
+//             defaultChecked={city.city === 'San Francisco'}
+//             onClick={() => props.onSelectCity(city)}
+//           />
+//           <label htmlFor={`city-${index}`}>{city.city}</label>
+//         </div>
+//       ))}
+//     </div>
+//   );
+// }
+
+// export default React.memo(ControlPanel);
+
+
+
+export default dataObj;

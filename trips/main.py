@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import trips, bars, tripBars
+from routers import trips, bars, tripBars, wishlist, wishlist_trips
 from fastapi.middleware.cors import CORSMiddleware
 import os
 
@@ -21,3 +21,5 @@ app.add_middleware(
 app.include_router(trips.router)
 app.include_router(bars.router)
 app.include_router(tripBars.router)
+app.include_router(wishlist.router)
+app.include_router(wishlist_trips.router)

@@ -1,10 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { authApiSlice } from "./authApiSlice";
+import { favoritesSlice } from "./favorites";
 
 export const tripsApi = createApi({
   reducerPath: "trips",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_TRIPS_API_HOST,
+    credentials: `include`,
     prepareHeaders: (headers, { getState }) => {
       const selector = authApiSlice.endpoints.getToken.select();
       const { data: tokenData } = selector(getState());
@@ -26,7 +28,7 @@ export const tripsApi = createApi({
           return acc;
         }, {});
         return {
-          method: "post",
+          method: "POST",
           url: "/api/books",
           credentials: "include",
           body: data,
@@ -38,13 +40,18 @@ export const tripsApi = createApi({
       query: (data) => ({
         url: "/trips",
         body: data,
-        method: "post",
+        method: "POST",
       }),
     }),
 
     getAllTrips: builder.query({
       query: () => `/trips`,
       providesTags: ["TripsList"],
+    }),
+
+    getOneTrip: builder.query({
+      query: (trip_id) => `/trips/${trip_id}`,
+      providesTags: ["IndivList"],
     }),
 
     deleteTrip: builder.mutation({
@@ -73,7 +80,7 @@ export const tripsApi = createApi({
       }),
       invalidatesTags: (result, error, arg) => [
         { type: "TripsList", id: arg.id },
-        "TripsList",
+        "TripsList", "WishList"
       ],
     }),
   }),
@@ -87,5 +94,6 @@ export const {
   useUpdateLocationsMutation,
   useUpdateTripMutation,
   useGetAllTripsQuery,
+  useGetOneTripQuery,
   useReturnBookMutation,
 } = tripsApi;

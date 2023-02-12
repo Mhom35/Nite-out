@@ -23,6 +23,7 @@ export default function Trip() {
   const dateTime = date.getTime().toString();
   const [tripName, setTripName] = useState("");
   const [description, setDescription] = useState("");
+  const [city, setCity ] = useState("");
   const [clicked, setClicked] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,8 +39,10 @@ export default function Trip() {
     event.preventDefault();
     const data = {
       trip_name: tripName,
+      city: city,
       locations: locations,
       description: description,
+      
       created_on: dateTime,
     };
     const tripUrl = `${process.env.REACT_APP_TRIPS_API_HOST}/trips`;
@@ -124,6 +127,18 @@ export default function Trip() {
               label="Trip Name"
               name=""
             />
+             <TextField
+              required
+              margin="normal"
+              fullWidth
+              id="outlined-multiline-static"
+              multiline
+              label="City"
+              name=""
+              rows={1}
+              value={city}
+              onChange={(event) => setCity(event.target.value)}
+            />
             <Link to="#yelpMap">
               <Button
                 type="button"
@@ -136,6 +151,7 @@ export default function Trip() {
                 Add Locations{" "}
               </Button>
             </Link>
+            
             <TextField
               required
               margin="normal"
@@ -148,6 +164,7 @@ export default function Trip() {
               value={description}
               onChange={(event) => setDescription(event.target.value)}
             />
+           
             {!clicked && locations.length > 0 && (
               <Button
                 type="submit"
