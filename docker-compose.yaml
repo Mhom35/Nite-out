@@ -28,7 +28,7 @@ services:
     environment:
       YELP_API_KEY: ${YELP_API_KEY}
       SIGNING_KEY: 308d2c047ed058f9eaebc3376b081b402f7521d185e704af8d86160f6d0cc335
-      DATABASE_URL: postgresql://tripsdb:password@postgres/tripsdb
+      DATABASE_URL: postgres://riockooj:P8wgKalWeo7oZx2MKzi7Z4i2z8MnJoRV@kashin.db.elephantsql.com/riockooj
       WAIT_HOSTS: postgres:5432
 
   accounts:
@@ -41,7 +41,7 @@ services:
       - ./accounts:/app
     environment:
       SIGNING_KEY: 308d2c047ed058f9eaebc3376b081b402f7521d185e704af8d86160f6d0cc335
-      DATABASE_URL: postgresql://accounts:password@postgres/accounts
+      DATABASE_URL: postgres://hicgxzgz:96-gQQ50lMlPhPgbEavIwjK_wh-9892J@kashin.db.elephantsql.com/hicgxzgz
       WAIT_HOSTS: postgres:5432
 
   ghi:

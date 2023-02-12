@@ -31,7 +31,6 @@ class WishListTripRepository:
                 # get cursor (something to run SQL with)
                 with conn.cursor() as db:
                     # Run our INSERT statement
-                    print("seee?")
                     result = db.execute(
                         """
                         INSERT INTO wishlist_trips (

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Typography, Button } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import BannerImage from './assets/banner.png'
+import BannerImage from './assets/city-landscape.webp'
 import BannerLayout from './BannerLayout'
 import './App.css'
 

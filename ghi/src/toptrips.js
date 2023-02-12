@@ -65,7 +65,7 @@ export default function TopTrips() {
       created_on: cleanedData.created_on,
       image_url: cleanedData.image_url,
       likes: newLikes,
-      distance: 0,
+      city: cleanedData.city,
       account: cleanedData.account,
       username: cleanedData.username,
       id: cleanedData.id,
@@ -103,9 +103,9 @@ export default function TopTrips() {
   }
 
   if (result.isSuccess){
-    console.log("yah")
+    console.log("success")
   } else if (result.isError){ 
-    console.log("nah")
+    console.log("error")
   }
 
   
@@ -144,6 +144,11 @@ export default function TopTrips() {
                         <Icon.PersonCircle className="me-2"/>
 
                         {trip.username}
+                      </Card.Text>
+                       <Card.Text style={{fontSize: 17, color: "#8c92ac"}}>
+                        <Icon.GeoAlt className="me-2"/>
+
+                        {trip.city}
                       </Card.Text>
                       <Card.Text>
                         <Icon.Quote className="ms-1 me-3"/>

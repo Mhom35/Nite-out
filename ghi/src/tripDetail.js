@@ -1,16 +1,15 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import CssBaseline from "@mui/material/CssBaseline";
-import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Button, ImageList } from "@mui/material";
-import ImageListItem from "@mui/material/ImageListItem";
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+import Card from 'react-bootstrap/Card';
+import * as Icon from 'react-bootstrap-icons';
 import { getTripId } from "./app/tripId";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -42,22 +41,6 @@ export default function TripDetail() {
     dispatch(getTripId(tripId));
     navigate(`/edit/trip/${tripId}`);
   };
-  // $(function () {
-  //   function beerRise() {
-  //     $(".beer").addClass("fill");
-  //     $(".head").addClass("active");
-  //   }
-  //   function pourBeer() {
-  //     $(".pour").addClass("pouring");
-  //     beerRise();
-  //     setTimeout(function () {
-  //       $(".pour").addClass("end");
-  //     }, 1500);
-  //   }
-  //   setTimeout(function () {
-  //     pourBeer();
-  //   }, 3000);
-  // });
 
   return (
     <>
@@ -96,7 +79,7 @@ export default function TripDetail() {
                 color="text.secondary"
                 paragraph
               >
-                {tripData.likes}
+                <Icon.Heart/> {tripData.likes}
               </Typography>
               {token && (
                 <Typography align="center">
@@ -105,27 +88,38 @@ export default function TripDetail() {
               )}
             </Container>
           </Box>
-            <div class="container">
-              <div class="offset"></div>
-              <div class="main-wrapper">
-                  {locations.map((location) => (
-                    <div class="item">
-                      <img key={location.bar_id} src={location.image_url} alt="" />
-                      <Typography gutterBottom variant="h5" component="h2">
-                        {location.bar_name}
-                      </Typography>
+        <Grid container spacing={7} columns={{ xs: 0, sm: 4, md: 8 }} >
+            {locations?.map((bar) => 
+              <Grid item xs={12} sm={4} md={2} lg={1}>
+                <Paper style={{width: '18rem'}}>
+                  <Card style={{ width: '18rem' }}>
+                    <Card.Img variant="bottom" style={{maxHeight: '15rem', minHeight: '15rem'}}src={bar.image_url} />
+                    <Card.Body>
+                      <Card.Title style={{fontSize: 30, fontSmooth: 3,}}>{bar.bar_name}</Card.Title>
+                       <Card.Text style={{fontSize: 20, color: "#8c92ac"}}>
+                          Priority: {bar.position + 1 }
+                        </Card.Text>
                       <a
-                        href={location.url}
-                        underline="hover"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                More Information
-              </a>
-            </div>
-          ))}
-          </div>
-        </div>
+                                href={bar.url}
+                                underline="hover"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                        <Card.Text style={{fontSize: 20, color: "#8c92ac"}}>
+                          Find out more on yelp
+                        </Card.Text>
+                        
+                      </a>
+                     
+                      
+          
+                    </Card.Body>
+                  </Card>
+                </Paper>
+              </Grid>
+
+            )}
+      </Grid>
 
         </main>
       </ThemeProvider>

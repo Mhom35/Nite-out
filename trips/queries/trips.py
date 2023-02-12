@@ -29,7 +29,7 @@ class TripIn(BaseModel):
     created_on: datetime
     image_url: Optional[str]
     likes: Optional[int]
-    distance: Optional[int]
+    city: Optional[str]
 
 
 class TripOut(BaseModel):
@@ -40,7 +40,7 @@ class TripOut(BaseModel):
     created_on: datetime
     image_url: Optional[str]
     likes: Optional[int]
-    distance: Optional[int]
+    city: Optional[str]
     account: int
     username: Optional[str]
 
@@ -52,7 +52,7 @@ class TripInWithAccount(BaseModel):
     created_on: datetime
     image_url: Optional[str]
     likes: Optional[int]
-    distance: Optional[int]
+    city: Optional[str]
     account: int
     username: Optional[str]
 
@@ -109,27 +109,27 @@ class TripRepository:
                             , description = %s
                             , image_url = %s
                             , likes = %s
-                            , distance = %s 
+                            , city = %s 
                             , account = %s
                             , username = %s
                         WHERE id = %s
                         """,
                         # , likes = %s
-                        #     , distance = %s
+                        #     , city = %s
                         [
                             trip.trip_name,
                             trip.locations,
                             trip.description,
                             trip.image_url,
                             trip.likes,
-                            trip.distance,
+                            trip.city,
                             trip.account,
                             trip.username,
                             trip_id
                         ],
                     )
                     record = result.fetchone()
-                    print(record)
+
 
                     return self.record_to_trip_out(record)
         except Exception as e:
@@ -146,9 +146,9 @@ class TripRepository:
                     result = db.execute(
                         """
                         INSERT INTO trips
-                            (trip_name, locations, description, created_on, account, username)
+                            (trip_name, locations, description, city, created_on, account, username)
                         VALUES
-                            (%s, %s, %s, %s, %s, %s)
+                            (%s, %s, %s, %s, %s, %s, %s)
 
                         RETURNING id;
                         """,
@@ -156,6 +156,7 @@ class TripRepository:
                             trip.trip_name,
                             trip.locations,
                             trip.description,
+                            trip.city,
                             trip.created_on,
                             account_id,
                             username
@@ -180,7 +181,7 @@ class TripRepository:
                         b.url, b.lat, b.long, b.image_url,
                         t.id AS trip_id, t.trip_name, t.locations,
                         t.description, t.created_on, t.image_url,
-                        t.likes, t.distance, tb.positions, t.account, t.username
+                        t.likes, t.city, tb.positions, t.account, t.username
                         FROM trip_bars AS tb
                         JOIN bars AS b ON b.id = tb.bar_id
                         JOIN trips AS t ON t.id = tb.trip_id
@@ -211,7 +212,7 @@ class TripRepository:
                                 created_on=trip[11],
                                 image_url=trip[12],
                                 likes=trip[13],
-                                distance=trip[14],
+                                city=trip[14],
                                 account=trip[16],
                                 username=trip[17],
                             )
@@ -255,7 +256,6 @@ class TripRepository:
                     all_trip_ids = [trip[0] for trip in result_hash]
                     trips = self.get_bars_for_trip(all_trip_ids)
                     elapsed = current_milli_time() - start
-                    print(elapsed)
                     return trips  
         except Exception:
             return {"message": "trip does not exist"}
@@ -271,7 +271,7 @@ class TripRepository:
                         b.url, b.lat, b.long, b.image_url,
                         t.id AS trip_id, t.trip_name, t.locations,
                         t.description, t.created_on, t.image_url,
-                        t.likes, t.distance, tb.positions, t.account, t.username
+                        t.likes, t.city, tb.positions, t.account, t.username
                         FROM trip_bars AS tb
                         JOIN bars AS b ON b.id = tb.bar_id
                         JOIN trips AS t ON t.id = tb.trip_id
@@ -302,7 +302,7 @@ class TripRepository:
                         created_on=record[11],
                         image_url=record[12],
                         likes=record[13],
-                        distance=record[14],
+                        city=record[14],
                         account=record[16],
                         username=record[17]
                     )
@@ -327,7 +327,7 @@ class TripRepository:
             created_on=record[4],
             image_url=record[5],
             likes=record[6],
-            distance=record[7],
+            city=record[7],
             account=record[8],
             username=record[9],
         )

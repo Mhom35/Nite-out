@@ -13,7 +13,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { useSignUpMutation } from "./app/authApiSlice";
 import { useCreateWishListMutation }  from "./app/favoritesAPI";
-import { create } from "@mui/material/styles/createTransitions";
 
 const theme = createTheme();
 
@@ -31,14 +30,15 @@ export default function SignUp() {
     if (response.data.access_token) {
       const wishlist = ["dummy"]
       createWishList({wishlist})
-      navigate("/trips/new");
+      
     }
   };
 
   if (createResult.isSuccess){
-    console.log("Make wishlist yah")
+    navigate("/trips/new");
+    
   } else if (createResult.isError){ 
-    console.log("nah")
+    console.log("error")
   }
 
   return (

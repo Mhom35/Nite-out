@@ -1,12 +1,7 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
-import EditBars from "./EditBars.js";
+import { useState } from "react";
 import { useNavigate } from "react-router";
-import { useSelector } from "react-redux";
 import {
-  useCreateWishListMutation,
-  useAddTripToWishListTripMutation,
-  useDeleteTripFromWishListMutation,
   useGetWishListQuery
 } from "./app/favoritesAPI";
 import { useDispatch } from "react-redux";
@@ -24,11 +19,9 @@ import { useGetOneTripQuery } from "./app/tripsApi";
 
 
 function MyVerticallyCenteredModal(props) {
-    const { data: barData, isLoading } = useGetOneTripQuery(props.trip);
-    // const tripArray = props.trip
-    console.log("KATIE WONG", barData.locations)
+    const { data: barData} = useGetOneTripQuery(props.trip);
   return (
-    <Modal
+    barData && <Modal
       {...props}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
@@ -36,7 +29,7 @@ function MyVerticallyCenteredModal(props) {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Modal heading
+          Bars 
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -67,7 +60,7 @@ function MyVerticallyCenteredModal(props) {
         <Button onClick={props.onHide}>Close</Button>
       </Modal.Footer>
     </Modal>
-  );
+    );
 }
 
 
@@ -78,14 +71,7 @@ export default function WishList() {
     // const [modalShow, setModalShow] = usestate('');
     const [modalShow, setModalShow] = useState(false);
     const [indivTrip, setIndivTrip ] = useState(0);
-
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
     const cityLandscape = require("./assets/city-landscape.webp");
-    useEffect(() => {
-        console.log(modalShow)
-        console.log(indivTrip)
-    }, [modalShow, indivTrip]);
 
     if (isLoading) {
     return (
@@ -101,15 +87,11 @@ export default function WishList() {
 
     const handleShowModal = async (e) => {
         const locations = e.target.value
-        console.log("loc", locations)
         setModalShow(true)
         setIndivTrip(locations)
 
     }
 
-
-
-    console.log("wishlist",wishlistdata)    
 
     return (
         <>
@@ -128,6 +110,11 @@ export default function WishList() {
 
                             {trip.username}
                         </Card.Text>
+                        <Card.Text style={{fontSize: 17, color: "#8c92ac"}}>
+                        <Icon.GeoAlt className="me-2"/>
+
+                        {trip.city}
+                      </Card.Text>
                         <Card.Text>
                             <Icon.Quote className="ms-1 me-3"/>
                             {trip.description.slice(0, 50)}
@@ -139,28 +126,7 @@ export default function WishList() {
                                 trip={indivTrip}
                                 onHide={() => setModalShow(false)}
                                 />    
-                                   {/* <div class="container">
-                                        <div class="offset"></div>
-                                            <div class="main-wrapper">
-                                                {trip.locations.map((location) => 
-                                                    <div class="item">
-                                                    <img key={location.bar_id} src={location.image_url} alt="" />
-                                                    <Typography gutterBottom variant="t5" component="h2">
-                                                        {location.bar_name}
-                                                    </Typography>
-                                                    <a
-                                                        href={location.url}
-                                                        underline="hover"
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                    >
-                                                        More Information
-                                                    </a>
-                                                        </div>
-                                                        
-                                                )}
-                                        </div>
-                                    </div> */}
+
                             
                         </Card.Body>
                     </Card>
@@ -170,36 +136,7 @@ export default function WishList() {
                 )}
         </Grid>  
         </Container>
-        {/* {wishlistdata?.map((trip) => 
-            <>
-            <h3 key={trip.id}>{trip.trip_name}</h3>
-            <div class="container">
-                <div class="offset"></div>
-                    <div class="main-wrapper">
-                        {trip.locations.map((location) => 
-                            <div class="item">
-                            <img key={location.bar_id} src={location.image_url} alt="" />
-                            <Typography gutterBottom variant="t5" component="h2">
-                                {location.bar_name}
-                            </Typography>
-                            <a
-                                href={location.url}
-                                underline="hover"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                More Information
-                            </a>
-                                </div>
-                                
-                        )}
-            </div>
-            </div>
-            </>
             
-        )} */}
-            
-        
         </>
         )
 

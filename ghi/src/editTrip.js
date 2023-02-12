@@ -84,7 +84,7 @@ export default function EditTrip() {
       created_on: getTripInfo.created_on,
       image_url: getTripInfo.image_url,
       likes: getTripInfo.likes,
-      distance: getTripInfo.distance,
+      city: getTripInfo.city,
       id: tripId,
     };
     updateLocations(locationData);
@@ -98,7 +98,7 @@ export default function EditTrip() {
   if (deleteResult.isSuccess) {
     navigate("/trips");
   } else if (deleteResult.isError) {
-    console.log("delete trip didn't work");
+    console.log("Delete trip didn't work");
   }
 
   if (updateResult.isSuccess && updateTripResult.isSuccess) {

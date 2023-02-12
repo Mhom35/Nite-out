@@ -48,7 +48,7 @@ function App() {
             <Route path="/edit/trip/:id" element={<EditTrip />} />
             <Route path="/edit/bars" element={<EditBars />} />
             <Route path="/heatmap" element={<HeatMap />} />
-            <Route path="/wishlist" element={<WishList/>} />
+            <Route path="/favorites" element={<WishList/>} />
 
             <Route path="/logout" element={<SignOut />} />
           </Routes>

@@ -1,17 +1,16 @@
 import React, { useState, useRef, useMemo, useEffect, useCallback } from "react";
-import ReactMapGL, { Marker, Popup, Layer, Source, useMap, MapProvider } from "react-map-gl";
+import ReactMapGL, { Marker, Popup, Layer, Source, MapProvider } from "react-map-gl";
 import "./toggle.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import sfData from "./data/sfBarData";
 import dataObj from "./data/dataSorting";
 import ReactSlider from "react-slider";
 import { circleLayer, heatmapLayer } from "./map-style";
-import Form from 'react-bootstrap/Form';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Button from '@mui/material/Button';
+import Select from '@mui/material/Select';
+
 
 
 function createObjData(filteredPopData, coordinatesData, barID) {
@@ -69,7 +68,6 @@ function HeatMap({ setCurrentValue }) {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedHour, setSelectedHour] = useState(0);
   const [selectedDay, setSelectedDay] = useState("");
-  const [selectedCity, setSelectedCity] = useState("");
   const [popularityData, setPopularityData] = useState(sfData);
   const [lat, setLat] = useState(37.783977);
   const [lng, setLng] = useState(-122.358809);
@@ -90,21 +88,7 @@ function HeatMap({ setCurrentValue }) {
     setOpen(true);
   };
 
-  //useMemo to get the popularity by selectedHour, day and city
-
-  // useEffect(() => {
-  //   //selectedDataSet ( from drop down menu)
-  //   const cityData = switchData(selectedCity);
-  //   setViewPort(cityData.viewPort);
-  //   setLng(viewport.longitude);
-  //   setLat(viewport.latitude);
-  //   setPopularityData(cityData.dataSet);
-
-  // }, [selectedCity]);
-
-
-  
-
+  //memoize popularity data by selectedHour, day and city
 const data = useMemo(() => {
     return popularityByHour(popularityData, selectedHour, selectedDay);
 }, [selectedHour, selectedDay, popularityData]);
@@ -223,12 +207,6 @@ const data = useMemo(() => {
             </div>
 
       </div>
-      {/* <div>
-        <img className="heatmap" src={legend} alt="heatmap" />
-      </div> */}
-
-
-
 
       <div className="semantics">
         <div className="sliderContainer">

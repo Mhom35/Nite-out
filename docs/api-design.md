@@ -229,7 +229,7 @@ Successful Response:
   "created_on": "2022-12-10T01:17:30.762Z",
   "image_url": "string",
   "likes": 0,
-  "distance": 0
+  "city": 0
 }
 ```
 
@@ -287,7 +287,7 @@ Successful Response:
   "created_on": "2022-12-10T01:31:28.068Z",
   "image_url": "string",
   "likes": 0,
-  "distance": 0
+  "city": 0
 }
 ```
 
