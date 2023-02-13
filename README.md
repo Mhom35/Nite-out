@@ -25,7 +25,7 @@ Anyone looking for bars to plan their next night out. Tourists looking for bars 
 
 ## Getting started
 
-The following steps will detail how to start the application on your own computer locally, or you could head to our deployed project at https://Mhom35.gitlab.io/Nite-out
+The following steps will detail how to start the application on your own computer locally, or you could head to our deployed project at https://niteout2.gitlab.io/niteout
 
 1. Clone the repository to your own computer.
 2. CD into the new directory of the project.
