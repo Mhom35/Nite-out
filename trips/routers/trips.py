@@ -36,7 +36,7 @@ def create_trip(
     # account: dict = Depends(get_current_user),
 ):
     try:
-        created_trip = repo.create_trip(account_data["id"], account_data["username"],trip)
+        created_trip = repo.create_trip(account_data["id"], account_data["username"], trip)   # noqa: E501
         return created_trip
     except Exception:
         response.status_code = 400
@@ -93,4 +93,4 @@ def get_trip_bars(
     trip_w_bars = repo.get_individual_trip(trip_id=trip_id)
     if trip_w_bars is None:
         response.status_code = 404
-    return trip_w_bars
+    return trip_w_barss

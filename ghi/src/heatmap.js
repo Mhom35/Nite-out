@@ -28,7 +28,7 @@ function createObjData(filteredPopData, coordinatesData, barID) {
   return featuresObj;
 }
 
-const legend = require("./assets/heatmap-legend.png");
+// const legend = require("./assets/heatmap-legend.png");
 
 function popularityByHour(data, hour, day) {
   let features = [];
@@ -135,7 +135,6 @@ const data = useMemo(() => {
                     setShowPopup(true);
                   }}
                 >
-                  {/* <img src="https://img.icons8.com/color/344/where.png" alt="hello" /> */}
                 </button>
               </Marker>
             </>

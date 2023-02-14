@@ -1,11 +1,8 @@
 import * as React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router";
 import {
   useGetWishListQuery
 } from "./app/favoritesAPI";
-import { useDispatch } from "react-redux";
-import { useAuthContext, getToken } from "./frontendAuth";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import Paper from '@mui/material/Paper';
@@ -19,7 +16,7 @@ import { useGetOneTripQuery } from "./app/tripsApi";
 
 
 function MyVerticallyCenteredModal(props) {
-    const { data: barData} = useGetOneTripQuery(props.trip);
+  const { data: barData} = useGetOneTripQuery(props.trip);
   return (
     barData && <Modal
       {...props}
@@ -70,7 +67,7 @@ export default function WishList() {
     const { data: wishlistdata, isLoading } = useGetWishListQuery();
     // const [modalShow, setModalShow] = usestate('');
     const [modalShow, setModalShow] = useState(false);
-    const [indivTrip, setIndivTrip ] = useState(0);
+    const [indivTrip, setIndivTrip ] = useState();
     const cityLandscape = require("./assets/city-landscape.webp");
 
     if (isLoading) {

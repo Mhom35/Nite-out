@@ -16,15 +16,13 @@ class WishListTripIn(BaseModel):
     trip_id: int
 
 
-
 class WishListTripOut(BaseModel):
     wishlist_id: int
     trip_id: int
 
 
-
 class WishListTripRepository:
-    def create_wishlist_trip(self, account_id: int, wishlist_trips: WishListTripIn) -> WishListTripOut:
+    def create_wishlist_trip(self, account_id: int, wishlist_trips: WishListTripIn) -> WishListTripOut:  # noqa: E501
         try:
             # connect to database
             with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
@@ -34,7 +32,7 @@ class WishListTripRepository:
                     result = db.execute(
                         """
                         INSERT INTO wishlist_trips (
-                            wishlist_id, 
+                            wishlist_id,
                             trip_id
                         )
                         VALUES
@@ -56,20 +54,20 @@ class WishListTripRepository:
             return {"message": "Create did not work"}
 
     def delete_trip_from_wishlist(self, wishlist_id: int, trip_id: int):
-            try:
-                # connect to database
-                with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
-                    # get cursor (something to run SQL with)
-                    with conn.cursor() as db:
-                        # Run our INSERT statement
-                        db.execute(
-                            """
-                            DELETE FROM wishlist_trips
-                            WHERE wishlist_id = %s AND trip_id = %s
-                            """,
-                            [wishlist_id, trip_id],
-                        )
-                        return True
-            except Exception as e:
-                print(e)
-                return False
+        try:
+            # connect to database
+            with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
+                # get cursor (something to run SQL with)
+                with conn.cursor() as db:
+                    # Run our INSERT statement
+                    db.execute(
+                        """
+                        DELETE FROM wishlist_trips
+                        WHERE wishlist_id = %s AND trip_id = %s
+                        """,
+                        [wishlist_id, trip_id],
+                    )
+                    return True
+        except Exception as e:
+            print(e)
+            return False

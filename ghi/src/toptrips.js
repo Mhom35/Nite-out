@@ -1,6 +1,4 @@
 import * as React from "react";
-// import Button from "@mui/material/Button";/
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { getTripId } from "./app/tripId";
 import { useDispatch } from "react-redux";
@@ -17,8 +15,6 @@ import { useAddTripToWishListMutation }  from "./app/favoritesAPI";
 import Alert from 'react-bootstrap/Alert';
 import { useAuthContext } from "./frontendAuth";
 
-
-const theme = createTheme();
 
 export default function TopTrips() {
   const { data: barData, isLoading } = useGetAllTripsQuery();
@@ -53,7 +49,9 @@ export default function TopTrips() {
     e.preventDefault()
     const tripId = e.currentTarget.value;
     let newLikes = 0;
-    const cleanedData = barData.filter((trip) => trip.id == tripId)[0];
+    /* eslint-disable */
+    const cleanedData = barData.filter((trip) => trip.id == tripId)[0]; 
+    /* eslint-enable */
     if (cleanedData.likes === null) {
       newLikes = 1;
     }
@@ -111,7 +109,7 @@ export default function TopTrips() {
   
 
   //  ensure likes are set to 0 instead of null else return the trip obj
-  const tripsData = barData.map((trip) =>
+  const tripsData = barData?.map((trip) =>
     trip.likes === null ? { ...trip, likes: 0 } : trip
   );
 
@@ -158,7 +156,7 @@ export default function TopTrips() {
                       <Button className="ms-1 me-1" variant="outline-primary"onClick={handleTripSelect} value={trip.id}>Details</Button>
                       
                       <Button variant="outline-primary" style={{marginLeft: 0, width: 50}} value={trip.id} onClick={(e) => handleBookMark(e)}> <Icon.BookmarkHeartFill/> </Button>
-                      <Button className="me-4" variant="outline-primary" style={{marginLeft: 35, width: 60}} value={trip.id} onClick={(e) => handleUpdateLikes(e)}> <Icon.Heart/> {trip.likes}</Button>
+                      <Button className="me-4" variant="outline-primary" style={{marginLeft: 35, width: 60}} value={trip.id} onClick={handleUpdateLikes}> <Icon.Heart/> {trip.likes}</Button>
                     </Card.Body>
                   </Card>
                 </Paper>

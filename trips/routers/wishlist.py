@@ -1,6 +1,6 @@
 import sys
 from fastapi import APIRouter, Depends, Response
-from typing import List, Union, Optional
+from typing import Union
 from queries.wishlist import (
     Error,
     WishListIn,
@@ -42,10 +42,7 @@ def create_wishlist(
     account_data: dict = Depends(authenticator.get_current_account_data),
 ):
     try:
-        if repo.get_wishlist(account_data["id"]):
-            return repo.get_wishlist(account_data["id"])
-        else:
-            created_wishlist = repo.create_wishlist(account_data["id"],wishlist)
+        created_wishlist = repo.create_wishlist(account_data["id"], wishlist)  # noqa: E501
         return created_wishlist
     except Exception:
         response.status_code = 400

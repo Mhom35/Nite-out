@@ -11,12 +11,10 @@ keepalive_kwargs = {
     "autocommit": True
 }
 
+
 kwargs = {"autocommit": True}
 # connection = psycopg.connect(conninfo=os.environ["DATABASE_URL"], **kwargs)
-import time
 
-def current_milli_time():
-    return round(time.time() * 1000)
 
 class Error(BaseModel):
     message: str
@@ -43,6 +41,7 @@ class TripOut(BaseModel):
     city: Optional[str]
     account: int
     username: Optional[str]
+
 
 class TripInWithAccount(BaseModel):
     id: int
@@ -94,7 +93,7 @@ class TripRepository:
             print(e)
             return False
 
-    def update_trip(self,  trip_id: int, trip: TripInWithAccount) -> Union[TripOut, Error]:
+    def update_trip(self,  trip_id: int, trip: TripInWithAccount) -> Union[TripOut, Error]:  # noqa: E501
         try:
             # connect to database
             with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
@@ -109,7 +108,7 @@ class TripRepository:
                             , description = %s
                             , image_url = %s
                             , likes = %s
-                            , city = %s 
+                            , city = %s
                             , account = %s
                             , username = %s
                         WHERE id = %s
@@ -129,14 +128,12 @@ class TripRepository:
                         ],
                     )
                     record = result.fetchone()
-
-
                     return self.record_to_trip_out(record)
         except Exception as e:
             print("error message:", e)
             return {"message": "Could not update trip"}
 
-    def create_trip(self, account_id: int, username: str, trip: TripIn) -> TripOut:
+    def create_trip(self, account_id: int, username: str, trip: TripIn) -> TripOut:  # noqa: E501
         try:
             # connect to database
             with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
@@ -146,7 +143,8 @@ class TripRepository:
                     result = db.execute(
                         """
                         INSERT INTO trips
-                            (trip_name, locations, description, city, created_on, account, username)
+                            (trip_name, locations, description,
+                            city, created_on, account, username)
                         VALUES
                             (%s, %s, %s, %s, %s, %s, %s)
 
@@ -163,7 +161,7 @@ class TripRepository:
                         ],
                     )
                     id = result.fetchone()[0]
-                    result = self.trip_in_to_out(id, trip, account_id, username)
+                    result = self.trip_in_to_out(id, trip, account_id, username)  # noqa: E501
                     return result
         except Exception:
             return {"message": "Create did not work"}
@@ -172,9 +170,8 @@ class TripRepository:
         try:
             with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
                 with conn.cursor() as db:
-                    # 
+                    #
                     new_dict = {}
-                    output = []
                     result = db.execute(
                         """
                         SELECT b.id AS bar_id, b.yelp_id, b.bar_name,
@@ -190,10 +187,7 @@ class TripRepository:
                         """,
                         [trip_list],
                     )
-
-
                     for trip in result:
-                        # trip id 
                         if trip[7] not in new_dict:
                             new_dict[trip[7]] = TripOut(
                                 id=trip[7],
@@ -230,15 +224,12 @@ class TripRepository:
                                 )
 
                             )
-
-                    
                     return list(new_dict.values())
 
         except Exception:
             return {"message": "trip does not exist"}
 
     def get_all_trips(self) -> Union[List[TripOut], Error]:
-        start = current_milli_time()
         try:
             with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
                 with conn.cursor() as db:
@@ -255,8 +246,7 @@ class TripRepository:
                     result_hash = set(result)
                     all_trip_ids = [trip[0] for trip in result_hash]
                     trips = self.get_bars_for_trip(all_trip_ids)
-                    elapsed = current_milli_time() - start
-                    return trips  
+                    return trips
         except Exception:
             return {"message": "trip does not exist"}
 
@@ -306,17 +296,14 @@ class TripRepository:
                         account=record[16],
                         username=record[17]
                     )
-                    
                     trip.locations = bars
                     return trip
         except Exception:
             return {"message": "trip does not exist"}
 
-
-
-    def trip_in_to_out(self, id: int, trip: TripIn, account_id: int, username: str):
+    def trip_in_to_out(self, id: int, trip: TripIn, account_id: int, username: str):  # noqa: E501
         old_data = trip.dict()
-        return TripOut(id=id, account=account_id, username=username, **old_data)
+        return TripOut(id=id, account=account_id, username=username, **old_data)  # noqa: E501
 
     def record_to_trip_out(self, record):
         return TripOut(

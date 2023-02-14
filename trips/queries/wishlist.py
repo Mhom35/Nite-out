@@ -1,16 +1,14 @@
 from pydantic import BaseModel
-from typing import Optional, List, Union
+from typing import Union
 # from queries.pool import pool
 from psycopg import connect
-from datetime import datetime
+# from datetime import datetime
 import os
 from queries.trips import (
     Error,
-    TripIn,
     TripRepository,
     TripOut,
 )
-
 
 
 keepalive_kwargs = {
@@ -20,12 +18,13 @@ keepalive_kwargs = {
 kwargs = {"autocommit": True}
 # connection = psycopg.connect(conninfo=os.environ["DATABASE_URL"], **kwargs)
 
-class Error(BaseModel):
-    message: str
+# class Error(BaseModel):
+#     message: str
 
 
 class WishListIn(BaseModel):
     wishlist: list
+
 
 class WishListOut(BaseModel):
     id: int
@@ -38,11 +37,8 @@ trip_class = TripRepository()
 get_trip_helper = trip_class.get_bars_for_trip
 
 
-
-
-
 class WishListRepository:
-    def create_wishlist(self, account_id: int, wishlist: WishListIn) -> TripOut:
+    def create_wishlist(self, account_id: int, wishlist: WishListIn) -> TripOut:  # noqa: E501
         try:
             # connect to database
             with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
@@ -60,7 +56,6 @@ class WishListRepository:
                         [
                             wishlist.wishlist,
                             account_id,
-      
                         ],
                     )
                     id = result.fetchone()[0]
@@ -72,11 +67,10 @@ class WishListRepository:
     def added_to_wishlist(self, trip_list: list):
         try:
             return get_trip_helper(trip_list)
-
         except Exception:
             return {"message": "trip does not exist"}
-    
-    def delete_from_wishlist(self, account_id: int, trip_id: int, wishlist: WishListIn) -> Union[WishListOut, Error]:
+
+    def delete_from_wishlist(self, account_id: int, trip_id: int, wishlist: WishListIn) -> Union[WishListOut, Error]:  # noqa: E501
         try:
             # connect to database
             with connect(conninfo=os.environ["DATABASE_URL"], **keepalive_kwargs) as conn:  # noqa: E501
@@ -90,14 +84,12 @@ class WishListRepository:
                         WHERE account_id = %s
                         """,
                         [
-                            trip.wishlist,
+                            wishlist.wishlist,
                             account_id,
                         ],
                     )
                     record = result.fetchone()
-
                     record.wishlist.pop(trip_id, None)
-                    
                     return record
         except Exception as e:
             print("error message:", e)
@@ -124,24 +116,21 @@ class WishListRepository:
                     result_hash = set(result)
                     all_trip_ids = [trip[0] for trip in result_hash]
                     trips = self.added_to_wishlist(all_trip_ids)
-                    return trips  
+                    return trips
         except Exception as e:
             print(e)
             return {"message": "BAR DON'T EXIST"}
 
-
-
-
-    def wishlist_in_to_out(self, id: int, wishlist: WishListIn, account_id: int):
+    def wishlist_in_to_out(self, id: int, wishlist: WishListIn, account_id: int):  # noqa: E501
         old_data = wishlist.dict()
-        return WishListOut(id=id, account=account_id, **old_data)
+        return WishListOut(id=account_id, account=account_id, **old_data)
 
-    def wishlist_add_to(self, wishlist: WishListIn, account_id: int, trip_id:int):
+    def wishlist_add_to(self, wishlist: WishListIn, account_id: int, trip_id: int):  # noqa: E501
         old_data = wishlist.dict()
         trip_dict = {}
         trip_dict[trip_id] = get_trip_helper(trip_id)
         old_data["wishlist"].append(trip_dict)
-        return WishListOut(id=account_id, account=account_id, **old_data)
+        return WishListOut(id=account_id, account=account_id, **old_data)  # noqa: E501
 
     def record_to_wishlist_out(self, record):
         return WishListOut(
