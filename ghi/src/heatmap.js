@@ -10,9 +10,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+// const legend = require("./assets/heatmap-legend.png");
 
 
-
+// clean data to match Map GL heatmap feature's data structure
 function createObjData(filteredPopData, coordinatesData, barID) {
   let featuresObj = {};
   let propertiesObj = {};
@@ -28,8 +29,8 @@ function createObjData(filteredPopData, coordinatesData, barID) {
   return featuresObj;
 }
 
-// const legend = require("./assets/heatmap-legend.png");
 
+// sort through Google Places API popularity data to get filtered city data
 function popularityByHour(data, hour, day) {
   let features = [];
   const popularityData = data.map((place) =>
@@ -52,9 +53,9 @@ function popularityByHour(data, hour, day) {
     );
     i += 1;
   }
-
   return { type: "FeatureCollection", features };
 }
+
 
 function HeatMap({ setCurrentValue }) {
   /* eslint-disable */
