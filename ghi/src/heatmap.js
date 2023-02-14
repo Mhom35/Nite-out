@@ -93,13 +93,14 @@ const data = useMemo(() => {
     return popularityByHour(popularityData, selectedHour, selectedDay);
 }, [selectedHour, selectedDay, popularityData]);
 
+// Render data for the selected city and use MapGL to fly to selected city
   const onSelectCity = useCallback((city) => {
     setPopularityData(city.dataSet)
     mapRef.current?.flyTo({center: [city.viewPort.longitude, city.viewPort.latitude], duration: 5000});
   }, []);
 
 
-  
+  // clock component - reset display hours to display standard clock
   useEffect(() => {
     setSelectedHour(pm ? selectedHour + 12: selectedHour - 12)
   },[pm])
