@@ -3,7 +3,7 @@ import newYork from "./newYorkData.js";
 import sfData from "./sfBarData";
 import * as React from 'react';
 
-const dataObj = [
+const citiesDataObj = [
   {city: "San Francisco",
   dataSet: sfData,
   viewPort: { latitude: 37.774929, longitude: -122.419418, zoom: 14 },
@@ -27,18 +27,19 @@ const dataObj = [
   },
 ];
 
-const switchData = (data) => {
-  switch (data) {
-    case "SF":
-      return dataObj.SF;
-    case "LA":
-      return dataObj.LA;
-    case "NYC":
-      return dataObj.NYC;
-    default:
-      return dataObj.SF;
-  }
-};
+export default citiesDataObj;
+// const switchData = (data) => {
+//   switch (data) {
+//     case "SF":
+//       return dataObj.SF;
+//     case "LA":
+//       return dataObj.LA;
+//     case "NYC":
+//       return dataObj.NYC;
+//     default:
+//       return dataObj.SF;
+//   }
+// };
 
 // function ControlPanel(props) {
 //   return (
@@ -64,4 +65,4 @@ const switchData = (data) => {
 
 
 
-export default dataObj;
+

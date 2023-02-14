@@ -3,7 +3,7 @@ import ReactMapGL, { Marker, Popup, Layer, Source, MapProvider } from "react-map
 import "./toggle.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import sfData from "./data/sfBarData";
-import dataObj from "./data/dataSorting";
+import citiesDataObj from "./data/dataSorting";
 import ReactSlider from "react-slider";
 import { circleLayer, heatmapLayer } from "./map-style";
 import InputLabel from '@mui/material/InputLabel';
@@ -191,7 +191,7 @@ const data = useMemo(() => {
 
         
             <div className="control-panel">
-              {dataObj.map((city, index) => (
+              {citiesDataObj.map((city, index) => (
                 <div key={`btn-${index}`} className="input">
                   <input
                     type="radio"
