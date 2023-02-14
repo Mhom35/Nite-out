@@ -27,6 +27,8 @@ Anyone looking for bars to plan their next night out. Tourists looking for bars 
 
 The following steps will detail how to start the application on your own computer locally, or you could head to our deployed project at https://niteout2.gitlab.io/niteout
 
+Parts of the website may be down due to a bug with Render.com, fixes are on the way soon!
+
 1. Clone the repository to your own computer.
 2. CD into the new directory of the project.
 3. Run `docker volume create pg-admin`
